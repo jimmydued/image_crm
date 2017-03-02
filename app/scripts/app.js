@@ -106,12 +106,12 @@ angular
         url:'/login'
     })
 
-       .state('sign-up',{
+      .state('sign-up',{
          templateUrl:'views/pages/sign-up.html',
          url:'/sign-up'
-        })
+    })
 
-        .state('forgotpassword',{
+      .state('forgotpassword',{
         templateUrl:'views/pages/forgotpassword.html',
         url:'/forgotpassword'
     })
