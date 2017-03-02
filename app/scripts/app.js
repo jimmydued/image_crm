@@ -105,6 +105,17 @@ angular
         templateUrl:'views/pages/login.html',
         url:'/login'
     })
+
+       .state('sign-up',{
+         templateUrl:'views/pages/sign-up.html',
+         url:'/sign-up'
+        })
+
+        .state('forgotpassword',{
+        templateUrl:'views/pages/forgotpassword.html',
+        url:'/forgotpassword'
+    })
+
       .state('dashboard.chart',{
         templateUrl:'views/chart.html',
         url:'/chart',
