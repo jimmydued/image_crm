@@ -1,13 +1,12 @@
 'use strict';
 /**
  * @ngdoc function
- * @name imageCrmApp.controller:MainCtrl
+ * @name imageCrm.controller:MainCtrl
  * @description
  * # MainCtrl
- * Controller of the imageCrmApp
+ * Controller of the imageCrm
  */
 angular.module('imageCrmApp')
-  .controller('MainCtrl', function($scope,$position) {
-	
+  .controller('loginCtrl', function($scope,$position) {	
     console.log("i am here");
   });
