@@ -70,4 +70,12 @@ padding-top:15px;
 }
 
 
+.validat-text-clr{             /*color of validation text message during validation*/
+	color:#FF0000;
+}
+
+
+.box-boder{                          /* border color of box during validation failure */
+  border: solid 1px #FF0000;
+}
 
