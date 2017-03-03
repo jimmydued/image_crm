@@ -55,6 +55,6 @@ padding-top:15px;
   input[type="password"].myBlur {      /*make myBlur class for email field for achieve boder color of input field */
   border: solid 1px #FF0000;  
   }  
-  input[type="text"].myBlur {      /*make myBlur class for text field for achieve boder color of input field */
+  input[type="text"].myBlur {          /*make myBlur class for text field for achieve boder color of input field */
   border: solid 1px #FF0000;  
   }  
