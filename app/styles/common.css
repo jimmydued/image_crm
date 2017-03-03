@@ -57,4 +57,7 @@ padding-top:15px;
   }  
   input[type="text"].myBlur {          /*make myBlur class for text field for achieve boder color of input field */
   border: solid 1px #FF0000;  
-  }  
+  }
+.left-m-bar{                            /*background of dashboard left menu bar*/
+  background: #333;
+}  
