@@ -1,28 +1,22 @@
 <div class="form">
      <div id="signup">   
           <h1>Sign Up for Free</h1>
-          
-          <form action="/" method="post">
-          
-          
+          <form action="/" method="post" name="signupForm">
         <div class="row">
             <div class="col-lg-6 col-md-6 col-sm-12 mtxxl">
-              <input type="text" required autocomplete="off" placeholder="First Name"/>
+              <input type="text" required autocomplete="off" placeholder="First Name" name="userFirstName" ng-model="user.firstName" ng-class="{'box-boder': signupForm.userFirstName.$invalid}" required/>
             </div>
-        
            <div class="col-lg-6 col-md-6 col-sm-12 mtxxl">
-              <input type="text"required autocomplete="off" placeholder="Last Name"/>
+              <input type="text"required autocomplete="off" placeholder="Last Name"  name="userLastName" ng-model="user.lastName" ng-class="{'box-boder': signupForm.userLastName.$invalid}" required/>
             </div>
         </div>
-
-          <div class="field-wrap mtxl">
-            <input type="email"required autocomplete="off" placeholder="Email Address"/>
+         <div class="field-wrap mtxl">
+            <input type="email"required autocomplete="off" placeholder="Email Address" name="userEmail"ng-model="user.email" ng-class="{'box-boder': signupForm.userEmail.$invalid}"  required/>
           </div>
-          
           <div class="field-wrap">
-            <input type="password"required autocomplete="off" placeholder="Set A Password"/>
+            <input type="password"required autocomplete="off" placeholder="Set A Password" name="userPassword" ng-model="user.password"  required/>
           </div>
-          <input type="submit" class="button button-block" value="Get Started"/>
+          <input type="submit" class="button btn" ng-disabled="signupForm.$invalid" value="Get Started"/>
           
           
           </form>
