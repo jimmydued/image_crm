@@ -1,81 +1,60 @@
 .man{
 	margin:0px;
 }
-
-
 /*marign for top*/
 .mts{
 	margin-top:5px;
 }
-
-
 .mtm{
 	margin-top: 10px;
 }
-
-
 .mtl{
 	margin-top: 15px;
-}
-
+ }
 .mtxl{
 	margin-top: 20px;
 }
-
 .mtxxl{
 	margin-top: 25px;
 }
-
-
 /*margin from left*/
-
 .mls{
 margin-left:5px;
 }
-
-
 .mlm{
 margin-left:10px;
 }
-
 .mll{
 margin-left:15px;
 }
-
 .mlxl{
 margin-left:20px;
 }
-
-
 .mlxxl{
 margin-left:25px;
 }
-
-
-
 /*padding for top */
-
 .pts{
 padding-top:5px;
 }
-
-
 .ptm{
 padding-top:10px;
 }
-
-
 .ptl{
 padding-top:15px;
 }
-
-
-.validat-text-clr{             /*color of validation text message during validation*/
+.validat-text-clr{                   /*color of validation text message during validation*/
 	color:#FF0000;
 }
-
-
-.box-boder{                          /* border color of box during validation failure */
-  border: solid 1px #FF0000;
+.box-boder{                           /* border color of box during validation failure */
+ border: solid 1px #FF0000;
 }
-
+  input[type="email"].myBlur {         /*make myBlur class for email field for achieve boder color of input field */
+  border: solid 1px #FF0000;  
+  }  
+  input[type="password"].myBlur {      /*make myBlur class for email field for achieve boder color of input field */
+  border: solid 1px #FF0000;  
+  }  
+  input[type="text"].myBlur {      /*make myBlur class for text field for achieve boder color of input field */
+  border: solid 1px #FF0000;  
+  }  
