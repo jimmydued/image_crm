@@ -1,6 +1,6 @@
 /**
- * @license AngularJS v1.6.2
- * (c) 2010-2017 Google, Inc. http://angularjs.org
+ * @license AngularJS v1.6.0
+ * (c) 2010-2016 Google, Inc. http://angularjs.org
  * License: MIT
  */
 (function(window) {'use strict';
@@ -57,7 +57,7 @@ function minErr(module, ErrorConstructor) {
       return match;
     });
 
-    message += '\nhttp://errors.angularjs.org/1.6.2/' +
+    message += '\nhttp://errors.angularjs.org/1.6.0/' +
       (module ? module + '/' : '') + code;
 
     for (i = SKIP_INDEXES, paramPrefix = '?'; i < templateArgs.length; i++, paramPrefix = '&') {
@@ -1548,16 +1548,12 @@ function getNgAttribute(element, ngAttr) {
 }
 
 function allowAutoBootstrap(document) {
-  var script = document.currentScript;
-  var src = script && script.getAttribute('src');
-
-  if (!src) {
+  if (!document.currentScript) {
     return true;
   }
-
+  var src = document.currentScript.getAttribute('src');
   var link = document.createElement('a');
   link.href = src;
-
   if (document.location.origin === link.origin) {
     // Same-origin resources are always allowed, even for non-whitelisted schemes.
     return true;
@@ -1939,7 +1935,7 @@ function bindJQuery() {
     extend(jQuery.fn, {
       scope: JQLitePrototype.scope,
       isolateScope: JQLitePrototype.isolateScope,
-      controller: /** @type {?} */ (JQLitePrototype).controller,
+      controller: JQLitePrototype.controller,
       injector: JQLitePrototype.injector,
       inheritedData: JQLitePrototype.inheritedData
     });
@@ -2581,6 +2577,7 @@ function toDebugString(obj) {
   $$ForceReflowProvider,
   $InterpolateProvider,
   $IntervalProvider,
+  $$HashMapProvider,
   $HttpProvider,
   $HttpParamSerializerProvider,
   $HttpParamSerializerJQLikeProvider,
@@ -2589,7 +2586,6 @@ function toDebugString(obj) {
   $jsonpCallbacksProvider,
   $LocationProvider,
   $LogProvider,
-  $$MapProvider,
   $ParseProvider,
   $RootScopeProvider,
   $QProvider,
@@ -2627,11 +2623,11 @@ function toDebugString(obj) {
 var version = {
   // These placeholder strings will be replaced by grunt's `build` task.
   // They need to be double- or single-quoted.
-  full: '1.6.2',
+  full: '1.6.0',
   major: 1,
   minor: 6,
-  dot: 2,
-  codeName: 'llamacorn-lovehug'
+  dot: 0,
+  codeName: 'rainbow-tsunami'
 };
 
 
@@ -2771,7 +2767,7 @@ function publishExternalAPI(angular) {
         $window: $WindowProvider,
         $$rAF: $$RAFProvider,
         $$jqLite: $$jqLiteProvider,
-        $$Map: $$MapProvider,
+        $$HashMap: $$HashMapProvider,
         $$cookieReader: $$CookieReaderProvider
       });
     }
@@ -3757,15 +3753,12 @@ forEach({
 
   after: function(element, newElement) {
     var index = element, parent = element.parentNode;
+    newElement = new JQLite(newElement);
 
-    if (parent) {
-      newElement = new JQLite(newElement);
-
-      for (var i = 0, ii = newElement.length; i < ii; i++) {
-        var node = newElement[i];
-        parent.insertBefore(node, index.nextSibling);
-        index = node;
-      }
+    for (var i = 0, ii = newElement.length; i < ii; i++) {
+      var node = newElement[i];
+      parent.insertBefore(node, index.nextSibling);
+      index = node;
     }
   },
 
@@ -3919,70 +3912,50 @@ function hashKey(obj, nextUidFn) {
   return key;
 }
 
-// A minimal ES2015 Map implementation.
-// Should be bug/feature equivalent to the native implementations of supported browsers
-// (for the features required in Angular).
-// See https://kangax.github.io/compat-table/es6/#test-Map
-var nanKey = Object.create(null);
-function NgMapShim() {
-  this._keys = [];
-  this._values = [];
-  this._lastKey = NaN;
-  this._lastIndex = -1;
+/**
+ * HashMap which can use objects as keys
+ */
+function HashMap(array, isolatedUid) {
+  if (isolatedUid) {
+    var uid = 0;
+    this.nextUid = function() {
+      return ++uid;
+    };
+  }
+  forEach(array, this.put, this);
 }
-NgMapShim.prototype = {
-  _idx: function(key) {
-    if (key === this._lastKey) {
-      return this._lastIndex;
-    }
-    this._lastKey = key;
-    this._lastIndex = this._keys.indexOf(key);
-    return this._lastIndex;
+HashMap.prototype = {
+  /**
+   * Store key value pair
+   * @param key key to store can be any type
+   * @param value value to store can be any type
+   */
+  put: function(key, value) {
+    this[hashKey(key, this.nextUid)] = value;
   },
-  _transformKey: function(key) {
-    return isNumberNaN(key) ? nanKey : key;
-  },
-  get: function(key) {
-    key = this._transformKey(key);
-    var idx = this._idx(key);
-    if (idx !== -1) {
-      return this._values[idx];
-    }
-  },
-  set: function(key, value) {
-    key = this._transformKey(key);
-    var idx = this._idx(key);
-    if (idx === -1) {
-      idx = this._lastIndex = this._keys.length;
-    }
-    this._keys[idx] = key;
-    this._values[idx] = value;
 
-    // Support: IE11
-    // Do not `return this` to simulate the partial IE11 implementation
+  /**
+   * @param key
+   * @returns {Object} the value for the key
+   */
+  get: function(key) {
+    return this[hashKey(key, this.nextUid)];
   },
-  delete: function(key) {
-    key = this._transformKey(key);
-    var idx = this._idx(key);
-    if (idx === -1) {
-      return false;
-    }
-    this._keys.splice(idx, 1);
-    this._values.splice(idx, 1);
-    this._lastKey = NaN;
-    this._lastIndex = -1;
-    return true;
+
+  /**
+   * Remove the key/value pair
+   * @param key
+   */
+  remove: function(key) {
+    var value = this[key = hashKey(key, this.nextUid)];
+    delete this[key];
+    return value;
   }
 };
 
-// For now, always use `NgMapShim`, even if `window.Map` is available. Some native implementations
-// are still buggy (often in subtle ways) and can cause hard-to-debug failures. When native `Map`
-// implementations get more stable, we can reconsider switching to `window.Map` (when available).
-var NgMap = NgMapShim;
-
-var $$MapProvider = [/** @this */function() {
+var $$HashMapProvider = [/** @this */function() {
   this.$get = [function() {
-    return NgMap;
+    return HashMap;
   }];
 }];
 
@@ -4057,7 +4030,11 @@ var STRIP_COMMENTS = /((\/\/.*$)|(\/\*[\s\S]*?\*\/))/mg;
 var $injectorMinErr = minErr('$injector');
 
 function stringifyFn(fn) {
-  return Function.prototype.toString.call(fn);
+  // Support: Chrome 50-51 only
+  // Creating a new string by adding `' '` at the end, to hack around some bug in Chrome v50/51
+  // (See https://github.com/angular/angular.js/issues/14487.)
+  // TODO (gkalpak): Remove workaround when Chrome v52 is released
+  return Function.prototype.toString.call(fn) + ' ';
 }
 
 function extractArgs(fn) {
@@ -4631,7 +4608,7 @@ function createInjector(modulesToLoad, strictDi) {
   var INSTANTIATING = {},
       providerSuffix = 'Provider',
       path = [],
-      loadedModules = new NgMap(),
+      loadedModules = new HashMap([], true),
       providerCache = {
         $provide: {
             provider: supportObject(provider),
@@ -4739,7 +4716,7 @@ function createInjector(modulesToLoad, strictDi) {
     var runBlocks = [], moduleFn;
     forEach(modulesToLoad, function(module) {
       if (loadedModules.get(module)) return;
-      loadedModules.set(module, true);
+      loadedModules.put(module, true);
 
       function runInvokeQueue(queue) {
         var i, ii;
@@ -5225,7 +5202,7 @@ var $$CoreAnimateJsProvider = /** @this */ function() {
 // this is prefixed with Core since it conflicts with
 // the animateQueueProvider defined in ngAnimate/animateQueue.js
 var $$CoreAnimateQueueProvider = /** @this */ function() {
-  var postDigestQueue = new NgMap();
+  var postDigestQueue = new HashMap();
   var postDigestElements = [];
 
   this.$get = ['$$AnimateRunner', '$rootScope',
@@ -5304,7 +5281,7 @@ var $$CoreAnimateQueueProvider = /** @this */ function() {
               jqLiteRemoveClass(elm, toRemove);
             }
           });
-          postDigestQueue.delete(element);
+          postDigestQueue.remove(element);
         }
       });
       postDigestElements.length = 0;
@@ -5319,7 +5296,7 @@ var $$CoreAnimateQueueProvider = /** @this */ function() {
 
       if (classesAdded || classesRemoved) {
 
-        postDigestQueue.set(element, data);
+        postDigestQueue.put(element, data);
         postDigestElements.push(element);
 
         if (postDigestElements.length === 1) {
@@ -6179,6 +6156,7 @@ function Browser(window, document, $log, $sniffer) {
       };
 
   cacheState();
+  lastHistoryState = cachedState;
 
   /**
    * @name $browser#url
@@ -6232,6 +6210,8 @@ function Browser(window, document, $log, $sniffer) {
       if ($sniffer.history && (!sameBase || !sameState)) {
         history[replace ? 'replaceState' : 'pushState'](state, '', url);
         cacheState();
+        // Do the assignment again so that those two variables are referentially identical.
+        lastHistoryState = cachedState;
       } else {
         if (!sameBase) {
           pendingLocation = url;
@@ -6280,7 +6260,8 @@ function Browser(window, document, $log, $sniffer) {
 
   function cacheStateAndFireUrlChange() {
     pendingLocation = null;
-    fireStateOrUrlChange();
+    cacheState();
+    fireUrlChange();
   }
 
   // This variable should be used *only* inside the cacheState function.
@@ -6294,16 +6275,11 @@ function Browser(window, document, $log, $sniffer) {
     if (equals(cachedState, lastCachedState)) {
       cachedState = lastCachedState;
     }
-
     lastCachedState = cachedState;
-    lastHistoryState = cachedState;
   }
 
-  function fireStateOrUrlChange() {
-    var prevLastHistoryState = lastHistoryState;
-    cacheState();
-
-    if (lastBrowserUrl === self.url() && prevLastHistoryState === cachedState) {
+  function fireUrlChange() {
+    if (lastBrowserUrl === self.url() && lastHistoryState === cachedState) {
       return;
     }
 
@@ -6369,7 +6345,7 @@ function Browser(window, document, $log, $sniffer) {
    * Needs to be exported to be able to check for changes that have been done in sync,
    * as hashchange/popstate events fire in async.
    */
-  self.$$checkUrlChange = fireStateOrUrlChange;
+  self.$$checkUrlChange = fireUrlChange;
 
   //////////////////////////////////////////////////////////////
   // Misc API
@@ -6979,8 +6955,7 @@ function $TemplateCacheProvider() {
  * * `$onChanges(changesObj)` - Called whenever one-way (`<`) or interpolation (`@`) bindings are updated. The
  *   `changesObj` is a hash whose keys are the names of the bound properties that have changed, and the values are an
  *   object of the form `{ currentValue, previousValue, isFirstChange() }`. Use this hook to trigger updates within a
- *   component such as cloning the bound value to prevent accidental mutation of the outer value. Note that this will
- *   also be called when your bindings are initialized.
+ *   component such as cloning the bound value to prevent accidental mutation of the outer value.
  * * `$doCheck()` - Called on each turn of the digest cycle. Provides an opportunity to detect and act on
  *   changes. Any actions that you wish to take in response to the changes that you detect must be
  *   invoked from this hook; implementing this has no effect on when `$onChanges` is called. For example, this hook
@@ -7835,7 +7810,7 @@ function $CompileProvider($provide, $$sanitizeUriProvider) {
   var bindingCache = createMap();
 
   function parseIsolateBindings(scope, directiveName, isController) {
-    var LOCAL_REGEXP = /^\s*([@&<]|=(\*?))(\??)\s*([\w$]*)\s*$/;
+    var LOCAL_REGEXP = /^\s*([@&<]|=(\*?))(\??)\s*(\w*)\s*$/;
 
     var bindings = createMap();
 
@@ -10007,7 +9982,7 @@ function $CompileProvider($provide, $$sanitizeUriProvider) {
           if (error instanceof Error) {
             $exceptionHandler(error);
           }
-        });
+        }).catch(noop);
 
       return function delayedNodeLinkFn(ignoreChildLinkFn, scope, node, rootElement, boundTranscludeFn) {
         var childBoundTranscludeFn = boundTranscludeFn;
@@ -12139,8 +12114,7 @@ function $HttpProvider() {
       if ((config.cache || defaults.cache) && config.cache !== false &&
           (config.method === 'GET' || config.method === 'JSONP')) {
         cache = isObject(config.cache) ? config.cache
-            : isObject(/** @type {?} */ (defaults).cache)
-              ? /** @type {?} */ (defaults).cache
+              : isObject(defaults.cache) ? defaults.cache
               : defaultCache;
       }
 
@@ -12919,8 +12893,7 @@ function $IntervalProvider() {
       * appropriate moment.  See the example below for more details on how and when to do this.
       * </div>
       *
-      * @param {function()} fn A function that should be called repeatedly. If no additional arguments
-      *   are passed (see below), the function is called with the current iteration count.
+      * @param {function()} fn A function that should be called repeatedly.
       * @param {number} delay Number of milliseconds between each function call.
       * @param {number=} [count=0] Number of times to repeat. If not set, or 0, will repeat
       *   indefinitely.
@@ -13318,8 +13291,6 @@ function LocationHtml5Url(appBase, appBaseNoFile, basePrefix) {
 
     this.$$url = encodePath(this.$$path) + (search ? '?' + search : '') + hash;
     this.$$absUrl = appBaseNoFile + this.$$url.substr(1); // first char is always '/'
-
-    this.$$urlUpdatedByLocation = true;
   };
 
   this.$$parseLinkUrl = function(url, relHref) {
@@ -13397,7 +13368,7 @@ function LocationHashbangUrl(appBase, appBaseNoFile, hashPrefix) {
         withoutHashUrl = '';
         if (isUndefined(withoutBaseUrl)) {
           appBase = url;
-          /** @type {?} */ (this).replace();
+          this.replace();
         }
       }
     }
@@ -13453,8 +13424,6 @@ function LocationHashbangUrl(appBase, appBaseNoFile, hashPrefix) {
 
     this.$$url = encodePath(this.$$path) + (search ? '?' + search : '') + hash;
     this.$$absUrl = appBase + (this.$$url ? hashPrefix + this.$$url : '');
-
-    this.$$urlUpdatedByLocation = true;
   };
 
   this.$$parseLinkUrl = function(url, relHref) {
@@ -13512,8 +13481,6 @@ function LocationHashbangInHtml5Url(appBase, appBaseNoFile, hashPrefix) {
     this.$$url = encodePath(this.$$path) + (search ? '?' + search : '') + hash;
     // include hashPrefix in $$absUrl when $$url is empty so IE9 does not reload page because of removal of '#'
     this.$$absUrl = appBase + hashPrefix + this.$$url;
-
-    this.$$urlUpdatedByLocation = true;
   };
 
 }
@@ -13843,7 +13810,6 @@ forEach([LocationHashbangInHtml5Url, LocationHashbangUrl, LocationHtml5Url], fun
     // but we're changing the $$state reference to $browser.state() during the $digest
     // so the modification window is narrow.
     this.$$state = isUndefined(state) ? null : state;
-    this.$$urlUpdatedByLocation = true;
 
     return this;
   };
@@ -14156,40 +14122,36 @@ function $LocationProvider() {
 
     // update browser
     $rootScope.$watch(function $locationWatch() {
-      if (initializing || $location.$$urlUpdatedByLocation) {
-        $location.$$urlUpdatedByLocation = false;
+      var oldUrl = trimEmptyHash($browser.url());
+      var newUrl = trimEmptyHash($location.absUrl());
+      var oldState = $browser.state();
+      var currentReplace = $location.$$replace;
+      var urlOrStateChanged = oldUrl !== newUrl ||
+        ($location.$$html5 && $sniffer.history && oldState !== $location.$$state);
 
-        var oldUrl = trimEmptyHash($browser.url());
-        var newUrl = trimEmptyHash($location.absUrl());
-        var oldState = $browser.state();
-        var currentReplace = $location.$$replace;
-        var urlOrStateChanged = oldUrl !== newUrl ||
-          ($location.$$html5 && $sniffer.history && oldState !== $location.$$state);
+      if (initializing || urlOrStateChanged) {
+        initializing = false;
 
-        if (initializing || urlOrStateChanged) {
-          initializing = false;
+        $rootScope.$evalAsync(function() {
+          var newUrl = $location.absUrl();
+          var defaultPrevented = $rootScope.$broadcast('$locationChangeStart', newUrl, oldUrl,
+              $location.$$state, oldState).defaultPrevented;
 
-          $rootScope.$evalAsync(function() {
-            var newUrl = $location.absUrl();
-            var defaultPrevented = $rootScope.$broadcast('$locationChangeStart', newUrl, oldUrl,
-                $location.$$state, oldState).defaultPrevented;
+          // if the location was changed by a `$locationChangeStart` handler then stop
+          // processing this location change
+          if ($location.absUrl() !== newUrl) return;
 
-            // if the location was changed by a `$locationChangeStart` handler then stop
-            // processing this location change
-            if ($location.absUrl() !== newUrl) return;
-
-            if (defaultPrevented) {
-              $location.$$parse(oldUrl);
-              $location.$$state = oldState;
-            } else {
-              if (urlOrStateChanged) {
-                setBrowserUrlWithFallback(newUrl, currentReplace,
-                                          oldState === $location.$$state ? null : $location.$$state);
-              }
-              afterLocationChange(oldUrl, oldState);
+          if (defaultPrevented) {
+            $location.$$parse(oldUrl);
+            $location.$$state = oldState;
+          } else {
+            if (urlOrStateChanged) {
+              setBrowserUrlWithFallback(newUrl, currentReplace,
+                                        oldState === $location.$$state ? null : $location.$$state);
             }
-          });
-        }
+            afterLocationChange(oldUrl, oldState);
+          }
+        });
       }
 
       $location.$$replace = false;
@@ -14267,7 +14229,7 @@ function $LogProvider() {
   this.debugEnabled = function(flag) {
     if (isDefined(flag)) {
       debug = flag;
-      return this;
+    return this;
     } else {
       return debug;
     }
@@ -15089,13 +15051,6 @@ function findConstantAndWatchExpressions(ast, $filter) {
       if (!property.value.constant) {
         argsToWatch.push.apply(argsToWatch, property.value.toWatch);
       }
-      if (property.computed) {
-        findConstantAndWatchExpressions(property.key, $filter);
-        if (!property.key.constant) {
-          argsToWatch.push.apply(argsToWatch, property.key.toWatch);
-        }
-      }
-
     });
     ast.constant = allConstants;
     ast.toWatch = argsToWatch;
@@ -16161,13 +16116,13 @@ function $ParseProvider() {
       }
     }
 
-    function expressionInputDirtyCheck(newValue, oldValueOfValue, compareObjectIdentity) {
+    function expressionInputDirtyCheck(newValue, oldValueOfValue) {
 
       if (newValue == null || oldValueOfValue == null) { // null/undefined
         return newValue === oldValueOfValue;
       }
 
-      if (typeof newValue === 'object' && !compareObjectIdentity) {
+      if (typeof newValue === 'object') {
 
         // attempt to convert the value to a primitive type
         // TODO(docs): add a note to docs that by implementing valueOf even objects and arrays can
@@ -16196,7 +16151,7 @@ function $ParseProvider() {
         inputExpressions = inputExpressions[0];
         return scope.$watch(function expressionInputWatch(scope) {
           var newInputValue = inputExpressions(scope);
-          if (!expressionInputDirtyCheck(newInputValue, oldInputValueOf, parsedExpression.literal)) {
+          if (!expressionInputDirtyCheck(newInputValue, oldInputValueOf)) {
             lastResult = parsedExpression(scope, undefined, undefined, [newInputValue]);
             oldInputValueOf = newInputValue && getValueOf(newInputValue);
           }
@@ -16216,7 +16171,7 @@ function $ParseProvider() {
 
         for (var i = 0, ii = inputExpressions.length; i < ii; i++) {
           var newInputValue = inputExpressions[i](scope);
-          if (changed || (changed = !expressionInputDirtyCheck(newInputValue, oldInputValueOfValues[i], parsedExpression.literal))) {
+          if (changed || (changed = !expressionInputDirtyCheck(newInputValue, oldInputValueOfValues[i]))) {
             oldInputValues[i] = newInputValue;
             oldInputValueOfValues[i] = newInputValue && getValueOf(newInputValue);
           }
@@ -16569,7 +16524,6 @@ function $QProvider() {
    *
    * @description
    * Retrieves or overrides whether to generate an error when a rejected promise is not handled.
-   * This feature is enabled by default.
    *
    * @param {boolean=} value Whether to generate an error when a rejected promise is not handled.
    * @returns {boolean|ng.$qProvider} Current value when called without a new value or self for
@@ -16711,11 +16665,7 @@ function qFactory(nextTick, exceptionHandler, errorOnUnhandledRejections) {
       if (!toCheck.pur) {
         toCheck.pur = true;
         var errorMessage = 'Possibly unhandled rejection: ' + toDebugString(toCheck.value);
-        if (toCheck.value instanceof Error) {
-          exceptionHandler(toCheck.value, errorMessage);
-        } else {
-          exceptionHandler(errorMessage);
-        }
+        exceptionHandler(errorMessage);
       }
     }
   }
@@ -17449,21 +17399,15 @@ function $RootScopeProvider() {
 
         if (!array) {
           array = scope.$$watchers = [];
-          array.$$digestWatchIndex = -1;
         }
         // we use unshift since we use a while loop in $digest for speed.
         // the while loop reads in reverse order.
         array.unshift(watcher);
-        array.$$digestWatchIndex++;
         incrementWatchersCount(this, 1);
 
         return function deregisterWatch() {
-          var index = arrayRemove(array, watcher);
-          if (index >= 0) {
+          if (arrayRemove(array, watcher) >= 0) {
             incrementWatchersCount(scope, -1);
-            if (index < array.$$digestWatchIndex) {
-              array.$$digestWatchIndex--;
-            }
           }
           lastDirtyWatch = null;
         };
@@ -17796,6 +17740,7 @@ function $RootScopeProvider() {
       $digest: function() {
         var watch, value, last, fn, get,
             watchers,
+            length,
             dirty, ttl = TTL,
             next, current, target = this,
             watchLog = [],
@@ -17836,10 +17781,10 @@ function $RootScopeProvider() {
           do { // "traverse the scopes" loop
             if ((watchers = current.$$watchers)) {
               // process our watches
-              watchers.$$digestWatchIndex = watchers.length;
-              while (watchers.$$digestWatchIndex--) {
+              length = watchers.length;
+              while (length--) {
                 try {
-                  watch = watchers[watchers.$$digestWatchIndex];
+                  watch = watchers[length];
                   // Most common watches are on primitives, in which case we can short
                   // circuit it with === operator, only when === fails do we use .equals
                   if (watch) {
@@ -17909,10 +17854,6 @@ function $RootScopeProvider() {
           }
         }
         postDigestQueue.length = postDigestQueuePosition = 0;
-
-        // Check for changes to browser url that happened during the $digest
-        // (for which no event is fired; e.g. via `history.pushState()`)
-        $browser.$$checkUrlChange();
       },
 
 
@@ -19618,10 +19559,7 @@ function $SnifferProvider() {
         // (see https://developer.chrome.com/apps/api_index). If sandboxed, they can be detected by
         // the presence of an extension runtime ID and the absence of other Chrome runtime APIs
         // (see https://developer.chrome.com/apps/manifest/sandbox).
-        // (NW.js apps have access to Chrome APIs, but do support `history`.)
-        isNw = $window.nw && $window.nw.process,
         isChromePackagedApp =
-            !isNw &&
             $window.chrome &&
             ($window.chrome.app && $window.chrome.app.runtime ||
                 !$window.chrome.app && $window.chrome.runtime && $window.chrome.runtime.id),
@@ -20163,14 +20101,6 @@ function $$CookieReader($document) {
   var lastCookies = {};
   var lastCookieString = '';
 
-  function safeGetCookie(rawDocument) {
-    try {
-      return rawDocument.cookie || '';
-    } catch (e) {
-      return '';
-    }
-  }
-
   function safeDecodeURIComponent(str) {
     try {
       return decodeURIComponent(str);
@@ -20181,7 +20111,7 @@ function $$CookieReader($document) {
 
   return function() {
     var cookieArray, cookie, i, index, name;
-    var currentCookieString = safeGetCookie(rawDocument);
+    var currentCookieString = rawDocument.cookie || '';
 
     if (currentCookieString !== lastCookieString) {
       lastCookieString = currentCookieString;
@@ -22382,8 +22312,7 @@ var htmlAnchorDirective = valueFn({
  *
  * @description
  *
- * This directive sets the `disabled` attribute on the element (typically a form control,
- * e.g. `input`, `button`, `select` etc.) if the
+ * This directive sets the `disabled` attribute on the element if the
  * {@link guide/expression expression} inside `ngDisabled` evaluates to truthy.
  *
  * A special directive is necessary because we cannot use interpolation inside the `disabled`
@@ -24889,27 +24818,15 @@ function isValidForStep(viewValue, stepBase, step) {
   // and `viewValue` is expected to be a valid stringified number.
   var value = Number(viewValue);
 
-  var isNonIntegerValue = !isNumberInteger(value);
-  var isNonIntegerStepBase = !isNumberInteger(stepBase);
-  var isNonIntegerStep = !isNumberInteger(step);
-
   // Due to limitations in Floating Point Arithmetic (e.g. `0.3 - 0.2 !== 0.1` or
   // `0.5 % 0.1 !== 0`), we need to convert all numbers to integers.
-  if (isNonIntegerValue || isNonIntegerStepBase || isNonIntegerStep) {
-    var valueDecimals = isNonIntegerValue ? countDecimals(value) : 0;
-    var stepBaseDecimals = isNonIntegerStepBase ? countDecimals(stepBase) : 0;
-    var stepDecimals = isNonIntegerStep ? countDecimals(step) : 0;
-
-    var decimalCount = Math.max(valueDecimals, stepBaseDecimals, stepDecimals);
+  if (!isNumberInteger(value) || !isNumberInteger(stepBase) || !isNumberInteger(step)) {
+    var decimalCount = Math.max(countDecimals(value), countDecimals(stepBase), countDecimals(step));
     var multiplier = Math.pow(10, decimalCount);
 
     value = value * multiplier;
     stepBase = stepBase * multiplier;
     step = step * multiplier;
-
-    if (isNonIntegerValue) value = Math.round(value);
-    if (isNonIntegerStepBase) stepBase = Math.round(stepBase);
-    if (isNonIntegerStep) step = Math.round(step);
   }
 
   return (value - stepBase) % step === 0;
@@ -25466,10 +25383,7 @@ var ngValueDirective = function() {
    *  makes it possible to use ngValue as a sort of one-way bind.
    */
   function updateElementValue(element, attr, value) {
-    // Support: IE9 only
-    // In IE9 values are converted to string (e.g. `input.value = null` results in `input.value === 'null'`).
-    var propValue = isDefined(value) ? value : (msie === 9) ? '' : null;
-    element.prop('value', propValue);
+    element.prop('value', value);
     attr.$set('value', value);
   }
 
@@ -25785,71 +25699,51 @@ var ngChangeDirective = valueFn({
 
 function classDirective(name, selector) {
   name = 'ngClass' + name;
-  var indexWatchExpression;
-
-  return ['$parse', function($parse) {
+  return ['$animate', function($animate) {
     return {
       restrict: 'AC',
       link: function(scope, element, attr) {
-        var expression = attr[name].trim();
-        var isOneTime = (expression.charAt(0) === ':') && (expression.charAt(1) === ':');
+        var oldVal;
 
-        var watchInterceptor = isOneTime ? toFlatValue : toClassString;
-        var watchExpression = $parse(expression, watchInterceptor);
-        var watchAction = isOneTime ? ngClassOneTimeWatchAction : ngClassWatchAction;
+        scope.$watch(attr[name], ngClassWatchAction, true);
 
-        var classCounts = element.data('$classCounts');
-        var oldModulo = true;
-        var oldClassString;
+        attr.$observe('class', function(value) {
+          ngClassWatchAction(scope.$eval(attr[name]));
+        });
 
-        if (!classCounts) {
-          // Use createMap() to prevent class assumptions involving property
-          // names in Object.prototype
-          classCounts = createMap();
-          element.data('$classCounts', classCounts);
-        }
 
         if (name !== 'ngClass') {
-          if (!indexWatchExpression) {
-            indexWatchExpression = $parse('$index', function moduloTwo($index) {
-              // eslint-disable-next-line no-bitwise
-              return $index & 1;
-            });
-          }
-
-          scope.$watch(indexWatchExpression, ngClassIndexWatchAction);
+          scope.$watch('$index', function($index, old$index) {
+            /* eslint-disable no-bitwise */
+            var mod = $index & 1;
+            if (mod !== (old$index & 1)) {
+              var classes = arrayClasses(scope.$eval(attr[name]));
+              if (mod === selector) {
+                addClasses(classes);
+              } else {
+                removeClasses(classes);
+              }
+            }
+            /* eslint-enable */
+          });
         }
 
-        scope.$watch(watchExpression, watchAction, isOneTime);
-
-        function addClasses(classString) {
-          classString = digestClassCounts(split(classString), 1);
-          attr.$addClass(classString);
+        function addClasses(classes) {
+          var newClasses = digestClassCounts(classes, 1);
+          attr.$addClass(newClasses);
         }
 
-        function removeClasses(classString) {
-          classString = digestClassCounts(split(classString), -1);
-          attr.$removeClass(classString);
+        function removeClasses(classes) {
+          var newClasses = digestClassCounts(classes, -1);
+          attr.$removeClass(newClasses);
         }
 
-        function updateClasses(oldClassString, newClassString) {
-          var oldClassArray = split(oldClassString);
-          var newClassArray = split(newClassString);
-
-          var toRemoveArray = arrayDifference(oldClassArray, newClassArray);
-          var toAddArray = arrayDifference(newClassArray, oldClassArray);
-
-          var toRemoveString = digestClassCounts(toRemoveArray, -1);
-          var toAddString = digestClassCounts(toAddArray, 1);
-
-          attr.$addClass(toAddString);
-          attr.$removeClass(toRemoveString);
-        }
-
-        function digestClassCounts(classArray, count) {
+        function digestClassCounts(classes, count) {
+          // Use createMap() to prevent class assumptions involving property
+          // names in Object.prototype
+          var classCounts = element.data('$classCounts') || createMap();
           var classesToUpdate = [];
-
-          forEach(classArray, function(className) {
+          forEach(classes, function(className) {
             if (count > 0 || classCounts[className]) {
               classCounts[className] = (classCounts[className] || 0) + count;
               if (classCounts[className] === +(count > 0)) {
@@ -25857,106 +25751,77 @@ function classDirective(name, selector) {
               }
             }
           });
-
+          element.data('$classCounts', classCounts);
           return classesToUpdate.join(' ');
         }
 
-        function ngClassIndexWatchAction(newModulo) {
-          // This watch-action should run before the `ngClass[OneTime]WatchAction()`, thus it
-          // adds/removes `oldClassString`. If the `ngClass` expression has changed as well, the
-          // `ngClass[OneTime]WatchAction()` will update the classes.
-          if (newModulo === selector) {
-            addClasses(oldClassString);
+        function updateClasses(oldClasses, newClasses) {
+          var toAdd = arrayDifference(newClasses, oldClasses);
+          var toRemove = arrayDifference(oldClasses, newClasses);
+          toAdd = digestClassCounts(toAdd, 1);
+          toRemove = digestClassCounts(toRemove, -1);
+          if (toAdd && toAdd.length) {
+            $animate.addClass(element, toAdd);
+          }
+          if (toRemove && toRemove.length) {
+            $animate.removeClass(element, toRemove);
+          }
+        }
+
+        function ngClassWatchAction(newVal) {
+          // eslint-disable-next-line no-bitwise
+          if (selector === true || (scope.$index & 1) === selector) {
+            var newClasses = arrayClasses(newVal || []);
+            if (!oldVal) {
+              addClasses(newClasses);
+            } else if (!equals(newVal,oldVal)) {
+              var oldClasses = arrayClasses(oldVal);
+              updateClasses(oldClasses, newClasses);
+            }
+          }
+          if (isArray(newVal)) {
+            oldVal = newVal.map(function(v) { return shallowCopy(v); });
           } else {
-            removeClasses(oldClassString);
+            oldVal = shallowCopy(newVal);
           }
-
-          oldModulo = newModulo;
-        }
-
-        function ngClassOneTimeWatchAction(newClassValue) {
-          var newClassString = toClassString(newClassValue);
-
-          if (newClassString !== oldClassString) {
-            ngClassWatchAction(newClassString);
-          }
-        }
-
-        function ngClassWatchAction(newClassString) {
-          if (oldModulo === selector) {
-            updateClasses(oldClassString, newClassString);
-          }
-
-          oldClassString = newClassString;
         }
       }
     };
-  }];
 
-  // Helpers
-  function arrayDifference(tokens1, tokens2) {
-    if (!tokens1 || !tokens1.length) return [];
-    if (!tokens2 || !tokens2.length) return tokens1;
+    function arrayDifference(tokens1, tokens2) {
+      var values = [];
 
-    var values = [];
-
-    outer:
-    for (var i = 0; i < tokens1.length; i++) {
-      var token = tokens1[i];
-      for (var j = 0; j < tokens2.length; j++) {
-        if (token === tokens2[j]) continue outer;
-      }
-      values.push(token);
-    }
-
-    return values;
-  }
-
-  function split(classString) {
-    return classString && classString.split(' ');
-  }
-
-  function toClassString(classValue) {
-    var classString = classValue;
-
-    if (isArray(classValue)) {
-      classString = classValue.map(toClassString).join(' ');
-    } else if (isObject(classValue)) {
-      classString = Object.keys(classValue).
-        filter(function(key) { return classValue[key]; }).
-        join(' ');
-    }
-
-    return classString;
-  }
-
-  function toFlatValue(classValue) {
-    var flatValue = classValue;
-
-    if (isArray(classValue)) {
-      flatValue = classValue.map(toFlatValue);
-    } else if (isObject(classValue)) {
-      var hasUndefined = false;
-
-      flatValue = Object.keys(classValue).filter(function(key) {
-        var value = classValue[key];
-
-        if (!hasUndefined && isUndefined(value)) {
-          hasUndefined = true;
+      outer:
+      for (var i = 0; i < tokens1.length; i++) {
+        var token = tokens1[i];
+        for (var j = 0; j < tokens2.length; j++) {
+          if (token === tokens2[j]) continue outer;
         }
-
-        return value;
-      });
-
-      if (hasUndefined) {
-        // Prevent the `oneTimeLiteralWatchInterceptor` from unregistering
-        // the watcher, by including at least one `undefined` value.
-        flatValue.push(undefined);
+        values.push(token);
       }
+      return values;
     }
 
-    return flatValue;
-  }
+    function arrayClasses(classVal) {
+      var classes = [];
+      if (isArray(classVal)) {
+        forEach(classVal, function(v) {
+          classes = classes.concat(arrayClasses(v));
+        });
+        return classes;
+      } else if (isString(classVal)) {
+        return classVal.split(' ');
+      } else if (isObject(classVal)) {
+        forEach(classVal, function(v, k) {
+          if (v) {
+            classes = classes.concat(k.split(' '));
+          }
+        });
+        return classes;
+      }
+      return classVal;
+    }
+  }];
 }
 
 /**
@@ -26797,15 +26662,15 @@ forEach(
       return {
         restrict: 'A',
         compile: function($element, attr) {
-          // NOTE:
-          // We expose the powerful `$event` object on the scope that provides access to the Window,
-          // etc. This is OK, because expressions are not sandboxed any more (and the expression
-          // sandbox was never meant to be a security feature anyway).
-          var fn = $parse(attr[directiveName]);
+          // We expose the powerful $event object on the scope that provides access to the Window,
+          // etc. that isn't protected by the fast paths in $parse.  We explicitly request better
+          // checks at the cost of speed since event handler expressions are not executed as
+          // frequently as regular change detection.
+          var fn = $parse(attr[directiveName], /* interceptorFn */ null, /* expensiveChecks */ true);
           return function ngEventHandler(scope, element) {
             element.on(eventName, function(event) {
               var callback = function() {
-                fn(scope, {$event: event});
+                fn(scope, {$event:event});
               };
               if (forceAsyncEvents[eventName] && $rootScope.$$phase) {
                 scope.$evalAsync(callback);
@@ -28684,29 +28549,6 @@ NgModelController.prototype = {
         that.$commitViewValue();
       });
     }
-  },
-
-  /**
-   * @ngdoc method
-   *
-   * @name ngModel.NgModelController#$overrideModelOptions
-   *
-   * @description
-   *
-   * Override the current model options settings programmatically.
-   *
-   * The previous `ModelOptions` value will not be modified. Instead, a
-   * new `ModelOptions` object will inherit from the previous one overriding
-   * or inheriting settings that are defined in the given parameter.
-   *
-   * See {@link ngModelOptions} for information about what options can be specified
-   * and how model option inheritance works.
-   *
-   * @param {Object} options a hash of settings to override the previous options
-   *
-   */
-  $overrideModelOptions: function(options) {
-    this.$options = this.$options.createChild(options);
   }
 };
 
@@ -29369,27 +29211,19 @@ defaultModelOptions = new ModelOptions({
  *
  */
 var ngModelOptionsDirective = function() {
-  NgModelOptionsController.$inject = ['$attrs', '$scope'];
-  function NgModelOptionsController($attrs, $scope) {
-    this.$$attrs = $attrs;
-    this.$$scope = $scope;
-  }
-  NgModelOptionsController.prototype = {
-    $onInit: function() {
-      var parentOptions = this.parentCtrl ? this.parentCtrl.$options : defaultModelOptions;
-      var modelOptionsDefinition = this.$$scope.$eval(this.$$attrs.ngModelOptions);
-
-      this.$options = parentOptions.createChild(modelOptionsDefinition);
-    }
-  };
-
   return {
     restrict: 'A',
     // ngModelOptions needs to run before ngModel and input directives
     priority: 10,
-    require: {parentCtrl: '?^^ngModelOptions'},
-    bindToController: true,
-    controller: NgModelOptionsController
+    require: ['ngModelOptions', '?^^ngModelOptions'],
+    controller: function NgModelOptionsController() {},
+    link: {
+      pre: function ngModelOptionsPreLinkFn(scope, element, attrs, ctrls) {
+        var optionsCtrl = ctrls[0];
+        var parentOptions = ctrls[1] ? ctrls[1].$options : defaultModelOptions;
+        optionsCtrl.$options = parentOptions.createChild(scope.$eval(attrs.ngModelOptions));
+      }
+    }
   };
 };
 
@@ -29942,17 +29776,17 @@ var ngOptionsDirective = ['$compile', '$document', '$parse', function($compile, 
 
       } else {
 
-        selectCtrl.writeValue = function writeNgOptionsMultiple(values) {
-          // Only set `<option>.selected` if necessary, in order to prevent some browsers from
-          // scrolling to `<option>` elements that are outside the `<select>` element's viewport.
-
-          var selectedOptions = values && values.map(getAndUpdateSelectedOption) || [];
-
+        selectCtrl.writeValue = function writeNgOptionsMultiple(value) {
           options.items.forEach(function(option) {
-            if (option.element.selected && !includes(selectedOptions, option)) {
-              option.element.selected = false;
-            }
+            option.element.selected = false;
           });
+
+          if (value) {
+            value.forEach(function(item) {
+              var option = options.getOptionFromViewValue(item);
+              if (option) option.element.selected = true;
+            });
+          }
         };
 
 
@@ -30042,14 +29876,6 @@ var ngOptionsDirective = ['$compile', '$document', '$parse', function($compile, 
         updateOptionElement(option, optionElement);
       }
 
-      function getAndUpdateSelectedOption(viewValue) {
-        var option = options.getOptionFromViewValue(viewValue);
-        var element = option && option.element;
-
-        if (element && !element.selected) element.selected = true;
-
-        return option;
-      }
 
       function updateOptionElement(option, element) {
         option.element = element;
@@ -30970,13 +30796,11 @@ var NG_HIDE_IN_PROGRESS_CLASS = 'ng-hide-animate';
  * @multiElement
  *
  * @description
- * The `ngShow` directive shows or hides the given HTML element based on the expression provided to
- * the `ngShow` attribute.
- *
- * The element is shown or hidden by removing or adding the `.ng-hide` CSS class onto the element.
- * The `.ng-hide` CSS class is predefined in AngularJS and sets the display style to none (using an
- * `!important` flag). For CSP mode please add `angular-csp.css` to your HTML file (see
- * {@link ng.directive:ngCsp ngCsp}).
+ * The `ngShow` directive shows or hides the given HTML element based on the expression
+ * provided to the `ngShow` attribute. The element is shown or hidden by removing or adding
+ * the `.ng-hide` CSS class onto the element. The `.ng-hide` CSS class is predefined
+ * in AngularJS and sets the display style to none (using an !important flag).
+ * For CSP mode please add `angular-csp.css` to your html file (see {@link ng.directive:ngCsp ngCsp}).
  *
  * ```html
  * <!-- when $scope.myValue is truthy (element is visible) -->
@@ -30986,32 +30810,31 @@ var NG_HIDE_IN_PROGRESS_CLASS = 'ng-hide-animate';
  * <div ng-show="myValue" class="ng-hide"></div>
  * ```
  *
- * When the `ngShow` expression evaluates to a falsy value then the `.ng-hide` CSS class is added
- * to the class attribute on the element causing it to become hidden. When truthy, the `.ng-hide`
- * CSS class is removed from the element causing the element not to appear hidden.
+ * When the `ngShow` expression evaluates to a falsy value then the `.ng-hide` CSS class is added to the class
+ * attribute on the element causing it to become hidden. When truthy, the `.ng-hide` CSS class is removed
+ * from the element causing the element not to appear hidden.
  *
- * ## Why is `!important` used?
+ * ## Why is !important used?
  *
- * You may be wondering why `!important` is used for the `.ng-hide` CSS class. This is because the
- * `.ng-hide` selector can be easily overridden by heavier selectors. For example, something as
- * simple as changing the display style on a HTML list item would make hidden elements appear
- * visible. This also becomes a bigger issue when dealing with CSS frameworks.
+ * You may be wondering why !important is used for the `.ng-hide` CSS class. This is because the `.ng-hide` selector
+ * can be easily overridden by heavier selectors. For example, something as simple
+ * as changing the display style on a HTML list item would make hidden elements appear visible.
+ * This also becomes a bigger issue when dealing with CSS frameworks.
  *
- * By using `!important`, the show and hide behavior will work as expected despite any clash between
- * CSS selector specificity (when `!important` isn't used with any conflicting styles). If a
- * developer chooses to override the styling to change how to hide an element then it is just a
- * matter of using `!important` in their own CSS code.
+ * By using !important, the show and hide behavior will work as expected despite any clash between CSS selector
+ * specificity (when !important isn't used with any conflicting styles). If a developer chooses to override the
+ * styling to change how to hide an element then it is just a matter of using !important in their own CSS code.
  *
  * ### Overriding `.ng-hide`
  *
- * By default, the `.ng-hide` class will style the element with `display: none !important`. If you
- * wish to change the hide behavior with `ngShow`/`ngHide`, you can simply overwrite the styles for
- * the `.ng-hide` CSS class. Note that the selector that needs to be used is actually
- * `.ng-hide:not(.ng-hide-animate)` to cope with extra animation classes that can be added.
+ * By default, the `.ng-hide` class will style the element with `display: none!important`. If you wish to change
+ * the hide behavior with ngShow/ngHide then this can be achieved by restating the styles for the `.ng-hide`
+ * class CSS. Note that the selector that needs to be used is actually `.ng-hide:not(.ng-hide-animate)` to cope
+ * with extra animation classes that can be added.
  *
  * ```css
  * .ng-hide:not(.ng-hide-animate) {
- *   /&#42; These are just alternative ways of hiding an element &#42;/
+ *   /&#42; this is just another form of hiding an element &#42;/
  *   display: block!important;
  *   position: absolute;
  *   top: -9999px;
@@ -31019,20 +30842,29 @@ var NG_HIDE_IN_PROGRESS_CLASS = 'ng-hide-animate';
  * }
  * ```
  *
- * By default you don't need to override anything in CSS and the animations will work around the
- * display style.
+ * By default you don't need to override in CSS anything and the animations will work around the display style.
  *
  * ## A note about animations with `ngShow`
  *
- * Animations in `ngShow`/`ngHide` work with the show and hide events that are triggered when the
- * directive expression is true and false. This system works like the animation system present with
- * `ngClass` except that you must also include the `!important` flag to override the display
- * property so that the elements are not actually hidden during the animation.
+ * Animations in ngShow/ngHide work with the show and hide events that are triggered when the directive expression
+ * is true and false. This system works like the animation system present with ngClass except that
+ * you must also include the !important flag to override the display property
+ * so that you can perform an animation when the element is hidden during the time of the animation.
  *
  * ```css
- * /&#42; A working example can be found at the bottom of this page. &#42;/
+ * //
+ * //a working example can be found at the bottom of this page
+ * //
  * .my-element.ng-hide-add, .my-element.ng-hide-remove {
- *   transition: all 0.5s linear;
+ *   /&#42; this is required as of 1.3x to properly
+ *      apply all styling in a show/hide animation &#42;/
+ *   transition: 0s linear all;
+ * }
+ *
+ * .my-element.ng-hide-add-active,
+ * .my-element.ng-hide-remove-active {
+ *   /&#42; the transition is defined in the active class &#42;/
+ *   transition: 1s linear all;
  * }
  *
  * .my-element.ng-hide-add { ... }
@@ -31041,108 +30873,76 @@ var NG_HIDE_IN_PROGRESS_CLASS = 'ng-hide-animate';
  * .my-element.ng-hide-remove.ng-hide-remove-active { ... }
  * ```
  *
- * Keep in mind that, as of AngularJS version 1.3, there is no need to change the display property
- * to block during animation states - ngAnimate will automatically handle the style toggling for you.
+ * Keep in mind that, as of AngularJS version 1.3, there is no need to change the display
+ * property to block during animation states--ngAnimate will handle the style toggling automatically for you.
  *
  * @animations
- * | Animation                                           | Occurs                                                                                                        |
- * |-----------------------------------------------------|---------------------------------------------------------------------------------------------------------------|
- * | {@link $animate#addClass addClass} `.ng-hide`       | After the `ngShow` expression evaluates to a non truthy value and just before the contents are set to hidden. |
- * | {@link $animate#removeClass removeClass} `.ng-hide` | After the `ngShow` expression evaluates to a truthy value and just before contents are set to visible.        |
+ * | Animation                        | Occurs                              |
+ * |----------------------------------|-------------------------------------|
+ * | {@link $animate#addClass addClass} `.ng-hide`  | after the `ngShow` expression evaluates to a non truthy value and just before the contents are set to hidden |
+ * | {@link $animate#removeClass removeClass}  `.ng-hide`  | after the `ngShow` expression evaluates to a truthy value and just before contents are set to visible |
  *
  * @element ANY
- * @param {expression} ngShow If the {@link guide/expression expression} is truthy/falsy then the
- *                            element is shown/hidden respectively.
+ * @param {expression} ngShow If the {@link guide/expression expression} is truthy
+ *     then the element is shown or hidden respectively.
  *
  * @example
- * A simple example, animating the element's opacity:
- *
-  <example module="ngAnimate" deps="angular-animate.js" animations="true" name="ng-show-simple">
+  <example module="ngAnimate" deps="angular-animate.js" animations="true" name="ng-show">
     <file name="index.html">
-      Show: <input type="checkbox" ng-model="checked" aria-label="Toggle ngShow"><br />
-      <div class="check-element animate-show-hide" ng-show="checked">
-        I show up when your checkbox is checked.
+      Click me: <input type="checkbox" ng-model="checked" aria-label="Toggle ngHide"><br/>
+      <div>
+        Show:
+        <div class="check-element animate-show" ng-show="checked">
+          <span class="glyphicon glyphicon-thumbs-up"></span> I show up when your checkbox is checked.
+        </div>
+      </div>
+      <div>
+        Hide:
+        <div class="check-element animate-show" ng-hide="checked">
+          <span class="glyphicon glyphicon-thumbs-down"></span> I hide when your checkbox is checked.
+        </div>
       </div>
     </file>
+    <file name="glyphicons.css">
+      @import url(../../components/bootstrap-3.1.1/css/bootstrap.css);
+    </file>
     <file name="animations.css">
-      .animate-show-hide.ng-hide {
-        opacity: 0;
+      .animate-show {
+        line-height: 20px;
+        opacity: 1;
+        padding: 10px;
+        border: 1px solid black;
+        background: white;
       }
 
-      .animate-show-hide.ng-hide-add,
-      .animate-show-hide.ng-hide-remove {
+      .animate-show.ng-hide-add, .animate-show.ng-hide-remove {
         transition: all linear 0.5s;
       }
 
-      .check-element {
-        border: 1px solid black;
-        opacity: 1;
-        padding: 10px;
-      }
-    </file>
-    <file name="protractor.js" type="protractor">
-      it('should check ngShow', function() {
-        var checkbox = element(by.model('checked'));
-        var checkElem = element(by.css('.check-element'));
-
-        expect(checkElem.isDisplayed()).toBe(false);
-        checkbox.click();
-        expect(checkElem.isDisplayed()).toBe(true);
-      });
-    </file>
-  </example>
- *
- * <hr />
- * @example
- * A more complex example, featuring different show/hide animations:
- *
-  <example module="ngAnimate" deps="angular-animate.js" animations="true" name="ng-show-complex">
-    <file name="index.html">
-      Show: <input type="checkbox" ng-model="checked" aria-label="Toggle ngShow"><br />
-      <div class="check-element funky-show-hide" ng-show="checked">
-        I show up when your checkbox is checked.
-      </div>
-    </file>
-    <file name="animations.css">
-      body {
-        overflow: hidden;
-        perspective: 1000px;
-      }
-
-      .funky-show-hide.ng-hide-add {
-        transform: rotateZ(0);
-        transform-origin: right;
-        transition: all 0.5s ease-in-out;
-      }
-
-      .funky-show-hide.ng-hide-add.ng-hide-add-active {
-        transform: rotateZ(-135deg);
-      }
-
-      .funky-show-hide.ng-hide-remove {
-        transform: rotateY(90deg);
-        transform-origin: left;
-        transition: all 0.5s ease;
-      }
-
-      .funky-show-hide.ng-hide-remove.ng-hide-remove-active {
-        transform: rotateY(0);
+      .animate-show.ng-hide {
+        line-height: 0;
+        opacity: 0;
+        padding: 0 10px;
       }
 
       .check-element {
-        border: 1px solid black;
-        opacity: 1;
         padding: 10px;
+        border: 1px solid black;
+        background: white;
       }
     </file>
     <file name="protractor.js" type="protractor">
-      it('should check ngShow', function() {
-        var checkbox = element(by.model('checked'));
-        var checkElem = element(by.css('.check-element'));
+      var thumbsUp = element(by.css('span.glyphicon-thumbs-up'));
+      var thumbsDown = element(by.css('span.glyphicon-thumbs-down'));
 
-        expect(checkElem.isDisplayed()).toBe(false);
-        checkbox.click();
-        expect(checkElem.isDisplayed()).toBe(true);
+      it('should check ng-show / ng-hide', function() {
+        expect(thumbsUp.isDisplayed()).toBeFalsy();
+        expect(thumbsDown.isDisplayed()).toBeTruthy();
+
+        element(by.model('checked')).click();
+
+        expect(thumbsUp.isDisplayed()).toBeTruthy();
+        expect(thumbsDown.isDisplayed()).toBeFalsy();
       });
     </file>
   </example>
@@ -31172,13 +30972,11 @@ var ngShowDirective = ['$animate', function($animate) {
  * @multiElement
  *
  * @description
- * The `ngHide` directive shows or hides the given HTML element based on the expression provided to
- * the `ngHide` attribute.
- *
- * The element is shown or hidden by removing or adding the `.ng-hide` CSS class onto the element.
- * The `.ng-hide` CSS class is predefined in AngularJS and sets the display style to none (using an
- * `!important` flag). For CSP mode please add `angular-csp.css` to your HTML file (see
- * {@link ng.directive:ngCsp ngCsp}).
+ * The `ngHide` directive shows or hides the given HTML element based on the expression
+ * provided to the `ngHide` attribute. The element is shown or hidden by removing or adding
+ * the `ng-hide` CSS class onto the element. The `.ng-hide` CSS class is predefined
+ * in AngularJS and sets the display style to none (using an !important flag).
+ * For CSP mode please add `angular-csp.css` to your html file (see {@link ng.directive:ngCsp ngCsp}).
  *
  * ```html
  * <!-- when $scope.myValue is truthy (element is hidden) -->
@@ -31188,32 +30986,30 @@ var ngShowDirective = ['$animate', function($animate) {
  * <div ng-hide="myValue"></div>
  * ```
  *
- * When the `ngHide` expression evaluates to a truthy value then the `.ng-hide` CSS class is added
- * to the class attribute on the element causing it to become hidden. When falsy, the `.ng-hide`
- * CSS class is removed from the element causing the element not to appear hidden.
+ * When the `ngHide` expression evaluates to a truthy value then the `.ng-hide` CSS class is added to the class
+ * attribute on the element causing it to become hidden. When falsy, the `.ng-hide` CSS class is removed
+ * from the element causing the element not to appear hidden.
  *
- * ## Why is `!important` used?
+ * ## Why is !important used?
  *
- * You may be wondering why `!important` is used for the `.ng-hide` CSS class. This is because the
- * `.ng-hide` selector can be easily overridden by heavier selectors. For example, something as
- * simple as changing the display style on a HTML list item would make hidden elements appear
- * visible. This also becomes a bigger issue when dealing with CSS frameworks.
+ * You may be wondering why !important is used for the `.ng-hide` CSS class. This is because the `.ng-hide` selector
+ * can be easily overridden by heavier selectors. For example, something as simple
+ * as changing the display style on a HTML list item would make hidden elements appear visible.
+ * This also becomes a bigger issue when dealing with CSS frameworks.
  *
- * By using `!important`, the show and hide behavior will work as expected despite any clash between
- * CSS selector specificity (when `!important` isn't used with any conflicting styles). If a
- * developer chooses to override the styling to change how to hide an element then it is just a
- * matter of using `!important` in their own CSS code.
+ * By using !important, the show and hide behavior will work as expected despite any clash between CSS selector
+ * specificity (when !important isn't used with any conflicting styles). If a developer chooses to override the
+ * styling to change how to hide an element then it is just a matter of using !important in their own CSS code.
  *
  * ### Overriding `.ng-hide`
  *
- * By default, the `.ng-hide` class will style the element with `display: none !important`. If you
- * wish to change the hide behavior with `ngShow`/`ngHide`, you can simply overwrite the styles for
- * the `.ng-hide` CSS class. Note that the selector that needs to be used is actually
- * `.ng-hide:not(.ng-hide-animate)` to cope with extra animation classes that can be added.
+ * By default, the `.ng-hide` class will style the element with `display: none!important`. If you wish to change
+ * the hide behavior with ngShow/ngHide then this can be achieved by restating the styles for the `.ng-hide`
+ * class in CSS:
  *
  * ```css
- * .ng-hide:not(.ng-hide-animate) {
- *   /&#42; These are just alternative ways of hiding an element &#42;/
+ * .ng-hide {
+ *   /&#42; this is just another form of hiding an element &#42;/
  *   display: block!important;
  *   position: absolute;
  *   top: -9999px;
@@ -31221,20 +31017,20 @@ var ngShowDirective = ['$animate', function($animate) {
  * }
  * ```
  *
- * By default you don't need to override in CSS anything and the animations will work around the
- * display style.
+ * By default you don't need to override in CSS anything and the animations will work around the display style.
  *
  * ## A note about animations with `ngHide`
  *
- * Animations in `ngShow`/`ngHide` work with the show and hide events that are triggered when the
- * directive expression is true and false. This system works like the animation system present with
- * `ngClass` except that you must also include the `!important` flag to override the display
- * property so that the elements are not actually hidden during the animation.
+ * Animations in ngShow/ngHide work with the show and hide events that are triggered when the directive expression
+ * is true and false. This system works like the animation system present with ngClass, except that the `.ng-hide`
+ * CSS class is added and removed for you instead of your own CSS class.
  *
  * ```css
- * /&#42; A working example can be found at the bottom of this page. &#42;/
+ * //
+ * //a working example can be found at the bottom of this page
+ * //
  * .my-element.ng-hide-add, .my-element.ng-hide-remove {
- *   transition: all 0.5s linear;
+ *   transition: 0.5s linear all;
  * }
  *
  * .my-element.ng-hide-add { ... }
@@ -31243,109 +31039,74 @@ var ngShowDirective = ['$animate', function($animate) {
  * .my-element.ng-hide-remove.ng-hide-remove-active { ... }
  * ```
  *
- * Keep in mind that, as of AngularJS version 1.3, there is no need to change the display property
- * to block during animation states - ngAnimate will automatically handle the style toggling for you.
+ * Keep in mind that, as of AngularJS version 1.3, there is no need to change the display
+ * property to block during animation states--ngAnimate will handle the style toggling automatically for you.
  *
  * @animations
- * | Animation                                           | Occurs                                                                                                     |
- * |-----------------------------------------------------|------------------------------------------------------------------------------------------------------------|
- * | {@link $animate#addClass addClass} `.ng-hide`       | After the `ngHide` expression evaluates to a truthy value and just before the contents are set to hidden.  |
- * | {@link $animate#removeClass removeClass} `.ng-hide` | After the `ngHide` expression evaluates to a non truthy value and just before contents are set to visible. |
+ * | Animation                        | Occurs                              |
+ * |----------------------------------|-------------------------------------|
+ * | {@link $animate#addClass addClass} `.ng-hide`  | after the `ngHide` expression evaluates to a truthy value and just before the contents are set to hidden |
+ * | {@link $animate#removeClass removeClass}  `.ng-hide`  | after the `ngHide` expression evaluates to a non truthy value and just before contents are set to visible |
  *
  *
  * @element ANY
- * @param {expression} ngHide If the {@link guide/expression expression} is truthy/falsy then the
- *                            element is hidden/shown respectively.
+ * @param {expression} ngHide If the {@link guide/expression expression} is truthy then
+ *     the element is shown or hidden respectively.
  *
  * @example
- * A simple example, animating the element's opacity:
- *
-  <example module="ngAnimate" deps="angular-animate.js" animations="true" name="ng-hide-simple">
+  <example module="ngAnimate" deps="angular-animate.js" animations="true" name="ng-hide">
     <file name="index.html">
-      Hide: <input type="checkbox" ng-model="checked" aria-label="Toggle ngHide"><br />
-      <div class="check-element animate-show-hide" ng-hide="checked">
-        I hide when your checkbox is checked.
+      Click me: <input type="checkbox" ng-model="checked" aria-label="Toggle ngShow"><br/>
+      <div>
+        Show:
+        <div class="check-element animate-hide" ng-show="checked">
+          <span class="glyphicon glyphicon-thumbs-up"></span> I show up when your checkbox is checked.
+        </div>
+      </div>
+      <div>
+        Hide:
+        <div class="check-element animate-hide" ng-hide="checked">
+          <span class="glyphicon glyphicon-thumbs-down"></span> I hide when your checkbox is checked.
+        </div>
       </div>
     </file>
+    <file name="glyphicons.css">
+      @import url(../../components/bootstrap-3.1.1/css/bootstrap.css);
+    </file>
     <file name="animations.css">
-      .animate-show-hide.ng-hide {
-        opacity: 0;
-      }
-
-      .animate-show-hide.ng-hide-add,
-      .animate-show-hide.ng-hide-remove {
+      .animate-hide {
         transition: all linear 0.5s;
+        line-height: 20px;
+        opacity: 1;
+        padding: 10px;
+        border: 1px solid black;
+        background: white;
+      }
+
+      .animate-hide.ng-hide {
+        line-height: 0;
+        opacity: 0;
+        padding: 0 10px;
       }
 
       .check-element {
-        border: 1px solid black;
-        opacity: 1;
         padding: 10px;
+        border: 1px solid black;
+        background: white;
       }
     </file>
     <file name="protractor.js" type="protractor">
-      it('should check ngHide', function() {
-        var checkbox = element(by.model('checked'));
-        var checkElem = element(by.css('.check-element'));
+      var thumbsUp = element(by.css('span.glyphicon-thumbs-up'));
+      var thumbsDown = element(by.css('span.glyphicon-thumbs-down'));
 
-        expect(checkElem.isDisplayed()).toBe(true);
-        checkbox.click();
-        expect(checkElem.isDisplayed()).toBe(false);
-      });
-    </file>
-  </example>
- *
- * <hr />
- * @example
- * A more complex example, featuring different show/hide animations:
- *
-  <example module="ngAnimate" deps="angular-animate.js" animations="true" name="ng-hide-complex">
-    <file name="index.html">
-      Hide: <input type="checkbox" ng-model="checked" aria-label="Toggle ngHide"><br />
-      <div class="check-element funky-show-hide" ng-hide="checked">
-        I hide when your checkbox is checked.
-      </div>
-    </file>
-    <file name="animations.css">
-      body {
-        overflow: hidden;
-        perspective: 1000px;
-      }
+      it('should check ng-show / ng-hide', function() {
+        expect(thumbsUp.isDisplayed()).toBeFalsy();
+        expect(thumbsDown.isDisplayed()).toBeTruthy();
 
-      .funky-show-hide.ng-hide-add {
-        transform: rotateZ(0);
-        transform-origin: right;
-        transition: all 0.5s ease-in-out;
-      }
+        element(by.model('checked')).click();
 
-      .funky-show-hide.ng-hide-add.ng-hide-add-active {
-        transform: rotateZ(-135deg);
-      }
-
-      .funky-show-hide.ng-hide-remove {
-        transform: rotateY(90deg);
-        transform-origin: left;
-        transition: all 0.5s ease;
-      }
-
-      .funky-show-hide.ng-hide-remove.ng-hide-remove-active {
-        transform: rotateY(0);
-      }
-
-      .check-element {
-        border: 1px solid black;
-        opacity: 1;
-        padding: 10px;
-      }
-    </file>
-    <file name="protractor.js" type="protractor">
-      it('should check ngHide', function() {
-        var checkbox = element(by.model('checked'));
-        var checkElem = element(by.css('.check-element'));
-
-        expect(checkElem.isDisplayed()).toBe(true);
-        checkbox.click();
-        expect(checkElem.isDisplayed()).toBe(false);
+        expect(thumbsUp.isDisplayed()).toBeTruthy();
+        expect(thumbsDown.isDisplayed()).toBeFalsy();
       });
     </file>
   </example>
@@ -31940,7 +31701,7 @@ var SelectController =
         ['$element', '$scope', /** @this */ function($element, $scope) {
 
   var self = this,
-      optionsMap = new NgMap();
+      optionsMap = new HashMap();
 
   self.selectValueMap = {}; // Keys are the hashed values, values the original values
 
@@ -32061,7 +31822,7 @@ var SelectController =
       self.emptyOption = element;
     }
     var count = optionsMap.get(value) || 0;
-    optionsMap.set(value, count + 1);
+    optionsMap.put(value, count + 1);
     // Only render at the end of a digest. This improves render performance when many options
     // are added during a digest and ensures all relevant options are correctly marked as selected
     scheduleRender();
@@ -32072,13 +31833,13 @@ var SelectController =
     var count = optionsMap.get(value);
     if (count) {
       if (count === 1) {
-        optionsMap.delete(value);
+        optionsMap.remove(value);
         if (value === '') {
           self.hasEmptyOption = false;
           self.emptyOption = undefined;
         }
       } else {
-        optionsMap.set(value, count - 1);
+        optionsMap.put(value, count - 1);
       }
     }
   };
@@ -32205,7 +31966,7 @@ var SelectController =
       var removeValue = optionAttrs.value;
 
       self.removeOption(removeValue);
-      scheduleRender();
+      self.ngModelCtrl.$render();
 
       if (self.multiple && currentValue && currentValue.indexOf(removeValue) !== -1 ||
           currentValue === removeValue
@@ -32530,9 +32291,9 @@ var selectDirective = function() {
 
         // Write value now needs to set the selected property of each matching option
         selectCtrl.writeValue = function writeMultipleValue(value) {
+          var items = new HashMap(value);
           forEach(element.find('option'), function(option) {
-            option.selected = !!value && (includes(value, option.value) ||
-                                          includes(value, selectCtrl.selectValueMap[option.value]));
+            option.selected = isDefined(items.get(option.value)) || isDefined(items.get(selectCtrl.selectValueMap[option.value]));
           });
         };
 
