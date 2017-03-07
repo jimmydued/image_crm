@@ -61,3 +61,19 @@ padding-top:15px;
 .left-m-bar{                            /*background of dashboard left menu bar*/
   background: #333;
 }  
+.line-color {   /*color code of line color*/
+    border-top:1px solid #000000;
+    margin-top:5px;
+}
+.text-size{          /*text size of text of heading*/
+font-size:15px;
+font-weight:bold;  
+}
+.row-border{                       /*to and bottom border of div */
+  border-top:1px solid gray;
+  border-bottom:1px solid gray;
+  margin-top:5px;
+}
+.spcl-txt-color{
+  color:red;
+}

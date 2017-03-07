@@ -116,6 +116,12 @@ angular
         url:'/forgotpassword'
     })
 
+
+    .state('transaction',{
+        templateUrl:'views/pages/transaction.html',
+        url:'/transaction'
+    })
+
       .state('dashboard.chart',{
         templateUrl:'views/chart.html',
         url:'/chart',
