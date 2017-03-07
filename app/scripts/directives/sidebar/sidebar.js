@@ -15,7 +15,7 @@ angular.module('imageCrmApp')
       replace: true,
       scope: {
       },
-      controller:function($scope){
+      controller:["$scope", function($scope){
         $scope.selectedMenu = 'dashboard';
         $scope.collapseVar = 0;
         $scope.multiCollapseVar = 0;
@@ -35,6 +35,6 @@ angular.module('imageCrmApp')
           else
             $scope.multiCollapseVar = y;
         };
-      }
+      }]
     }
   }]);

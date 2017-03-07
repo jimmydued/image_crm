@@ -13,13 +13,19 @@ angular
     'ui.router',
     'ui.bootstrap',
     'angular-loading-bar',
+    'ngCookies'
   ])
-  .config(['$stateProvider','$urlRouterProvider','$ocLazyLoadProvider',function ($stateProvider,$urlRouterProvider,$ocLazyLoadProvider) {
+  .config(['$stateProvider','$urlRouterProvider','$ocLazyLoadProvider', '$httpProvider',function ($stateProvider,$urlRouterProvider,$ocLazyLoadProvider,$httpProvider) {
     
     $ocLazyLoadProvider.config({
       debug:false,
       events:true,
     });
+
+    $httpProvider.defaults.headers.common = {};
+    $httpProvider.defaults.headers.post = {};
+    $httpProvider.defaults.headers.put = {};
+    $httpProvider.defaults.headers.patch = {};
 
     $urlRouterProvider.otherwise('/dashboard/home');
 
@@ -28,7 +34,7 @@ angular
         url:'/dashboard',
         templateUrl: 'views/dashboard/main.html',
         resolve: {
-            loadMyDirectives:function($ocLazyLoad){
+            loadMyDirectives:["$ocLazyLoad", function($ocLazyLoad){
                 return $ocLazyLoad.load(
                 {
                     name:'imageCrmApp',
@@ -71,7 +77,7 @@ angular
                   name:'ngTouch',
                   files:['bower_components/angular-touch/angular-touch.js']
                 })
-            }
+            }]
         }
     })
       .state('dashboard.home',{
@@ -79,7 +85,7 @@ angular
         controller: 'MainCtrl',
         templateUrl:'views/dashboard/home.html',
         resolve: {
-          loadMyFiles:function($ocLazyLoad) {
+          loadMyFiles:["$ocLazyLoad", function($ocLazyLoad) {
             return $ocLazyLoad.load({
               name:'imageCrmApp',
               files:[
@@ -90,7 +96,7 @@ angular
               'scripts/directives/dashboard/stats/stats.js'
               ]
             })
-          }
+          }]
         }
       })
       .state('dashboard.form',{
@@ -121,7 +127,7 @@ angular
         url:'/chart',
         controller:'ChartCtrl',
         resolve: {
-          loadMyFile:function($ocLazyLoad) {
+          loadMyFile:["$ocLazyLoad", function($ocLazyLoad) {
             return $ocLazyLoad.load({
               name:'chart.js',
               files:[
@@ -133,7 +139,7 @@ angular
                 name:'imageCrmApp',
                 files:['scripts/controllers/chartContoller.js']
             })
-          }
+          }]
         }
     })
       .state('dashboard.table',{
@@ -164,6 +170,31 @@ angular
        templateUrl:'views/ui-elements/grid.html',
        url:'/grid'
    })
-  }]);
+  }])
+  .run(run);
+  
+  /*
+    Constant defination for complete application.
+  */
+  var constants = {};
+  constants.apiBaseUrl = "http://localhost/image_crm/api";
+  
+  /*Code to handle not logged InUser redirection*/
+  run.$inject = ['$rootScope', '$location', '$cookies', '$http'];
+  function run($rootScope, $location, $cookies, $http) {
+    // keep user logged in after page refresh
+    $rootScope.globals = $cookies.getObject('globals') || {};
+    if ($rootScope.globals.currentUser) {
+      $http.defaults.headers.common['Authorization'] = 'Basic ' + $rootScope.globals.currentUser.authdata;
+    }
 
-    
+    $rootScope.$on('$locationChangeStart', function (event, next, current) {
+      // redirect to login page if not logged in and trying to access a restricted page
+      var restrictedPage = $.inArray($location.path(), ['/login', '/register']) === -1;
+      var loggedIn = $rootScope.globals.currentUser;
+      if (restrictedPage && !loggedIn) {
+          $location.path('/login');
+      }
+    });
+  }
+  

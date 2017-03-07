@@ -225,19 +225,6 @@ module.exports = function (grunt) {
         }]
       }
     },
-    uglify: {
-      build: {
-        files: [{
-            expand: true,
-            src: '**/*.js',
-            dest: '<%= yeoman.dist %>/scripts',
-            cwd: '<%= yeoman.app %>/scripts'
-        }]
-      },
-      options: {
-        mangle:false
-      },
-    },
     // concat: {
     //   dist: {}
     // },

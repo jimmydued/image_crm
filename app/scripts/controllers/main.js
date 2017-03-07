@@ -7,7 +7,7 @@
  * Controller of the imageCrmApp
  */
 angular.module('imageCrmApp')
-  .controller('MainCtrl', function($scope,$position) {
+  .controller('MainCtrl', ["$scope", "$position", function($scope,$position) {
 	
     console.log("i am here");
-  });
+  }]);

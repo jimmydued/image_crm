@@ -22,10 +22,10 @@ if (isset($data->username) && isset($data->password)) {
     if ($user != false){
         // use is found
         $response["error"] = FALSE;
-        $response["firstname"] = $user["firstname"];
-		$response["lastname"] = $user["lastname"];
-		$response["username"] = $user["username"];
-        $response["email"] = $user["email"];
+        $response["firstname"] 	= $user["firstname"];
+		$response["lastname"] 	= $user["lastname"];
+		$response["username"] 	= $user["username"];
+        $response["email"] 		= $user["email"];
         echo json_encode($response);
     } 
 	else

@@ -7,5 +7,5 @@
  * Controller of the imageCrmApp
  */
 angular.module('imageCrmApp')
-  .controller('FormCtrl', function($scope) {
-});
+  .controller('FormCtrl', ["$scope", function($scope) {
+}]);
