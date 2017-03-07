@@ -57,13 +57,8 @@ class DB_Functions {
         if ($stmt->execute()) {
             $user = $stmt->get_result()->fetch_assoc();
             $stmt->close();
- 
-            // verifying user password
-            $salt = $user['salt'];
-            $encrypted_password = $user['encrypted_password'];
-            $hash = $this->checkhashSSHA($salt, $password);
             // check for password equality
-            if ($encrypted_password == $hash) {
+            if ($user['password'] == md5($password)) {
                 // user authentication details are correct
                 return $user;
             }
@@ -94,33 +89,6 @@ class DB_Functions {
             return false;
         }
     }
- 
-    /**
-     * Encrypting password
-     * @param password
-     * returns salt and encrypted password
-     */
-    public function hashSSHA($password) {
- 
-        $salt = sha1(rand());
-        $salt = substr($salt, 0, 10);
-        $encrypted = base64_encode(sha1($password . $salt, true) . $salt);
-        $hash = array("salt" => $salt, "encrypted" => $encrypted);
-        return $hash;
-    }
- 
-    /**
-     * Decrypting password
-     * @param salt, password
-     * returns hash string
-     */
-    public function checkhashSSHA($salt, $password) {
- 
-        $hash = base64_encode(sha1($password . $salt, true) . $salt);
- 
-        return $hash;
-    }
- 
 }
  
 ?>
