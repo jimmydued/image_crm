@@ -15,8 +15,6 @@
         return service;
 
         function CheckUserAuthentication(userDetails) {
-            //return {'error':'FALSE','username':'jimmydued'};
-            
             return $http.post(apiUrl+'login.php', userDetails).then(handleSuccess, handleError('Error creating user'));
         }
 
