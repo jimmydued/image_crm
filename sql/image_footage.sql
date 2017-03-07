@@ -1,20 +1,19 @@
 -- phpMyAdmin SQL Dump
--- version 4.5.1
+-- version 3.3.9
 -- http://www.phpmyadmin.net
 --
--- Host: 127.0.0.1
--- Generation Time: Mar 06, 2017 at 07:16 AM
--- Server version: 10.1.13-MariaDB
--- PHP Version: 5.6.20
+-- Host: localhost
+-- Generation Time: Mar 07, 2017 at 08:55 AM
+-- Server version: 5.5.8
+-- PHP Version: 5.3.5
 
-SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET time_zone = "+00:00";
+SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8mb4 */;
+/*!40101 SET NAMES utf8 */;
 
 --
 -- Database: `image_footage`
@@ -26,12 +25,16 @@ SET time_zone = "+00:00";
 -- Table structure for table `admins`
 --
 
-CREATE TABLE `admins` (
-  `id` int(11) NOT NULL,
+CREATE TABLE IF NOT EXISTS `admins` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `username` varchar(255) NOT NULL,
   `password` varchar(255) NOT NULL,
-  `status` int(2) NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+  `status` int(2) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `username` (`username`),
+  KEY `password` (`password`),
+  KEY `status` (`status`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
 
 --
 -- Dumping data for table `admins`
@@ -46,16 +49,20 @@ INSERT INTO `admins` (`id`, `username`, `password`, `status`) VALUES
 -- Table structure for table `banners`
 --
 
-CREATE TABLE `banners` (
-  `id` int(11) NOT NULL,
+CREATE TABLE IF NOT EXISTS `banners` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `title` varchar(255) DEFAULT NULL,
   `banner_image` varchar(255) DEFAULT NULL,
   `url_link` varchar(255) DEFAULT NULL,
   `sort` int(11) DEFAULT '0',
   `active` tinyint(4) DEFAULT '0',
   `created` datetime DEFAULT NULL,
-  `modified` datetime DEFAULT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+  `modified` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `title` (`title`),
+  KEY `active` (`active`),
+  KEY `sort` (`sort`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
 
 --
 -- Dumping data for table `banners`
@@ -72,15 +79,20 @@ INSERT INTO `banners` (`id`, `title`, `banner_image`, `url_link`, `sort`, `activ
 -- Table structure for table `categories`
 --
 
-CREATE TABLE `categories` (
-  `id` int(11) NOT NULL,
+CREATE TABLE IF NOT EXISTS `categories` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `parent_id` int(11) DEFAULT '0',
   `name` varchar(255) DEFAULT NULL,
   `position` int(11) DEFAULT '0',
   `active` tinyint(4) DEFAULT '0',
   `created` datetime DEFAULT NULL,
-  `modified` datetime DEFAULT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+  `modified` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `parent_id` (`parent_id`),
+  KEY `active` (`active`),
+  KEY `position` (`position`),
+  KEY `name` (`name`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
 
 --
 -- Dumping data for table `categories`
@@ -98,11 +110,15 @@ INSERT INTO `categories` (`id`, `parent_id`, `name`, `position`, `active`, `crea
 -- Table structure for table `categories_products`
 --
 
-CREATE TABLE `categories_products` (
-  `id` bigint(20) NOT NULL,
+CREATE TABLE IF NOT EXISTS `categories_products` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `category_id` int(11) DEFAULT NULL,
-  `product_id` int(11) DEFAULT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+  `product_id` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `NewIndex1` (`category_id`,`product_id`),
+  KEY `category_id` (`category_id`),
+  KEY `product_id` (`product_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=26 ;
 
 --
 -- Dumping data for table `categories_products`
@@ -127,8 +143,8 @@ INSERT INTO `categories_products` (`id`, `category_id`, `product_id`) VALUES
 -- Table structure for table `company_infos`
 --
 
-CREATE TABLE `company_infos` (
-  `id` int(11) NOT NULL,
+CREATE TABLE IF NOT EXISTS `company_infos` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(250) NOT NULL DEFAULT '',
   `address1` varchar(250) NOT NULL DEFAULT '',
   `address2` varchar(250) NOT NULL DEFAULT '',
@@ -144,8 +160,9 @@ CREATE TABLE `company_infos` (
   `from_name` varchar(200) NOT NULL DEFAULT '',
   `subject` text NOT NULL,
   `created` datetime DEFAULT NULL,
-  `modified` datetime DEFAULT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+  `modified` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
 
 --
 -- Dumping data for table `company_infos`
@@ -160,8 +177,8 @@ INSERT INTO `company_infos` (`id`, `name`, `address1`, `address2`, `city`, `stat
 -- Table structure for table `contents`
 --
 
-CREATE TABLE `contents` (
-  `id` int(11) NOT NULL,
+CREATE TABLE IF NOT EXISTS `contents` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `category_type` int(4) DEFAULT NULL,
   `name` varchar(255) DEFAULT NULL,
   `permalink` varchar(255) DEFAULT NULL,
@@ -172,8 +189,13 @@ CREATE TABLE `contents` (
   `sort` int(11) DEFAULT NULL,
   `active` int(11) DEFAULT '0',
   `created` datetime DEFAULT NULL,
-  `modified` datetime DEFAULT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+  `modified` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `name` (`name`),
+  KEY `permalink` (`permalink`),
+  KEY `active` (`active`),
+  KEY `sort` (`sort`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
 
 --
 -- Dumping data for table `contents`
@@ -190,11 +212,12 @@ INSERT INTO `contents` (`id`, `category_type`, `name`, `permalink`, `description
 -- Table structure for table `countries`
 --
 
-CREATE TABLE `countries` (
-  `id` int(11) NOT NULL,
+CREATE TABLE IF NOT EXISTS `countries` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `code` char(2) DEFAULT NULL,
-  `name` varchar(255) DEFAULT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+  `name` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=230 ;
 
 --
 -- Dumping data for table `countries`
@@ -437,8 +460,8 @@ INSERT INTO `countries` (`id`, `code`, `name`) VALUES
 -- Table structure for table `coupons`
 --
 
-CREATE TABLE `coupons` (
-  `id` int(11) NOT NULL,
+CREATE TABLE IF NOT EXISTS `coupons` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `code` varchar(50) DEFAULT NULL,
   `coupon_type` varchar(50) DEFAULT NULL,
   `coupon_value` double NOT NULL,
@@ -449,8 +472,9 @@ CREATE TABLE `coupons` (
   `description` text,
   `active` tinyint(1) NOT NULL DEFAULT '1',
   `created` datetime DEFAULT NULL,
-  `modified` datetime DEFAULT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+  `modified` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
 
 --
 -- Dumping data for table `coupons`
@@ -466,14 +490,15 @@ INSERT INTO `coupons` (`id`, `code`, `coupon_type`, `coupon_value`, `from_date`,
 -- Table structure for table `email_templates`
 --
 
-CREATE TABLE `email_templates` (
-  `id` int(11) NOT NULL,
+CREATE TABLE IF NOT EXISTS `email_templates` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `draft_name` varchar(255) DEFAULT NULL,
   `from_email` varchar(255) DEFAULT NULL,
   `from_name` varchar(255) DEFAULT NULL,
   `subject` varchar(255) DEFAULT NULL,
-  `content` longtext
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `content` longtext,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
 
 --
 -- Dumping data for table `email_templates`
@@ -490,16 +515,20 @@ INSERT INTO `email_templates` (`id`, `draft_name`, `from_email`, `from_name`, `s
 -- Table structure for table `image_uploads`
 --
 
-CREATE TABLE `image_uploads` (
-  `id` int(11) NOT NULL,
+CREATE TABLE IF NOT EXISTS `image_uploads` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `title` varchar(255) DEFAULT NULL,
   `banner_image` varchar(255) DEFAULT NULL,
   `url_link` varchar(255) DEFAULT NULL,
   `sort` int(11) DEFAULT '0',
   `active` tinyint(4) DEFAULT '0',
   `created` datetime DEFAULT NULL,
-  `modified` datetime DEFAULT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+  `modified` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `title` (`title`),
+  KEY `active` (`active`),
+  KEY `sort` (`sort`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=33 ;
 
 --
 -- Dumping data for table `image_uploads`
@@ -516,8 +545,8 @@ INSERT INTO `image_uploads` (`id`, `title`, `banner_image`, `url_link`, `sort`, 
 -- Table structure for table `manage_banners`
 --
 
-CREATE TABLE `manage_banners` (
-  `id` int(11) NOT NULL,
+CREATE TABLE IF NOT EXISTS `manage_banners` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) DEFAULT NULL,
   `banner_image` varchar(255) DEFAULT NULL,
   `banner_link` varchar(255) DEFAULT NULL,
@@ -525,8 +554,12 @@ CREATE TABLE `manage_banners` (
   `sort` int(11) DEFAULT '0',
   `active` tinyint(4) DEFAULT '0',
   `created` datetime DEFAULT NULL,
-  `modified` datetime DEFAULT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+  `modified` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `name` (`name`),
+  KEY `active` (`active`),
+  KEY `sort` (`sort`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
 
 --
 -- Dumping data for table `manage_banners`
@@ -543,14 +576,20 @@ INSERT INTO `manage_banners` (`id`, `name`, `banner_image`, `banner_link`, `shor
 -- Table structure for table `multiple_image_uploads`
 --
 
-CREATE TABLE `multiple_image_uploads` (
-  `id` int(11) NOT NULL,
+CREATE TABLE IF NOT EXISTS `multiple_image_uploads` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `image_upload_id` int(11) DEFAULT NULL,
   `multiple_image` char(100) DEFAULT NULL,
   `sort` int(5) DEFAULT NULL,
   `created` datetime DEFAULT NULL,
-  `modified` datetime DEFAULT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+  `modified` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+--
+-- Dumping data for table `multiple_image_uploads`
+--
+
 
 -- --------------------------------------------------------
 
@@ -558,15 +597,16 @@ CREATE TABLE `multiple_image_uploads` (
 -- Table structure for table `newsletters`
 --
 
-CREATE TABLE `newsletters` (
-  `id` int(11) NOT NULL,
+CREATE TABLE IF NOT EXISTS `newsletters` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `title` varchar(255) DEFAULT NULL,
   `subject` varchar(255) DEFAULT NULL,
   `message` text,
   `active` tinyint(4) DEFAULT '1',
   `created` datetime DEFAULT NULL,
-  `modified` datetime DEFAULT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+  `modified` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=6 ;
 
 --
 -- Dumping data for table `newsletters`
@@ -582,15 +622,17 @@ INSERT INTO `newsletters` (`id`, `title`, `subject`, `message`, `active`, `creat
 -- Table structure for table `newsletter_subscribers`
 --
 
-CREATE TABLE `newsletter_subscribers` (
-  `id` int(11) NOT NULL,
+CREATE TABLE IF NOT EXISTS `newsletter_subscribers` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `subscriber_email` varchar(255) DEFAULT NULL,
   `firstname` varchar(255) DEFAULT NULL,
   `lastname` varchar(255) DEFAULT NULL,
   `is_subscribed` tinyint(1) DEFAULT '1',
   `created` datetime DEFAULT NULL,
-  `modified` datetime DEFAULT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+  `modified` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `NewIndex1` (`subscriber_email`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=6 ;
 
 --
 -- Dumping data for table `newsletter_subscribers`
@@ -606,8 +648,8 @@ INSERT INTO `newsletter_subscribers` (`id`, `subscriber_email`, `firstname`, `la
 -- Table structure for table `orders`
 --
 
-CREATE TABLE `orders` (
-  `id` int(11) NOT NULL,
+CREATE TABLE IF NOT EXISTS `orders` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `user_id` int(11) DEFAULT NULL,
   `txn_id` varchar(255) DEFAULT NULL,
   `subtotal` decimal(10,2) DEFAULT NULL,
@@ -646,8 +688,9 @@ CREATE TABLE `orders` (
   `bill_country` varchar(100) DEFAULT NULL,
   `bill_phone` varchar(100) DEFAULT NULL,
   `created` datetime NOT NULL,
-  `modified` datetime NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+  `modified` datetime NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=6 ;
 
 --
 -- Dumping data for table `orders`
@@ -666,8 +709,8 @@ INSERT INTO `orders` (`id`, `user_id`, `txn_id`, `subtotal`, `shipping_price`, `
 -- Table structure for table `order_items`
 --
 
-CREATE TABLE `order_items` (
-  `id` int(11) NOT NULL,
+CREATE TABLE IF NOT EXISTS `order_items` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `order_id` int(11) DEFAULT NULL,
   `product_id` int(11) DEFAULT NULL,
   `quantity` int(11) DEFAULT NULL,
@@ -677,8 +720,9 @@ CREATE TABLE `order_items` (
   `attribute_name` varchar(255) DEFAULT NULL,
   `status` int(11) DEFAULT '0',
   `created` datetime DEFAULT NULL,
-  `modified` datetime DEFAULT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+  `modified` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=6 ;
 
 --
 -- Dumping data for table `order_items`
@@ -697,8 +741,8 @@ INSERT INTO `order_items` (`id`, `order_id`, `product_id`, `quantity`, `price`, 
 -- Table structure for table `products`
 --
 
-CREATE TABLE `products` (
-  `id` bigint(25) NOT NULL,
+CREATE TABLE IF NOT EXISTS `products` (
+  `id` bigint(25) NOT NULL AUTO_INCREMENT,
   `name` varchar(100) DEFAULT NULL,
   `keywords` varchar(255) DEFAULT NULL,
   `price` decimal(10,2) DEFAULT '0.00',
@@ -713,8 +757,10 @@ CREATE TABLE `products` (
   `featured_product` int(11) DEFAULT '0',
   `rating` double(10,1) NOT NULL DEFAULT '0.0',
   `created` datetime DEFAULT NULL,
-  `modified` datetime DEFAULT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+  `modified` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `price` (`price`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=12 ;
 
 --
 -- Dumping data for table `products`
@@ -739,14 +785,17 @@ INSERT INTO `products` (`id`, `name`, `keywords`, `price`, `img_sizes`, `active`
 -- Table structure for table `product_attributes`
 --
 
-CREATE TABLE `product_attributes` (
-  `id` int(11) NOT NULL,
+CREATE TABLE IF NOT EXISTS `product_attributes` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `attribute_code` varchar(50) DEFAULT NULL,
   `sort_order` int(10) DEFAULT NULL,
   `active` int(1) DEFAULT '1',
   `created` datetime DEFAULT NULL,
-  `modified` datetime DEFAULT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+  `modified` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `created` (`created`),
+  KEY `prodatt_active` (`active`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
 
 --
 -- Dumping data for table `product_attributes`
@@ -761,13 +810,17 @@ INSERT INTO `product_attributes` (`id`, `attribute_code`, `sort_order`, `active`
 -- Table structure for table `product_attribute_relations`
 --
 
-CREATE TABLE `product_attribute_relations` (
-  `id` int(11) NOT NULL,
+CREATE TABLE IF NOT EXISTS `product_attribute_relations` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `product_id` int(11) DEFAULT NULL,
   `attribute_id` int(11) DEFAULT NULL,
   `attribute_value_id` int(11) DEFAULT NULL,
-  `quantity` varchar(255) DEFAULT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+  `quantity` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `attribute_unique_id` (`product_id`,`attribute_id`,`attribute_value_id`),
+  KEY `attribute_id` (`attribute_id`),
+  KEY `prod_att_rel_attrbval` (`attribute_value_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=7 ;
 
 --
 -- Dumping data for table `product_attribute_relations`
@@ -783,16 +836,20 @@ INSERT INTO `product_attribute_relations` (`id`, `product_id`, `attribute_id`, `
 -- Table structure for table `product_attribute_values`
 --
 
-CREATE TABLE `product_attribute_values` (
-  `id` int(11) NOT NULL,
+CREATE TABLE IF NOT EXISTS `product_attribute_values` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `attribute_id` int(11) DEFAULT NULL,
   `name` varchar(255) DEFAULT NULL,
   `color_code` varchar(100) DEFAULT NULL,
   `active` int(1) DEFAULT '1',
   `sort_order` int(10) DEFAULT NULL,
   `created` datetime DEFAULT NULL,
-  `modified` datetime DEFAULT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+  `modified` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `created` (`created`),
+  KEY `attribute_id` (`attribute_id`),
+  KEY `pav_active` (`active`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=8 ;
 
 --
 -- Dumping data for table `product_attribute_values`
@@ -813,14 +870,15 @@ INSERT INTO `product_attribute_values` (`id`, `attribute_id`, `name`, `color_cod
 -- Table structure for table `product_images`
 --
 
-CREATE TABLE `product_images` (
-  `id` int(11) NOT NULL,
+CREATE TABLE IF NOT EXISTS `product_images` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `product_id` int(11) DEFAULT NULL,
   `product_image` varchar(100) DEFAULT NULL,
   `sort` int(5) DEFAULT NULL,
   `created` datetime DEFAULT NULL,
-  `modified` datetime DEFAULT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+  `modified` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=17 ;
 
 --
 -- Dumping data for table `product_images`
@@ -840,8 +898,8 @@ INSERT INTO `product_images` (`id`, `product_id`, `product_image`, `sort`, `crea
 -- Table structure for table `ratings`
 --
 
-CREATE TABLE `ratings` (
-  `id` int(11) NOT NULL,
+CREATE TABLE IF NOT EXISTS `ratings` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `user_id` int(11) DEFAULT NULL,
   `product_id` int(11) DEFAULT NULL,
   `overall` int(5) NOT NULL DEFAULT '0',
@@ -852,8 +910,12 @@ CREATE TABLE `ratings` (
   `review` text,
   `active` tinyint(1) NOT NULL DEFAULT '1',
   `created` datetime DEFAULT NULL,
-  `modified` datetime DEFAULT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+  `modified` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `user_id` (`user_id`),
+  KEY `product_id` (`product_id`),
+  KEY `active` (`active`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=7 ;
 
 --
 -- Dumping data for table `ratings`
@@ -870,8 +932,8 @@ INSERT INTO `ratings` (`id`, `user_id`, `product_id`, `overall`, `comfort`, `sty
 -- Table structure for table `shippings`
 --
 
-CREATE TABLE `shippings` (
-  `id` bigint(20) NOT NULL,
+CREATE TABLE IF NOT EXISTS `shippings` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `ship_method` int(11) NOT NULL DEFAULT '0',
   `ship_name` varchar(50) DEFAULT NULL,
   `pickup_method` varchar(50) DEFAULT NULL,
@@ -892,8 +954,9 @@ CREATE TABLE `shippings` (
   `FedExPayorType` varchar(250) DEFAULT NULL,
   `FedExServer` varchar(250) DEFAULT NULL,
   `created` datetime DEFAULT NULL,
-  `modified` datetime DEFAULT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+  `modified` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
 
 --
 -- Dumping data for table `shippings`
@@ -910,8 +973,8 @@ INSERT INTO `shippings` (`id`, `ship_method`, `ship_name`, `pickup_method`, `pac
 -- Table structure for table `shopping_carts`
 --
 
-CREATE TABLE `shopping_carts` (
-  `id` int(11) NOT NULL,
+CREATE TABLE IF NOT EXISTS `shopping_carts` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `session_id` varchar(255) DEFAULT NULL,
   `product_id` int(11) DEFAULT NULL,
   `quantity` int(11) DEFAULT NULL,
@@ -920,8 +983,11 @@ CREATE TABLE `shopping_carts` (
   `attribute_value_id` varchar(255) DEFAULT NULL,
   `attribute_name` varchar(255) DEFAULT NULL,
   `created` datetime DEFAULT NULL,
-  `modified` datetime DEFAULT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+  `modified` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `session_id` (`session_id`),
+  KEY `product_id` (`product_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=23 ;
 
 --
 -- Dumping data for table `shopping_carts`
@@ -939,11 +1005,17 @@ INSERT INTO `shopping_carts` (`id`, `session_id`, `product_id`, `quantity`, `pri
 -- Table structure for table `shopping_coupons`
 --
 
-CREATE TABLE `shopping_coupons` (
-  `id` int(11) NOT NULL,
+CREATE TABLE IF NOT EXISTS `shopping_coupons` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `session_id` varchar(100) DEFAULT NULL,
-  `coupon_id` int(11) DEFAULT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+  `coupon_id` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=28 ;
+
+--
+-- Dumping data for table `shopping_coupons`
+--
+
 
 -- --------------------------------------------------------
 
@@ -951,11 +1023,14 @@ CREATE TABLE `shopping_coupons` (
 -- Table structure for table `states`
 --
 
-CREATE TABLE `states` (
-  `id` int(11) NOT NULL,
+CREATE TABLE IF NOT EXISTS `states` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `state` varchar(255) NOT NULL DEFAULT '',
-  `abv` char(2) NOT NULL DEFAULT ''
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+  `abv` char(2) NOT NULL DEFAULT '',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id` (`id`),
+  KEY `id_2` (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=64 ;
 
 --
 -- Dumping data for table `states`
@@ -1032,8 +1107,8 @@ INSERT INTO `states` (`id`, `state`, `abv`) VALUES
 -- Table structure for table `users`
 --
 
-CREATE TABLE `users` (
-  `id` int(10) UNSIGNED NOT NULL,
+CREATE TABLE IF NOT EXISTS `users` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `fbid` varchar(255) DEFAULT NULL,
   `email` varchar(255) DEFAULT NULL,
   `password` varchar(255) DEFAULT NULL,
@@ -1073,8 +1148,11 @@ CREATE TABLE `users` (
   `activation_key` varchar(255) DEFAULT NULL,
   `active` int(3) NOT NULL DEFAULT '0',
   `created` datetime DEFAULT NULL,
-  `modified` datetime DEFAULT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+  `modified` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `email` (`email`),
+  KEY `active` (`active`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=12 ;
 
 --
 -- Dumping data for table `users`
@@ -1085,7 +1163,8 @@ INSERT INTO `users` (`id`, `fbid`, `email`, `password`, `username`, `firstname`,
 (7, '', 'pkumar@gmail.com', 'c8879f8e5eab57fd9a73a8088c281a6d999a0172', '', 'piyush', 'srivastava', '', '', '', 'sec45', '2238383812', '9810203930', 'gurgaon', 'HR', '122001', 'India', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 1, '9b1a59935d423f070871ecd0d11d371477ac1c2a', 1, '2017-01-26 12:15:15', '2017-01-26 12:15:15'),
 (8, '', 'aman@gmail.com', 'a836dfa2a0f5428d7606112dca44b2d780d9cdc6', '', 'aman', 'kumar', '', '', '', 'sec45', '234234234234', '982342342', 'delhi', 'delhi', '201201', 'India', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 1, 'b13b589793c757bff693198f63e7050350ff1c03', 0, '2017-01-27 21:50:04', '2017-01-27 21:50:04'),
 (9, '', 'raman@gmail.com', '9ac7feeeb08687acb52bc9c68bc336ffeb07fb9b', 'raman2', 'raman2', 'kumar2', 'job11', 'business11', 'company11', 'sec461', '2939938912', '9812939393', 'gurgaon', 'hr', '122001', 'Iceland', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 1, 'bef9d9fc35de075a8b851f3c234bd4702a8fd9c6', 1, '2017-01-27 21:54:21', '2017-02-04 18:11:07'),
-(10, '', 'tewt@gmail.com', 'e0b9ae8a1ee18092a14920abc715cf652d7f280d', 'adad', 'asdsad', 'adds', 'software', 'IT', 'it section', 'sec45', '23423423423', '98234244', 'delhi', 'delhi', '234332', 'India', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, '6a3c0e0f3bb2c642b9bc0f87235c0c9360a5a495', 1, '2017-02-05 02:09:19', '2017-02-05 02:09:19');
+(10, '', 'tewt@gmail.com', 'e0b9ae8a1ee18092a14920abc715cf652d7f280d', 'adad', 'asdsad', 'adds', 'software', 'IT', 'it section', 'sec45', '23423423423', '98234244', 'delhi', 'delhi', '234332', 'India', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, '6a3c0e0f3bb2c642b9bc0f87235c0c9360a5a495', 1, '2017-02-05 02:09:19', '2017-02-05 02:09:19'),
+(11, NULL, 'k@k.com', '202cb962ac59075b964b07152d234b70', 'jimmydued', 'kapil', 'sharma', 'test', 'test', 'test', 'test', 'test', 'test', 'test', 'test', 'test', 'test', 'test', 'test', 'test', 'test', 'test', 'test', 'test', 'test', 'test', 'test', 'test', 'test', 'test', 'test', 'test', 'test', 'test', 'test', 0, 0, '123', 0, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -1093,16 +1172,24 @@ INSERT INTO `users` (`id`, `fbid`, `email`, `password`, `username`, `firstname`,
 -- Table structure for table `users1`
 --
 
-CREATE TABLE `users1` (
-  `id` int(11) NOT NULL,
+CREATE TABLE IF NOT EXISTS `users1` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `unique_id` varchar(23) NOT NULL,
   `name` varchar(50) NOT NULL,
   `email` varchar(100) NOT NULL,
   `encrypted_password` varchar(80) NOT NULL,
   `salt` varchar(10) NOT NULL,
   `created_at` datetime DEFAULT NULL,
-  `updated_at` datetime DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `updated_at` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `unique_id` (`unique_id`),
+  UNIQUE KEY `email` (`email`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+--
+-- Dumping data for table `users1`
+--
+
 
 -- --------------------------------------------------------
 
@@ -1110,16 +1197,22 @@ CREATE TABLE `users1` (
 -- Table structure for table `wish_lists`
 --
 
-CREATE TABLE `wish_lists` (
-  `id` int(11) NOT NULL,
+CREATE TABLE IF NOT EXISTS `wish_lists` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `user_id` int(11) DEFAULT NULL,
   `product_id` int(11) DEFAULT NULL,
   `attribute_id` varchar(255) DEFAULT NULL,
   `attribute_value_id` varchar(255) DEFAULT NULL,
   `attribute_name` varchar(255) DEFAULT NULL,
   `created` datetime DEFAULT NULL,
-  `modified` datetime DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `modified` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+--
+-- Dumping data for table `wish_lists`
+--
+
 
 -- --------------------------------------------------------
 
@@ -1127,8 +1220,8 @@ CREATE TABLE `wish_lists` (
 -- Table structure for table `zip_codes`
 --
 
-CREATE TABLE `zip_codes` (
-  `id` int(11) NOT NULL,
+CREATE TABLE IF NOT EXISTS `zip_codes` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `zip_code` varchar(5) CHARACTER SET latin1 NOT NULL,
   `lat` float NOT NULL,
   `lon` float NOT NULL,
@@ -1141,395 +1234,15 @@ CREATE TABLE `zip_codes` (
   `zaxis` float NOT NULL,
   `z_primary` varchar(100) CHARACTER SET latin1 NOT NULL,
   `country` varchar(100) CHARACTER SET latin1 NOT NULL,
-  `state_name` varchar(255) NOT NULL COMMENT 'US State Name'
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+  `state_name` varchar(255) NOT NULL COMMENT 'US State Name',
+  PRIMARY KEY (`id`),
+  KEY `zip_code` (`zip_code`),
+  KEY `city` (`city`),
+  KEY `state_prefix` (`state_prefix`,`state_name`),
+  KEY `country` (`country`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 --
--- Indexes for dumped tables
+-- Dumping data for table `zip_codes`
 --
 
---
--- Indexes for table `admins`
---
-ALTER TABLE `admins`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `username` (`username`),
-  ADD KEY `password` (`password`),
-  ADD KEY `status` (`status`);
-
---
--- Indexes for table `banners`
---
-ALTER TABLE `banners`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `title` (`title`),
-  ADD KEY `active` (`active`),
-  ADD KEY `sort` (`sort`);
-
---
--- Indexes for table `categories`
---
-ALTER TABLE `categories`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `parent_id` (`parent_id`),
-  ADD KEY `active` (`active`),
-  ADD KEY `position` (`position`),
-  ADD KEY `name` (`name`);
-
---
--- Indexes for table `categories_products`
---
-ALTER TABLE `categories_products`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `NewIndex1` (`category_id`,`product_id`),
-  ADD KEY `category_id` (`category_id`),
-  ADD KEY `product_id` (`product_id`);
-
---
--- Indexes for table `company_infos`
---
-ALTER TABLE `company_infos`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `contents`
---
-ALTER TABLE `contents`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `name` (`name`),
-  ADD KEY `permalink` (`permalink`),
-  ADD KEY `active` (`active`),
-  ADD KEY `sort` (`sort`);
-
---
--- Indexes for table `countries`
---
-ALTER TABLE `countries`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `coupons`
---
-ALTER TABLE `coupons`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `email_templates`
---
-ALTER TABLE `email_templates`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `image_uploads`
---
-ALTER TABLE `image_uploads`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `title` (`title`),
-  ADD KEY `active` (`active`),
-  ADD KEY `sort` (`sort`);
-
---
--- Indexes for table `manage_banners`
---
-ALTER TABLE `manage_banners`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `name` (`name`),
-  ADD KEY `active` (`active`),
-  ADD KEY `sort` (`sort`);
-
---
--- Indexes for table `multiple_image_uploads`
---
-ALTER TABLE `multiple_image_uploads`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `newsletters`
---
-ALTER TABLE `newsletters`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `newsletter_subscribers`
---
-ALTER TABLE `newsletter_subscribers`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `NewIndex1` (`subscriber_email`);
-
---
--- Indexes for table `orders`
---
-ALTER TABLE `orders`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `order_items`
---
-ALTER TABLE `order_items`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `products`
---
-ALTER TABLE `products`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `price` (`price`);
-
---
--- Indexes for table `product_attributes`
---
-ALTER TABLE `product_attributes`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `created` (`created`),
-  ADD KEY `prodatt_active` (`active`);
-
---
--- Indexes for table `product_attribute_relations`
---
-ALTER TABLE `product_attribute_relations`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `attribute_unique_id` (`product_id`,`attribute_id`,`attribute_value_id`),
-  ADD KEY `attribute_id` (`attribute_id`),
-  ADD KEY `prod_att_rel_attrbval` (`attribute_value_id`);
-
---
--- Indexes for table `product_attribute_values`
---
-ALTER TABLE `product_attribute_values`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `created` (`created`),
-  ADD KEY `attribute_id` (`attribute_id`),
-  ADD KEY `pav_active` (`active`);
-
---
--- Indexes for table `product_images`
---
-ALTER TABLE `product_images`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `ratings`
---
-ALTER TABLE `ratings`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `user_id` (`user_id`),
-  ADD KEY `product_id` (`product_id`),
-  ADD KEY `active` (`active`);
-
---
--- Indexes for table `shippings`
---
-ALTER TABLE `shippings`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `shopping_carts`
---
-ALTER TABLE `shopping_carts`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `session_id` (`session_id`),
-  ADD KEY `product_id` (`product_id`);
-
---
--- Indexes for table `shopping_coupons`
---
-ALTER TABLE `shopping_coupons`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `states`
---
-ALTER TABLE `states`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `id` (`id`),
-  ADD KEY `id_2` (`id`);
-
---
--- Indexes for table `users`
---
-ALTER TABLE `users`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `email` (`email`),
-  ADD KEY `active` (`active`);
-
---
--- Indexes for table `users1`
---
-ALTER TABLE `users1`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `unique_id` (`unique_id`),
-  ADD UNIQUE KEY `email` (`email`);
-
---
--- Indexes for table `wish_lists`
---
-ALTER TABLE `wish_lists`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `zip_codes`
---
-ALTER TABLE `zip_codes`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `zip_code` (`zip_code`),
-  ADD KEY `city` (`city`),
-  ADD KEY `state_prefix` (`state_prefix`,`state_name`),
-  ADD KEY `country` (`country`);
-
---
--- AUTO_INCREMENT for dumped tables
---
-
---
--- AUTO_INCREMENT for table `admins`
---
-ALTER TABLE `admins`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
---
--- AUTO_INCREMENT for table `banners`
---
-ALTER TABLE `banners`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
---
--- AUTO_INCREMENT for table `categories`
---
-ALTER TABLE `categories`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
---
--- AUTO_INCREMENT for table `categories_products`
---
-ALTER TABLE `categories_products`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
---
--- AUTO_INCREMENT for table `company_infos`
---
-ALTER TABLE `company_infos`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
---
--- AUTO_INCREMENT for table `contents`
---
-ALTER TABLE `contents`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
---
--- AUTO_INCREMENT for table `countries`
---
-ALTER TABLE `countries`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=230;
---
--- AUTO_INCREMENT for table `coupons`
---
-ALTER TABLE `coupons`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
---
--- AUTO_INCREMENT for table `email_templates`
---
-ALTER TABLE `email_templates`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
---
--- AUTO_INCREMENT for table `image_uploads`
---
-ALTER TABLE `image_uploads`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
---
--- AUTO_INCREMENT for table `manage_banners`
---
-ALTER TABLE `manage_banners`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
---
--- AUTO_INCREMENT for table `multiple_image_uploads`
---
-ALTER TABLE `multiple_image_uploads`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `newsletters`
---
-ALTER TABLE `newsletters`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
---
--- AUTO_INCREMENT for table `newsletter_subscribers`
---
-ALTER TABLE `newsletter_subscribers`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
---
--- AUTO_INCREMENT for table `orders`
---
-ALTER TABLE `orders`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
---
--- AUTO_INCREMENT for table `order_items`
---
-ALTER TABLE `order_items`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
---
--- AUTO_INCREMENT for table `products`
---
-ALTER TABLE `products`
-  MODIFY `id` bigint(25) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
---
--- AUTO_INCREMENT for table `product_attributes`
---
-ALTER TABLE `product_attributes`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
---
--- AUTO_INCREMENT for table `product_attribute_relations`
---
-ALTER TABLE `product_attribute_relations`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
---
--- AUTO_INCREMENT for table `product_attribute_values`
---
-ALTER TABLE `product_attribute_values`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
---
--- AUTO_INCREMENT for table `product_images`
---
-ALTER TABLE `product_images`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
---
--- AUTO_INCREMENT for table `ratings`
---
-ALTER TABLE `ratings`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
---
--- AUTO_INCREMENT for table `shippings`
---
-ALTER TABLE `shippings`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
---
--- AUTO_INCREMENT for table `shopping_carts`
---
-ALTER TABLE `shopping_carts`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
---
--- AUTO_INCREMENT for table `shopping_coupons`
---
-ALTER TABLE `shopping_coupons`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
---
--- AUTO_INCREMENT for table `states`
---
-ALTER TABLE `states`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=64;
---
--- AUTO_INCREMENT for table `users`
---
-ALTER TABLE `users`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
---
--- AUTO_INCREMENT for table `users1`
---
-ALTER TABLE `users1`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `wish_lists`
---
-ALTER TABLE `wish_lists`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `zip_codes`
---
-ALTER TABLE `zip_codes`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
