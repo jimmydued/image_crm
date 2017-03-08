@@ -1,4 +1,4 @@
-<div class="container-fluid">
+<div class="container-fluid" ng-controller="TransactionController as vm">
    <div class="row mtxl">
       <div class="col-md-12 col-sm-12 col-xs-12 text-size">
          <strong>TRANSACTION TO BE VERIFIED-LAST 7 DAYS</strong>
@@ -38,4 +38,7 @@
        </span>
        <hr class="line-color">
     </div>
+	<div>
+		<ui-custom-grid options="vm.firstOptions" class="grid"></ui-grid>
+	</div>
 </div>

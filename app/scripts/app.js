@@ -16,7 +16,8 @@ angular
     'ngCookies'
   ])
   .config(['$stateProvider','$urlRouterProvider','$ocLazyLoadProvider', '$httpProvider',function ($stateProvider,$urlRouterProvider,$ocLazyLoadProvider,$httpProvider) {
-    
+    delete $httpProvider.defaults.headers.common["X-Requested-With"];
+
     $ocLazyLoadProvider.config({
       debug:false,
       events:true,
@@ -117,13 +118,25 @@ angular
         url:'/forgotpassword'
     })
 
-
     .state('dashboard.transaction',{
         templateUrl:'views/pages/transaction.html',
-        url:'/transaction'
-    })
-
-      .state('dashboard.chart',{
+        url:'/transaction',
+        controller:'TransactionController',
+        resolve: {
+                    loadMyFiles:["$ocLazyLoad", function($ocLazyLoad) {
+                      return $ocLazyLoad.load({
+                        name:'imageCrmApp',
+                        files:[
+                              
+                              'scripts/controllers/transactionController.js',
+                              'scripts/directives/uicustomgrid/uicustomgrid.js'
+                        ]
+                    })
+                  }
+                ]
+          }
+    })  
+    .state('dashboard.chart',{
         templateUrl:'views/chart.html',
         url:'/chart',
         controller:'ChartCtrl',
