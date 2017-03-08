@@ -17,18 +17,10 @@ angular
   ])
   .config(['$stateProvider','$urlRouterProvider','$ocLazyLoadProvider', '$httpProvider',function ($stateProvider,$urlRouterProvider,$ocLazyLoadProvider,$httpProvider) {
     
-    $httpProvider.defaults.withCredentials = true;
-    $httpProvider.defaults.headers = {'Content-Type': 'application/json;charset=utf-8'};
-
     $ocLazyLoadProvider.config({
       debug:false,
       events:true,
     });
-
-    $httpProvider.defaults.headers.common = {};
-    $httpProvider.defaults.headers.post = {};
-    $httpProvider.defaults.headers.put = {};
-    $httpProvider.defaults.headers.patch = {};
 
     $urlRouterProvider.otherwise('/dashboard/home');
 
