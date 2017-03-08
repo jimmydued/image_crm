@@ -187,12 +187,6 @@ angular
   }])
   .run(run);
   
-  /*
-    Constant defination for complete application.
-  */
-  var constants = {};
-  constants.apiBaseUrl = "http://localhost/image_crm/api";
-  
   /*Code to handle not logged InUser redirection*/
   run.$inject = ['$rootScope', '$location', '$cookies', '$http'];
   function run($rootScope, $location, $cookies, $http) {
