@@ -74,6 +74,9 @@ font-weight:bold;
   border-bottom:1px solid gray;
   margin-top:5px;
 }
-.spcl-txt-color{
+.spcl-txt-color{                  /*for text color */
   color:red;
+}
+.hdr-color{
+  background:black;
 }
