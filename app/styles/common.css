@@ -49,15 +49,15 @@ padding-top:15px;
 .box-boder{                           /* border color of box during validation failure */
  border: solid 1px #FF0000;
 }
-  input[type="email"].myBlur {         /*make myBlur class for email field for achieve boder color of input field */
+input[type="email"].myBlur {         /*make myBlur class for email field for achieve boder color of input field */
   border: solid 1px #FF0000;  
-  }  
-  input[type="password"].myBlur {      /*make myBlur class for email field for achieve boder color of input field */
+}  
+input[type="password"].myBlur {      /*make myBlur class for email field for achieve boder color of input field */
   border: solid 1px #FF0000;  
-  }  
-  input[type="text"].myBlur {          /*make myBlur class for text field for achieve boder color of input field */
+}  
+input[type="text"].myBlur {          /*make myBlur class for text field for achieve boder color of input field */
   border: solid 1px #FF0000;  
-  }
+}
 .left-m-bar{                            /*background of dashboard left menu bar*/
   background: #333;
 }  
@@ -77,6 +77,12 @@ font-weight:bold;
 .spcl-txt-color{                  /*for text color */
   color:red;
 }
+
 .hdr-color{
   background:black;
+}
+
+/*added for ui-grid directive*/
+.grid {
+  height: 250px;
 }
