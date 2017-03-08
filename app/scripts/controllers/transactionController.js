@@ -9,7 +9,6 @@
     TransactionController.$inject = ['$location'];
 
     function TransactionController($location) {
-		console.log("kappu here");
 		
 		var vm 	=	this; 
         vm.myData = [
