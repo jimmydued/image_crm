@@ -126,7 +126,7 @@ angular
     })
 
 
-    .state('transaction',{
+    .state('dashboard.transaction',{
         templateUrl:'views/pages/transaction.html',
         url:'/transaction'
     })
