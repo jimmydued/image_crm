@@ -13,11 +13,11 @@ angular
     'ui.router',
     'ui.bootstrap',
     'angular-loading-bar',
-    'ngCookies'
+    'ngCookies',
+    'ui.grid'
   ])
   .config(['$stateProvider','$urlRouterProvider','$ocLazyLoadProvider', '$httpProvider',function ($stateProvider,$urlRouterProvider,$ocLazyLoadProvider,$httpProvider) {
-    delete $httpProvider.defaults.headers.common["X-Requested-With"];
-
+    
     $ocLazyLoadProvider.config({
       debug:false,
       events:true,
@@ -119,19 +119,18 @@ angular
     })
 
     .state('dashboard.transaction',{
-        templateUrl:'views/pages/transaction.html',
+        templateUrl:'views/transaction.html',
         url:'/transaction',
-        controller:'TransactionController',
+        controller:'TransacCtrl',
         resolve: {
-                    loadMyFiles:["$ocLazyLoad", function($ocLazyLoad) {
+                    loadMyFile:["$ocLazyLoad", function($ocLazyLoad) {
                       return $ocLazyLoad.load({
-                        name:'imageCrmApp',
-                        files:[
-                              
-                              'scripts/controllers/transactionController.js',
-                              'scripts/directives/uicustomgrid/uicustomgrid.js'
-                        ]
-                    })
+                                  name:'imageCrmApp',
+                                  files:[
+                                    'scripts/controllers/transactionController.js',
+                                    'scripts/directives/uicustomgrid/uicustomgrid.js'
+                                  ] 
+                              })
                   }
                 ]
           }

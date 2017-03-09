@@ -1,14 +1,13 @@
 (function () {
     'use strict';
-	angular.module('imageCrmApp', ['ui.grid']);
 	
 	angular
         .module('imageCrmApp')
-        .controller('TransactionController', TransactionController);
+        .controller('TransacCtrl', TransacCtrl);
 
-    TransactionController.$inject = ['$location'];
+    TransacCtrl.$inject = ['$location'];
 
-    function TransactionController($location) {
+    function TransacCtrl($location) {
 		
 		var vm 	=	this; 
         vm.myData = [

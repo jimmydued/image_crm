@@ -15,6 +15,7 @@ angular.module('imageCrmApp')
 					  options : '=',
 					},
 					controllerAs : 'vm',
+					replace: false,
 					link: function(scope, element, attrs) {					
 						scope.gridOptions = {
 							data: scope.options.data, //private scoped from options : '=',
