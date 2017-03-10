@@ -14,7 +14,10 @@ angular
     'ui.bootstrap',
     'angular-loading-bar',
     'ngCookies',
-    'ui.grid'
+    'ui.grid',
+    'ui.grid.grouping', 
+    'ui.grid.edit', 
+    'ui.grid.selection'
   ])
   .config(['$stateProvider','$urlRouterProvider','$ocLazyLoadProvider', '$httpProvider',function ($stateProvider,$urlRouterProvider,$ocLazyLoadProvider,$httpProvider) {
     
@@ -134,7 +137,26 @@ angular
                   }
                 ]
           }
+    })
+
+    .state('dashboard.abandondCartList',{
+        templateUrl:'views/abandondcartlist.html',
+        url:'/abandondCartList',
+        controller:'AbandondCartListCtrl',
+        resolve: {
+                    loadMyFile:["$ocLazyLoad", function($ocLazyLoad) {
+                      return $ocLazyLoad.load({
+                                  name:'imageCrmApp',
+                                  files:[
+                                    'scripts/controllers/abandondCartList.js',
+                                    'scripts/directives/uicustomgrid/uicustomgrid.js'
+                                  ] 
+                              })
+                  }
+                ]
+          }
     })  
+    
     .state('dashboard.chart',{
         templateUrl:'views/chart.html',
         url:'/chart',
@@ -155,11 +177,13 @@ angular
           }]
         }
     })
-      .state('dashboard.table',{
+    
+    .state('dashboard.table',{
         templateUrl:'views/table.html',
         url:'/table'
     })
-      .state('dashboard.panels-wells',{
+    
+    .state('dashboard.panels-wells',{
           templateUrl:'views/ui-elements/panels-wells.html',
           url:'/panels-wells'
       })
@@ -190,7 +214,7 @@ angular
   run.$inject = ['$rootScope', '$location', '$cookies', '$http'];
   function run($rootScope, $location, $cookies, $http) {
     // keep user logged in after page refresh
-    $rootScope.globals = $cookies.getObject('globals') || {};
+    /*$rootScope.globals = $cookies.getObject('globals') || {};
     if ($rootScope.globals.currentUser) {
       $http.defaults.headers.common['Authorization'] = 'Basic ' + $rootScope.globals.currentUser.authdata;
     }
@@ -202,6 +226,6 @@ angular
       if (restrictedPage && !loggedIn) {
           $location.path('/login');
       }
-    });
+    });*/
   }
   
