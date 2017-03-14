@@ -18,11 +18,11 @@ angular.module('imageCrmApp')
 					replace: false,
 					link: function(scope, element, attrs) {					
 						scope.gridOptions = {
-							enableGroupHeaderSelection: scope.options.enableGroupHeaderSelection,
-							enableSorting  : scope.options.enableSorting,
+            				enableRowHeaderSelection  : scope.options.enableRowHeaderSelection,
+            				enableCellEdit	: scope.options.enableCellEdit,
+							enableSorting   : scope.options.enableSorting,
 							data: scope.options.data, //private scoped from options : '=',
-							columnDefs: scope.options.colDef, // optional setting or default setting,
-							onRegisterApi : scope.options.onRegisterApi
+							columnDefs: scope.options.colDef
 						};
 					}
 			}

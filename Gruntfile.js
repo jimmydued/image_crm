@@ -26,17 +26,6 @@ module.exports = function (grunt) {
 
     // Project settings
     yeoman: appConfig,
-	php: {
-        dist: {
-            options: {
-                hostname: '127.0.0.1',
-                port: 9001,
-                base: 'crm', // Project root
-                keepalive: true,
-                open: true
-            }
-        }
-    },
     // Watches files for changes and runs tasks based on the changed files
     watch: {
       bower: {
@@ -77,12 +66,6 @@ module.exports = function (grunt) {
 
     // The actual grunt server settings
     connect: {
-      options: {
-        port: 9000,
-        // Change this to '0.0.0.0' to access the server from outside.
-        hostname: 'localhost',
-        livereload: 35729
-      },
 	  options: {
         port: 9000,
         // Change this to '0.0.0.0' to access the server from outside.
@@ -427,8 +410,7 @@ module.exports = function (grunt) {
     'cssmin',
     'ngAnnotate',
     /*'uglify',*/
-    'htmlmin',
-	/*'php:dist'*/
+    'htmlmin'
   ]);
 
   grunt.registerTask('default', [
