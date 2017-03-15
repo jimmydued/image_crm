@@ -32,7 +32,6 @@
                 "package": "Enormo",
                 "plan": true
             },
-            ,
             {
                 "date":"2016-06-02",
                 "uid": "FebPresent",
@@ -58,8 +57,20 @@
 						{field: 'castDateTime'},
 						{field: 'package'},
 						{field: 'plan'},
-                        {field: 'status'},
-                        {field: 'action'}
+                        {
+                            field: 'status',
+                            editType: 'dropdown',
+                            enableCellEdit: true,
+                            editableCellTemplate: 'ui-grid/dropdownEditor',
+                            editDropdownOptionsArray: [
+                              { id: 0, value: 'Pending' },
+                              { id: 1, value: 'Started' }
+                            ]
+                        },
+                        {
+                            field: 'action',
+                            cellTemplate:'<button type="button" ng-if="row.treeLevel!=0" class="btn btn-danger btn-xs grid-bttn-align">Update</button>'
+                        }
 
             ]
         };

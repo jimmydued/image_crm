@@ -1,2 +1,66 @@
-https://go.teamviewer.com/v12/m29173601
+HI Kapil,
 
+I tried to Input as much details as possible, hope I did not miss anything prudent. so kindly re create the milestones with timelines, like tentative closing date, so we are all on track.. We have just 60 days and we need to rush..
+
+Milestome 1
+Services:
+
+   		1) Login/Logout/Forgot Password
+		2) Services for transaction*
+
+Here you need to create various services like Subscription, Downloadpack, Images on demand, Rights Managed, Customised Image.
+
+Milestone 2: Daily Task with auto renewal and grid integration
+here we will have Auto renewal cancelled tranx, Expiring Subscription in 10 days, Expiring download packs in 10 days, Expiring RM Image in 10 days, and FOLLOW UP list from the Potential Customer List.
+
+Abandoned cart list with filters and update functionality- here Abandoned cart list and check out failure can be clubbed together
+
+Milestone 3
+
+	UI:
+
+   		1) Sales forcast search : Not required now; Instead Have potential client list (attaching ref)
+		2) Download on behalf 
+		3) Transaction by country search and grid integration 
+		4) Proforma invoice search: This can added in the general search bar at the bottom of page on left (Attached ref).
+
+Milestone 4
+
+
+	UI:
+
+   		1) Recent 100 canceled transaction grid configure: Move to milestone 3
+		2) Low remaining credit list  grid for show 50 records in a one page - Not required.covered mostly in milestone 2
+		3) Paypal manual transfer : Not sure about this, Paypal should be a payment option while making payment. Here we can probably introduce offline payment or credit payments. these will be transactions where client will pay us through cheque or NEFT after the activation of service, not advance. 
+                4) linking front end and back end / we can create different search modules some of which can be downloaded.
+
+Milestone 5
+
+
+	UI:
+
+   		1) first tab ui client info (account info,personal info,other info,edit client information,customer retentation notification,add new comment grid ) The order should be account info which will option to re generate password, personal info, Company Info, Edit client info, Add new comment, Create Invoice- top right/ left with ICON.
+
+Milestone 6
+
+
+	UI:
+   	1)  Ui of second tab  invoices (credit, subscription, download pack, Image on demand, multi login, cart purchase ,Customise size ,add new comment)Subscription, Downloadpack, Images on demand, Rights Managed, Customised Image, Multi Logins, Add new comment.
+		 
+		 
+
+Milestone 7 we can remove for the time being.
+
+Milestone 8 : we would want this differently and this would be a bit complex... The Invoice details had been shared separetely in a different mail, hope you have them. We need, proforma Invoice which can be created only when we make Invoices Manually. Proforma Invoice can be converted into tax Invoice, It should also have two option, Advance recd / credit period option with Due date. Transaction status can be in dropdown,  partial payment recd, Payment pending and closed.
+Invoice will be of two kinds as mentioned earlier.
+1) Generated Online by clients- When they make a purchase of any item, like single image / pack/ sub, system should automatically detect the online cost and auto generate invoice. Here by default single image Invoices should have Image captured on the invoices.
+2) The same kind of Invoice being generated, when details are being input manually.
+3) An RM Invoice with the details of RM Calculator, it should auto calculate cost and capture all the license details in the Invoice, Like date of License, Usage, Location, period, medium etc. ( Sample of the calculator can be seen in the below two links;
+http://www.masterfile.com/search/enlarged_pricing.html?img=700-08122060
+
+http://www.gettyimages.in/purchase/price-calculator/495349101
+4) It is not related to the website;Manual Invoices with Image nos, here a very small size of hardly 50-100 KB image needs to uploaded manually, so that the image reflects on the Invoice with Licensing detains...THis could be a little tricky, here one invoice may have 4 images 2 RM and 2 RF, it has to capture all details, including Size of the Image, End Client, Usage, For RM the full details under Usage must be captured.
+
+The Admin will have rights to assign, who can view what, for eg. Sale people in India can view only India report or clients registered under Indian Address or India IP. The Payment status of any transaction can be changed only by an accounts person. Admin can reset/change password for employees account. Admin can restrict view options basis state..etc
+
+Let me know if you have more questions..

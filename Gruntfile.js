@@ -50,6 +50,9 @@ module.exports = function (grunt) {
 	  php: {
         files: ['api/**/*.php']
       },
+	  html: {
+        files: ['<%= yeoman.app %>/styles/{,*/}*.html']
+      },
       gruntfile: {
         files: ['Gruntfile.js']
       },
