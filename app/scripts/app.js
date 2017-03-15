@@ -155,6 +155,24 @@ angular
           }]
         }
     })
+	
+	 .state('dashboard.daily-tasks',{
+        templateUrl:'views/daily-tasks.html',
+        url:'/daily-tasks',
+        controller:'DailyTasksCtrl',
+        resolve: {
+                    loadMyFile:["$ocLazyLoad", function($ocLazyLoad) {
+                      return $ocLazyLoad.load({
+                                  name:'imageCrmApp',
+                                  files:[
+                                    'scripts/controllers/dailyTasksController.js',
+                                    'scripts/directives/uicustomgrid/uicustomgrid.js'
+                                  ] 
+                              })
+                  }
+                ]
+          }
+    })  
       .state('dashboard.table',{
         templateUrl:'views/table.html',
         url:'/table'
@@ -190,7 +208,7 @@ angular
   run.$inject = ['$rootScope', '$location', '$cookies', '$http'];
   function run($rootScope, $location, $cookies, $http) {
     // keep user logged in after page refresh
-    $rootScope.globals = $cookies.getObject('globals') || {};
+  /*  $rootScope.globals = $cookies.getObject('globals') || {};
     if ($rootScope.globals.currentUser) {
       $http.defaults.headers.common['Authorization'] = 'Basic ' + $rootScope.globals.currentUser.authdata;
     }
@@ -202,6 +220,6 @@ angular
       if (restrictedPage && !loggedIn) {
           $location.path('/login');
       }
-    });
+    });*/
   }
   

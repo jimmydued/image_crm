@@ -1,2 +1,25 @@
 https://go.teamviewer.com/v12/m29173601
 
+step1:npm install -g grunt-cli
+
+step2:npm install -g bower
+
+step3:npm install
+
+step4:grunt
+
+step5:grunt serve
+
+k@k.com
+123
+
+
+===========================================
+Tutorials point, w3schools.com
+
+1) Directive
+2) Dependency Injections
+3) Services
+4) Controllers
+5) two way databinding
+6)
