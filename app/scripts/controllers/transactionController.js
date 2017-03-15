@@ -26,6 +26,8 @@
         ];
 		
 		vm.firstOptions = {
+            enableRowHeaderSelection : false,
+            enableCellEdit: false, 
             data: vm.myData,
 			colDef: [
                   {field: 'firstName'},

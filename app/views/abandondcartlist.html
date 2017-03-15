@@ -1,0 +1,29 @@
+<div class="container-fluid" ng-controller="AbandondCartListCtrl as vm">
+	<div class="row mtxl">
+      <div class="col-md-3 col-sm-3 col-xs-3 text-size">
+         <strong>Abandond Cart List</strong>
+      </div>
+	  <div class="col-md-3 col-sm-3  col-xs-3">
+         206 Item remaining
+      </div>
+	  <div class="col-md-3 col-sm-3 col-xs-3 form-group">
+        <label>Selects</label>
+        <select class="form-control">
+            <option>All Countries</option>
+			<option>U.S</option>
+			<option>India</option>
+        </select>
+      </div>
+	  <div class="col-md-3 col-sm-3 col-xs-3 form-group">
+        <label>Selects</label>
+        <select class="form-control">
+            <option>All Statuses</option>
+			<option>Started</option>
+			<option>Pending</option>
+        </select>
+      </div>
+	</div>
+	<div>
+		<ui-custom-grid options="vm.gridOptions" class="grid"></ui-custom-grid>
+	</div>
+</div>

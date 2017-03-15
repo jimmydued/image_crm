@@ -26,7 +26,6 @@ module.exports = function (grunt) {
 
     // Project settings
     yeoman: appConfig,
-
     // Watches files for changes and runs tasks based on the changed files
     watch: {
       bower: {
@@ -48,6 +47,12 @@ module.exports = function (grunt) {
         files: ['<%= yeoman.app %>/styles/{,*/}*.css'],
         tasks: ['newer:copy:styles', 'autoprefixer']
       },
+	  php: {
+        files: ['api/**/*.php']
+      },
+	  html: {
+        files: ['<%= yeoman.app %>/styles/{,*/}*.html']
+      },
       gruntfile: {
         files: ['Gruntfile.js']
       },
@@ -56,7 +61,6 @@ module.exports = function (grunt) {
           livereload: '<%= connect.options.livereload %>'
         },
         files: [
-          '<%= yeoman.app %>/{,*/}*.html',
           '.tmp/styles/{,*/}*.css',
           '<%= yeoman.app %>/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}'
         ]
@@ -65,7 +69,7 @@ module.exports = function (grunt) {
 
     // The actual grunt server settings
     connect: {
-      options: {
+	  options: {
         port: 9000,
         // Change this to '0.0.0.0' to access the server from outside.
         hostname: 'localhost',
@@ -86,6 +90,29 @@ module.exports = function (grunt) {
           }
         }
       },
+	  browserSync: {
+        dist: {
+            bsFiles: {
+                src: [
+                    // Files you want to watch for changes
+                ]
+            },
+            options: {
+                proxy: '<%= php.dist.options.hostname %>:<%= php.dist.options.port %>',
+                watchTask: true,
+                notify: true,
+                open: true,
+                logLevel: 'silent',
+                ghostMode: {
+                    clicks: true,
+                    scroll: true,
+                    links: true,
+                    forms: true
+                }
+            }
+        }
+    }
+	  ,
       test: {
         options: {
           port: 9001,
@@ -385,7 +412,7 @@ module.exports = function (grunt) {
     'copy:dist',
     'cssmin',
     'ngAnnotate',
-    'uglify',
+    /*'uglify',*/
     'htmlmin'
   ]);
 
