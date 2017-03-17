@@ -155,6 +155,25 @@ angular
                   }
                 ]
           }
+    })
+
+
+    .state('dashboard.advancedMemberSearch',{
+        templateUrl:'views/advancedMemberSearch.html',
+        url:'/advancedMemberSearch',
+        controller:'AdvancedMemberSearchCtrl',
+        resolve: {
+                    loadMyFile:["$ocLazyLoad", function($ocLazyLoad) {
+                      return $ocLazyLoad.load({
+                                  name:'imageCrmApp',
+                                  files:[
+                                    'scripts/controllers/advancedMemberSearch.js',
+                                    'scripts/directives/uicustomgrid/uicustomgrid.js'
+                                  ] 
+                              })
+                  }
+                ]
+          }
     })  
     
     .state('dashboard.chart',{
@@ -187,11 +206,13 @@ angular
           templateUrl:'views/ui-elements/panels-wells.html',
           url:'/panels-wells'
       })
-      .state('dashboard.buttons',{
+    
+    .state('dashboard.buttons',{
         templateUrl:'views/ui-elements/buttons.html',
         url:'/buttons'
     })
-      .state('dashboard.notifications',{
+    
+    .state('dashboard.notifications',{
         templateUrl:'views/ui-elements/notifications.html',
         url:'/notifications'
     })
@@ -199,11 +220,13 @@ angular
        templateUrl:'views/ui-elements/typography.html',
        url:'/typography'
    })
-      .state('dashboard.icons',{
+   
+   .state('dashboard.icons',{
        templateUrl:'views/ui-elements/icons.html',
        url:'/icons'
    })
-      .state('dashboard.grid',{
+   
+   .state('dashboard.grid',{
        templateUrl:'views/ui-elements/grid.html',
        url:'/grid'
    })
@@ -215,7 +238,7 @@ angular
   run.$inject = ['$rootScope', '$location', '$cookies', '$http'];
   function run($rootScope, $location, $cookies, $http) {
     // keep user logged in after page refresh
-    /*$rootScope.globals = $cookies.getObject('globals') || {};
+    $rootScope.globals = $cookies.getObject('globals') || {};
     if ($rootScope.globals.currentUser) {
       $http.defaults.headers.common['Authorization'] = 'Basic ' + $rootScope.globals.currentUser.authdata;
     }
@@ -227,6 +250,6 @@ angular
       if (restrictedPage && !loggedIn) {
           $location.path('/login');
       }
-    });*/
+    });
   }
   
