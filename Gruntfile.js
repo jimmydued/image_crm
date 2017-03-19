@@ -32,6 +32,13 @@ module.exports = function (grunt) {
         files: ['bower.json'],
         tasks: ['wiredep']
       },
+      allfiles: {
+        files: ['<%= yeoman.app %>/scripts/{,*/}*.{js,html}'],
+        options: {
+          livereload: '<%= connect.options.livereload %>'
+        }
+      }
+	  ,
       js: {
         files: ['<%= yeoman.app %>/scripts/{,*/}*.js'],
         tasks: ['newer:jshint:all'],

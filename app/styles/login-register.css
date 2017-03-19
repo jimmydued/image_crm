@@ -9,7 +9,7 @@ a:hover {
 }
 
 .form {
-  background: rgba(19, 35, 47, 0.9);
+  background: #f8f8f8;
   padding: 40px;
   max-width: 600px;
   margin: 40px auto;
@@ -19,7 +19,7 @@ a:hover {
 
 .login-h1 {
   text-align: center;
-  color: #ffffff;
+  color: black;
   font-weight: 300;
   margin: 0 0 40px;
 }
