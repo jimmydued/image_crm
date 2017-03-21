@@ -173,7 +173,8 @@ angular
                 ]
           }
     })  
-     .state('dashboard.abandondCartList',{
+    
+    .state('dashboard.abandondCartList',{
         templateUrl:'views/abandondcartlist.html',
         url:'/abandondCartList',
         controller:'AbandondCartListCtrl',
@@ -188,11 +189,8 @@ angular
                               })
                   }
                 ]
-          }
-<<<<<<< HEAD
-    }) 
-=======
-    })
+         }       
+      })
 
 
     .state('dashboard.advancedMemberSearch',{
@@ -231,7 +229,6 @@ angular
           }
     })  
     
->>>>>>> be5bcd1afdedcbab5b07d9dea698803e2a9ad96f
     .state('dashboard.chart',{
         templateUrl:'views/chart.html',
         url:'/chart',
