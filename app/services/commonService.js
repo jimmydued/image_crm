@@ -5,22 +5,22 @@
         .module('imageCrmApp')
         .factory('CommonService', CommonService);
 
-    CommonService.$inject = ['$http', 'apiUrl'];
-    function CommonService($http, apiUrl) {
+    CommonService.$inject = ['$http'];
+    function CommonService($http) {
 
         var service = {};
 
         service.postData = postData;
-		
-		service.getData = getData;
-		
+        
+        service.getData = getData;
+        
         return service;
 
         function postData(postUrl,data) {
             return $http.post(postUrl, data).then(handleSuccess, handleError('Error creating user'));
         }
-		
-		function getData(getUrl) {
+        
+        function getData(getUrl) {
             return $http.get(getUrl).then(handleSuccess, handleError('Error creating user'));
         }
 

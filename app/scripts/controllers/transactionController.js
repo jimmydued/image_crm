@@ -1,7 +1,7 @@
 (function () {
     'use strict';
-	
-	angular
+    
+    angular
         .module('imageCrmApp')
         .controller('TransacCtrl', TransacCtrl);
 
@@ -9,42 +9,26 @@
 
     function TransacCtrl($location, $rootScope, apiUrl, CommonService) {
 
-		var vm 	=	this;
-		
-		console.log('rootScope',$rootScope.globals.currentUser);
-		
-		CommonService.postData(apiUrl+"transactions.php",$rootScope.globals.currentUser)
+        var vm  =   this;
+        
+        CommonService.postData(apiUrl+"transactions.php",$rootScope.globals.currentUser)
                     .then(function (gridData) {
-                        //vm.transactionData = gridData;
-						console.log(gridData);
-					});
-		
-		vm.myData = [
-            {
-                "firstName": "Cox",
-                "lastName": "Carney",
-                "company": "Enormo",
-                "employed": true
-            },
-            {
-                "firstName": "Lorraine",
-                "lastName": "Wise",
-                "company": "Comveyer",
-                "employed": false
-            },
-        ];
-		
-		vm.firstOptions = {
+                        if (gridData.error==false) {
+                            vm.gridDataOptions = gridData.data;
+                        }
+        });
+                
+        vm.gridOptions = {
             enableRowHeaderSelection : false,
             enableCellEdit: false, 
-            data: vm.myData,
-			colDef: [
+            data: vm.gridDataOptions,
+            colDef: [
                   {field: 'firstName'},
                   {field: 'lastName'},
-				  {field: 'company'},
-				  {field: 'employed'},
+                  {field: 'company'},
+                  {field: 'employed'},
             ]
         };
     }
-	
+    
 })();
