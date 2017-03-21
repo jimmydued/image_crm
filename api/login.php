@@ -51,12 +51,6 @@ class Login extends Common_Functions{
 
 $loginObj 		=  	new Login();
 
-$response 		= 	array("error" => FALSE);
-
-$request_body 	= 	file_get_contents('php://input');
-
-$data 			= 	json_decode($request_body);
-
 if (isset($data->apiKey) && isset($data->password)) {
 	
     // receiving the post params

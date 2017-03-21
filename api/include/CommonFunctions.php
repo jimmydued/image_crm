@@ -7,32 +7,25 @@ $data 			= 	json_decode($request_body);
 
 $task			=	(!empty($data->task)?$data->task:"list");
 
-$cf = new Common_Functions($data);
-
 class Common_Functions {
 	
-    protected $conn,$input_data;
+    protected $conn;
  
     // constructor
-    function __construct($input_data) {
-        require_once 'DB_Connect.php';
+    function __construct() {
+		require_once 'DB_Connect.php';
         // connecting to database
         $db = new Db_Connect();
         $this->conn = $db->connect();
-		$this->input_data = $input_data;
+    }
+ 
+	function keepValidateUser($input_data){
 		
-    }
- 
-    // destructor
-    function __destruct() {
-         
-    }
- 
-	function keepValidateUser(){
+		$input_data->apiKey = base64_decode($input_data->apiKey);
 	
-		if (isset($this->input_data->apiKey)){
+		if (isset($input_data->apiKey)){
 			// get the user by username
-			$user = $this->isUserExistedByUsername($this->input_data->apiKey);
+			$user = $this->isUserExistedByUsername($input_data->apiKey);
 			
 			if (!$user){
 				// user is not found with the credentials
@@ -100,10 +93,9 @@ class Common_Functions {
      * Check user is existed or not by username
      */
     public function isUserExistedByUsername($username) {
-        $stmt = $this->conn->prepare("SELECT username from users WHERE username = ?");
-		
-		$stmt->bind_param("s", $username);
- 
+        
+		$stmt = $this->conn->prepare("SELECT * from users WHERE username = '".$username."'");
+			
         $stmt->execute();
  
         $stmt->store_result();
