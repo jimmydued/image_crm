@@ -48,7 +48,7 @@ class Common_Functions {
 		else {
 			// required post params is missing
 			$response["error"] = TRUE;
-			$response["error_msg"] = "You are not authrize to access!";
+			$response["error_msg"] = "You are not authorize to access!";
 			echo json_encode($response);
 			exit;
 		}

@@ -20,22 +20,22 @@
         function login() {
             vm.dataLoading = true;
             
-			var loggedInUserData = {};
-            loggedInUserData.apiKey 	= vm.username;   
-            loggedInUserData.password 	= Base64Service.encode(vm.password);
-			
-			UserService.CheckUserAuthentication(loggedInUserData)
+            var loggedInUserData = {};
+            loggedInUserData.apiKey     = Base64Service.encode(vm.username);   
+            loggedInUserData.password   = Base64Service.encode(vm.password);
+            
+            UserService.CheckUserAuthentication(loggedInUserData)
                     .then(function (user) {
                         if (user.error==false) {
-                            AuthenticationService.SetCredentials(vm.apiKey);
-							$location.path('/');
+                            AuthenticationService.SetCredentials(loggedInUserData);
+                            $location.path('/');
                         } else {
                             var message = 'Username or password is incorrect';
-							FlashService.Error(message);
-							vm.dataLoading = false;
-						}
+                            FlashService.Error(message);
+                            vm.dataLoading = false;
+                        }
                     });
         };
     }
-	
+    
 })();

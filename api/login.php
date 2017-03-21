@@ -60,8 +60,8 @@ $data 			= 	json_decode($request_body);
 if (isset($data->apiKey) && isset($data->password)) {
 	
     // receiving the post params
-    $email = $data->apiKey;
-    $password = base64_decode($data->password);
+    $email 		= base64_decode($data->apiKey);
+    $password 	= base64_decode($data->password);
 	
     // get the user by email and password
     $user = $loginObj->getUserByEmailAndPassword($email, $password);

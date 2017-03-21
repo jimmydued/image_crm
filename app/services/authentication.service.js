@@ -14,18 +14,15 @@
 
         return service;
 
-        function SetCredentials(username, password) {
-            var authdata = Base64Service.encode(username + ':' + password);
-
+        function SetCredentials(loggedInUser) {
             $rootScope.globals = {
                 currentUser: {
-                    username: username,
-                    authdata: authdata
+                    apiKey: loggedInUser.apiKey
                 }
             };
 
             // set default auth header for http requests
-            $http.defaults.headers.common['Authorization'] = 'Basic ' + authdata;
+            $http.defaults.headers.common['Authorization'] = 'Basic ' + loggedInUser.apiKey;
 
             // store user details in globals cookie that keeps user logged in for 1 week (or until they logout)
             var cookieExp = new Date();

@@ -8,7 +8,7 @@
     TransacCtrl.$inject = ['$location'];
 
     function TransacCtrl($location) {
-		
+
 		var vm 	=	this; 
         vm.myData = [
             {
