@@ -148,6 +148,7 @@ angular
                                   name:'imageCrmApp',
                                   files:[
                                     'scripts/controllers/transactionController.js',
+									'services/commonService.js',
                                     'scripts/directives/uicustomgrid/uicustomgrid.js'
                                   ] 
                               })
@@ -291,7 +292,7 @@ angular
   run.$inject = ['$rootScope', '$location', '$cookies', '$http'];
   function run($rootScope, $location, $cookies, $http) {
     // keep user logged in after page refresh
-    /*$rootScope.globals = $cookies.getObject('globals') || {};
+    $rootScope.globals = $cookies.getObject('globals') || {};
     
     if ($rootScope.globals.currentUser) {
       $http.defaults.headers.common['Authorization'] = 'Basic ' + $rootScope.globals.currentUser.apiKey;
@@ -304,6 +305,6 @@ angular
       if (restrictedPage && !loggedIn) {
           $location.path('/login');
       }
-    });*/
+    });
   }
   

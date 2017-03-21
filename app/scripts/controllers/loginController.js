@@ -27,7 +27,7 @@
             UserService.CheckUserAuthentication(loggedInUserData)
                     .then(function (user) {
                         if (user.error==false) {
-                            AuthenticationService.SetCredentials(loggedInUserData);
+                            AuthenticationService.SetCredentials(Base64Service.encode(user.username));
                             $location.path('/');
                         } else {
                             var message = 'Username or password is incorrect';

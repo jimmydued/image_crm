@@ -5,12 +5,21 @@
         .module('imageCrmApp')
         .controller('TransacCtrl', TransacCtrl);
 
-    TransacCtrl.$inject = ['$location'];
+    TransacCtrl.$inject = ['$location','$rootScope', 'apiUrl', 'CommonService'];
 
-    function TransacCtrl($location) {
+    function TransacCtrl($location, $rootScope, apiUrl, CommonService) {
 
-		var vm 	=	this; 
-        vm.myData = [
+		var vm 	=	this;
+		
+		console.log('rootScope',$rootScope.globals.currentUser);
+		
+		CommonService.postData(apiUrl+"transactions.php",$rootScope.globals.currentUser)
+                    .then(function (gridData) {
+                        //vm.transactionData = gridData;
+						console.log(gridData);
+					});
+		
+		vm.myData = [
             {
                 "firstName": "Cox",
                 "lastName": "Carney",
