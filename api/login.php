@@ -1,16 +1,6 @@
 <?php
+require_once 'include/CommonFunctions.php';
 
-require_once 'include/DB_Functions.php';
-
-$db = new DB_Functions();
- 
-// json response array
-$response = array("error" => FALSE);
-
-$request_body = file_get_contents('php://input');
-
-$data = json_decode($request_body);
- 
 if (isset($data->username) && isset($data->password)) {
  
     // receiving the post params
@@ -18,7 +8,7 @@ if (isset($data->username) && isset($data->password)) {
     $password = base64_decode($data->password);
 	
     // get the user by email and password
-    $user = $db->getUserByEmailAndPassword($email, $password);
+    $user = $cf->getUserByEmailAndPassword($email, $password);
     if ($user != false){
         // use is found
         $response["error"] = FALSE;

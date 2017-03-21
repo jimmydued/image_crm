@@ -156,7 +156,24 @@ angular
           }
     })
 
-    .state('dashboard.abandondCartList',{
+    .state('dashboard.daily-tasks',{
+        templateUrl:'views/daily-tasks.html',
+        url:'/daily-tasks',
+        controller:'DailyTasksCtrl',
+        resolve: {
+                    loadMyFile:["$ocLazyLoad", function($ocLazyLoad) {
+                      return $ocLazyLoad.load({
+                                  name:'imageCrmApp',
+                                  files:[
+                                    'scripts/controllers/DailyTasksController.js',
+                                    'scripts/directives/uicustomgrid/uicustomgrid.js'
+                                  ] 
+                              })
+                  }
+                ]
+          }
+    })  
+     .state('dashboard.abandondCartList',{
         templateUrl:'views/abandondcartlist.html',
         url:'/abandondCartList',
         controller:'AbandondCartListCtrl',
@@ -172,6 +189,9 @@ angular
                   }
                 ]
           }
+<<<<<<< HEAD
+    }) 
+=======
     })
 
 
@@ -211,6 +231,7 @@ angular
           }
     })  
     
+>>>>>>> be5bcd1afdedcbab5b07d9dea698803e2a9ad96f
     .state('dashboard.chart',{
         templateUrl:'views/chart.html',
         url:'/chart',

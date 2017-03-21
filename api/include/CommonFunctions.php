@@ -1,7 +1,51 @@
 <?php
-class DB_Functions {
+$cf = new Common_Functions();
+// json response array
+$response = array("error" => FALSE);
+
+$request_body = file_get_contents('php://input');
+
+$data = json_decode($request_body);
+$task=(!empty($data->task)?$data->task:"list");
+$data->username="adad";
+if (isset($data->username)) {
  
-    private $conn;
+    // receiving the post params
+    $email = $data->username;
+    //$password = base64_decode($data->password);
+	
+    // get the user by username
+    $user = $cf->isUserExistedByUsername($email);
+    if ($user != false){
+            
+	  
+    } 
+	else
+	{
+        // user is not found with the credentials
+        $response["error"] = TRUE;
+        $response["error_msg"] = "Login credentials are wrong. Please try again!";
+        echo json_encode($response);
+		exit;
+    }
+} else {
+    // required post params is missing
+    $response["error"] = TRUE;
+    $response["error_msg"] = "You are not authrize to access!";
+    echo json_encode($response);
+	exit;
+}
+
+
+
+
+
+
+
+
+class Common_Functions {
+ 
+    protected $conn;
  
     // constructor
     function __construct() {
@@ -89,6 +133,31 @@ class DB_Functions {
             return false;
         }
     }
+	
+	/**
+     * Check user is existed or not by username
+     */
+    public function isUserExistedByUsername($username) {
+        $stmt = $this->conn->prepare("SELECT username from users WHERE username = ?");
+		
+		$stmt->bind_param("s", $username);
+ 
+        $stmt->execute();
+ 
+        $stmt->store_result();
+ 
+        if ($stmt->num_rows > 0) {
+            // user existed 
+            $stmt->close();
+            return true;
+        } else {
+            // user not existed
+            $stmt->close();
+            return false;
+        }
+    }
 }
+
+
  
 ?>
