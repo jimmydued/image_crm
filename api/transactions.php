@@ -5,7 +5,7 @@ class Transactions_Functions extends Common_Functions{
  
     // constructor
     function __construct() {
-        $this->keepValidateUser($data->apiKey);
+        $this->keepValidateUser();
     }
 	
 	/**

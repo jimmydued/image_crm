@@ -1,7 +1,5 @@
 <?php
-$cf = new Common_Functions();
-// json response array
-$response = array("error" => FALSE);
+$response = array("error" => FALSE); // json response array
 
 $request_body 	= 	file_get_contents('php://input');
 
@@ -9,18 +7,21 @@ $data 			= 	json_decode($request_body);
 
 $task			=	(!empty($data->task)?$data->task:"list");
 
+$cf = new Common_Functions($data);
 
 
 class Common_Functions {
 	
-    protected $conn;
+    protected $conn,$input_data;
  
     // constructor
-    function __construct() {
+    function __construct($input_data) {
         require_once 'DB_Connect.php';
         // connecting to database
         $db = new Db_Connect();
         $this->conn = $db->connect();
+		$this->input_data = $input_data;
+		
     }
  
     // destructor
@@ -28,14 +29,16 @@ class Common_Functions {
          
     }
  
-	function keepValidateUser($apiKey){
+	function keepValidateUser(){
+		
+		
 	
-		if (isset($apiKey)){
+		if (isset($this->input_data->apiKey)){
  
-			$username = $apiKey;
+			
 			
 			// get the user by username
-			$user = $cf->isUserExistedByUsername($username);
+			$user = $this->isUserExistedByUsername($this->input_data->apiKey);
 			
 			if (!$user){
 				// user is not found with the credentials
