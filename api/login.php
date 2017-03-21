@@ -1,14 +1,70 @@
 <?php
 require_once 'include/CommonFunctions.php';
 
-if (isset($data->username) && isset($data->password)) {
+class Login extends Common_Functions{
+    
+	/**
+     * Get user by email and password
+     */
+    public function getUserByEmailAndPassword($email, $password) {
  
+        $stmt = $this->conn->prepare("SELECT * FROM users WHERE email = ?");
+ 
+        $stmt->bind_param("s", $email);
+ 
+        if ($stmt->execute()) {
+            $user = $stmt->get_result()->fetch_assoc();
+            $stmt->close();
+            // check for password equality
+            if ($user['password'] == md5($password)) {
+                // user authentication details are correct
+                return $user;
+            }
+        } else {
+            return NULL;
+        }
+    }
+ 
+    /**
+     * Check user is existed or not
+     */
+    public function isUserExisted($email) {
+        $stmt = $this->conn->prepare("SELECT email from users WHERE email = ?");
+ 
+        $stmt->bind_param("s", $email);
+ 
+        $stmt->execute();
+ 
+        $stmt->store_result();
+ 
+        if ($stmt->num_rows > 0) {
+            // user existed 
+            $stmt->close();
+            return true;
+        } else {
+            // user not existed
+            $stmt->close();
+            return false;
+        }
+    }
+}
+
+$loginObj 		=  	new Login();
+
+$response 		= 	array("error" => FALSE);
+
+$request_body 	= 	file_get_contents('php://input');
+
+$data 			= 	json_decode($request_body);
+
+if (isset($data->apiKey) && isset($data->password)) {
+	
     // receiving the post params
-    $email = $data->username;
+    $email = $data->apiKey;
     $password = base64_decode($data->password);
 	
     // get the user by email and password
-    $user = $cf->getUserByEmailAndPassword($email, $password);
+    $user = $loginObj->getUserByEmailAndPassword($email, $password);
     if ($user != false){
         // use is found
         $response["error"] = FALSE;
@@ -30,5 +86,6 @@ if (isset($data->username) && isset($data->password)) {
     $response["error"] = TRUE;
     $response["error_msg"] = "Required parameters email or password is missing!";
     echo json_encode($response);
+	exit;
 }
 ?>

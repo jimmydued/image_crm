@@ -21,13 +21,13 @@
             vm.dataLoading = true;
             
 			var loggedInUserData = {};
-            loggedInUserData.username = vm.username;   
-            loggedInUserData.password = Base64Service.encode(vm.password);
+            loggedInUserData.apiKey 	= vm.username;   
+            loggedInUserData.password 	= Base64Service.encode(vm.password);
 			
 			UserService.CheckUserAuthentication(loggedInUserData)
                     .then(function (user) {
                         if (user.error==false) {
-                            AuthenticationService.SetCredentials(vm.username);
+                            AuthenticationService.SetCredentials(vm.apiKey);
 							$location.path('/');
                         } else {
                             var message = 'Username or password is incorrect';
