@@ -3,11 +3,11 @@
 
     angular
         .module('imageCrmApp')
-        .controller('LoginController', LoginController);
+        .controller('LoginCtrl', LoginCtrl);
 
-    LoginController.$inject = ['$location', 'AuthenticationService', 'FlashService', 'UserService', 'Base64Service'];
+    LoginCtrl.$inject = ['$location', 'AuthenticationService', 'FlashService', 'UserService', 'Base64Service'];
 
-    function LoginController($location, AuthenticationService, FlashService, UserService, Base64Service) {
+    function LoginCtrl($location, AuthenticationService, FlashService, UserService, Base64Service) {
         var vm = this;
 
         vm.login = login;

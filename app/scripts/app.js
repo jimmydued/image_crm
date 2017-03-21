@@ -106,10 +106,27 @@ angular
         templateUrl:'views/pages/blank.html',
         url:'/blank'
     })
-      .state('login',{
+    
+    .state('login',{
         templateUrl:'views/pages/login.html',
-        url:'/login'
-    })
+        url:'/login',
+        controller:'LoginCtrl',
+        resolve: {
+                    loadMyFile:["$ocLazyLoad", function($ocLazyLoad) {
+                      return $ocLazyLoad.load({
+                                  name:'imageCrmApp',
+                                  files:[                                    
+                                    'services/user.service.js',
+                                    'services/authentication.service.js',
+                                    'services/flash.service.js',
+                                    'services/base64Service.js',
+                                    'scripts/controllers/loginController.js'
+                                  ] 
+                              })
+                  }
+                ]
+          }
+    })  
 
       .state('sign-up',{
          templateUrl:'views/pages/sign-up.html',
@@ -168,6 +185,24 @@ angular
                                   name:'imageCrmApp',
                                   files:[
                                     'scripts/controllers/advancedMemberSearch.js',
+                                    'scripts/directives/uicustomgrid/uicustomgrid.js'
+                                  ] 
+                              })
+                  }
+                ]
+          }
+    })
+
+    .state('dashboard.searchClientInformation',{
+        templateUrl:'views/searchClientInformation.html',
+        url:'/searchClientInformation',
+        controller:'SearchClientInformationCtrl',
+        resolve: {
+                    loadMyFile:["$ocLazyLoad", function($ocLazyLoad) {
+                      return $ocLazyLoad.load({
+                                  name:'imageCrmApp',
+                                  files:[
+                                    'scripts/controllers/searchClientInformation.js',
                                     'scripts/directives/uicustomgrid/uicustomgrid.js'
                                   ] 
                               })
