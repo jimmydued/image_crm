@@ -9,7 +9,6 @@ $task			=	(!empty($data->task)?$data->task:"list");
 
 $cf = new Common_Functions($data);
 
-
 class Common_Functions {
 	
     protected $conn,$input_data;
@@ -30,13 +29,8 @@ class Common_Functions {
     }
  
 	function keepValidateUser(){
-		
-		
 	
 		if (isset($this->input_data->apiKey)){
- 
-			
-			
 			// get the user by username
 			$user = $this->isUserExistedByUsername($this->input_data->apiKey);
 			
