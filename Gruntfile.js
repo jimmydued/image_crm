@@ -32,6 +32,13 @@ module.exports = function (grunt) {
         files: ['bower.json'],
         tasks: ['wiredep']
       },
+      allfiles: {
+        files: ['<%= yeoman.app %>/scripts/{,*/}*.{js,html}'],
+        options: {
+          livereload: '<%= connect.options.livereload %>'
+        }
+      }
+	  ,
       js: {
         files: ['<%= yeoman.app %>/scripts/{,*/}*.js'],
         tasks: ['newer:jshint:all'],
@@ -45,14 +52,17 @@ module.exports = function (grunt) {
       },
       styles: {
         files: ['<%= yeoman.app %>/styles/{,*/}*.css'],
-        tasks: ['newer:copy:styles', 'autoprefixer']
-      },
-	  php: {
-        files: ['api/**/*.php']
+        tasks: ['newer:copy:styles', 'autoprefixer'],
+		options: {
+          livereload: '<%= connect.options.livereload %>'
+        }
       },
 	  html: {
-        files: ['<%= yeoman.app %>/styles/{,*/}*.html']
-      },
+        files: ['<%= yeoman.app %>/views/{,*/}*.html'],
+        options: {
+          livereload: '<%= connect.options.livereload %>'
+        }
+	  },
       gruntfile: {
         files: ['Gruntfile.js']
       },
@@ -89,29 +99,7 @@ module.exports = function (grunt) {
             ];
           }
         }
-      },
-	  browserSync: {
-        dist: {
-            bsFiles: {
-                src: [
-                    // Files you want to watch for changes
-                ]
-            },
-            options: {
-                proxy: '<%= php.dist.options.hostname %>:<%= php.dist.options.port %>',
-                watchTask: true,
-                notify: true,
-                open: true,
-                logLevel: 'silent',
-                ghostMode: {
-                    clicks: true,
-                    scroll: true,
-                    links: true,
-                    forms: true
-                }
-            }
-        }
-    }
+      }
 	  ,
       test: {
         options: {

@@ -59,7 +59,7 @@ input[type="text"].myBlur {          /*make myBlur class for text field for achi
   border: solid 1px #FF0000;  
 }
 .left-m-bar{                            /*background of dashboard left menu bar*/
-  background: #333;
+  background: #286090;
 }  
 .line-color {   /*color code of line color*/
     border-top:1px solid #000000;
@@ -79,7 +79,7 @@ font-weight:bold;
 }
 
 .hdr-color{
-  background:black;
+  background:#286090;
 }
 
 /*added for ui-grid directive*/

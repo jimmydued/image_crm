@@ -172,7 +172,31 @@ angular
                   }
                 ]
           }
+<<<<<<< HEAD
     }) 
+=======
+    })
+
+
+    .state('dashboard.advancedMemberSearch',{
+        templateUrl:'views/advancedMemberSearch.html',
+        url:'/advancedMemberSearch',
+        controller:'AdvancedMemberSearchCtrl',
+        resolve: {
+                    loadMyFile:["$ocLazyLoad", function($ocLazyLoad) {
+                      return $ocLazyLoad.load({
+                                  name:'imageCrmApp',
+                                  files:[
+                                    'scripts/controllers/advancedMemberSearch.js',
+                                    'scripts/directives/uicustomgrid/uicustomgrid.js'
+                                  ] 
+                              })
+                  }
+                ]
+          }
+    })  
+    
+>>>>>>> be5bcd1afdedcbab5b07d9dea698803e2a9ad96f
     .state('dashboard.chart',{
         templateUrl:'views/chart.html',
         url:'/chart',
@@ -203,11 +227,13 @@ angular
           templateUrl:'views/ui-elements/panels-wells.html',
           url:'/panels-wells'
       })
-      .state('dashboard.buttons',{
+    
+    .state('dashboard.buttons',{
         templateUrl:'views/ui-elements/buttons.html',
         url:'/buttons'
     })
-      .state('dashboard.notifications',{
+    
+    .state('dashboard.notifications',{
         templateUrl:'views/ui-elements/notifications.html',
         url:'/notifications'
     })
@@ -215,11 +241,13 @@ angular
        templateUrl:'views/ui-elements/typography.html',
        url:'/typography'
    })
-      .state('dashboard.icons',{
+   
+   .state('dashboard.icons',{
        templateUrl:'views/ui-elements/icons.html',
        url:'/icons'
    })
-      .state('dashboard.grid',{
+   
+   .state('dashboard.grid',{
        templateUrl:'views/ui-elements/grid.html',
        url:'/grid'
    })
