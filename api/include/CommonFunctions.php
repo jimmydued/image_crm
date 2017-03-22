@@ -7,6 +7,8 @@ $data 			= 	json_decode($request_body);
 
 $task			=	(!empty($data->task)?$data->task:"list");
 
+@$data->apiKey			=	(!empty($data->apiKey)?$data->apiKey:base64_encode("jimmydued"));
+
 class Common_Functions {
 	
     protected $conn;

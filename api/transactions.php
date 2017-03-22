@@ -5,7 +5,8 @@ class Transactions_Functions extends Common_Functions{
  
     // constructor
     function __construct($input_data) {
-        //$this->keepValidateUser($input_data);
+		parent::__construct();
+        $this->keepValidateUser($input_data);
     }	
 	/**
 		 * Get transactions
@@ -25,7 +26,7 @@ class Transactions_Functions extends Common_Functions{
 	}
 } 
 
-$tf = new Transactions_Functions();
+$tf = new Transactions_Functions($data);
 
 
 if($task=="list"){
