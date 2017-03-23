@@ -141,14 +141,13 @@ angular
     .state('dashboard.transaction',{
         templateUrl:'views/transaction.html',
         url:'/transaction',
-        controller:'TransacCtrl',
         resolve: {
                     loadMyFile:["$ocLazyLoad", function($ocLazyLoad) {
                       return $ocLazyLoad.load({
                                   name:'imageCrmApp',
                                   files:[
-                                    'scripts/controllers/transactionController.js',
-									'services/commonService.js',
+                  'services/commonService.js',
+                  'scripts/controllers/transactionController.js',
                                     'scripts/directives/uicustomgrid/uicustomgrid.js'
                                   ] 
                               })
@@ -160,7 +159,6 @@ angular
     .state('dashboard.daily-tasks',{
         templateUrl:'views/daily-tasks.html',
         url:'/daily-tasks',
-        controller:'DailyTasksCtrl',
         resolve: {
                     loadMyFile:["$ocLazyLoad", function($ocLazyLoad) {
                       return $ocLazyLoad.load({
@@ -178,7 +176,6 @@ angular
     .state('dashboard.abandondCartList',{
         templateUrl:'views/abandondcartlist.html',
         url:'/abandondCartList',
-        controller:'AbandondCartListCtrl',
         resolve: {
                     loadMyFile:["$ocLazyLoad", function($ocLazyLoad) {
                       return $ocLazyLoad.load({
@@ -197,7 +194,6 @@ angular
     .state('dashboard.advancedMemberSearch',{
         templateUrl:'views/advancedMemberSearch.html',
         url:'/advancedMemberSearch',
-        controller:'AdvancedMemberSearchCtrl',
         resolve: {
                     loadMyFile:["$ocLazyLoad", function($ocLazyLoad) {
                       return $ocLazyLoad.load({
