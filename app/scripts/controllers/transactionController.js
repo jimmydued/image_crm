@@ -5,16 +5,15 @@
         .module('imageCrmApp')
         .controller('TransacCtrl', TransacCtrl);
 
-    TransacCtrl.$inject = ['$location','$rootScope', 'apiUrl', 'CommonService','$timeout', '$http', '$scope'];
+    TransacCtrl.$inject = ['$location','$rootScope', 'apiUrl', 'CommonService', '$http'];
 
-    function TransacCtrl($location, $rootScope, apiUrl, CommonService, $timeout, $http, $scope) {
+    function TransacCtrl($location, $rootScope, apiUrl, CommonService, $http) {
+        
         var vm = this;
 
+        /*This method is callback when we are dealing with asynchronus http calls.*/
         function parseData(response){
-
             vm.gridOptions = {
-                enableRowHeaderSelection : false,
-                enableCellEdit: false,
                 data    :  [response.data],
                 colDef  :  [
                                 {field: 'id'},
@@ -26,16 +25,16 @@
                             ]
 
             };
-
         }              
 
+        /*This method actually loading the data from service.*/
         function loadData() {
 
             CommonService.postData(apiUrl+"transactions.php",$rootScope.globals.currentUser)
                     .then(function (gridData) {
                         if (gridData.error==false) {
                             parseData(gridData);
-                        }
+                        } 
             });
         };
         

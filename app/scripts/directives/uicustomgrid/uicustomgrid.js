@@ -18,9 +18,9 @@ angular.module('imageCrmApp')
 					replace: false,
 					link: function(scope, element, attrs) {					
 						scope.gridOptions = {
-            				enableRowHeaderSelection  : scope.options.enableRowHeaderSelection,
-            				enableCellEdit	: scope.options.enableCellEdit,
-							enableSorting   : scope.options.enableSorting,
+            				enableRowHeaderSelection  : scope.options.enableRowHeaderSelection ? scope.options.enableRowHeaderSelection : false,
+            				enableCellEdit	: scope.options.enableCellEdit ? scope.options.enableCellEdit : false,
+							enableSorting   : scope.options.enableSorting ? scope.options.enableSorting : false,
 							data: scope.options.data, //private scoped from options : '=',
 							columnDefs: scope.options.colDef
 						};

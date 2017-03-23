@@ -28,7 +28,6 @@ class Transactions_Functions extends Common_Functions{
 
 $tf = new Transactions_Functions($data);
 
-
 if($task=="list"){
 	$result_data=$tf->getTransactions();
 	$response["error"] = FALSE;
