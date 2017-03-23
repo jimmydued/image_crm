@@ -4,10 +4,10 @@ require_once 'include/CommonFunctions.php';
 class Transactions_Functions extends Common_Functions{
  
     // constructor
-    function __construct() {
-        $this->keepValidateUser();
-    }
-	
+    function __construct($input_data) {
+		parent::__construct();
+        $this->keepValidateUser($input_data);
+    }	
 	/**
 		 * Get transactions
 	 */
@@ -26,7 +26,8 @@ class Transactions_Functions extends Common_Functions{
 	}
 } 
 
-$tf = new Transactions_Functions();
+$tf = new Transactions_Functions($data);
+
 
 if($task=="list"){
 	$result_data=$tf->getTransactions();
