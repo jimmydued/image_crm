@@ -5,75 +5,61 @@
         .module('imageCrmApp')
         .controller('AbandondCartListCtrl', AbandondCartListCtrl);
 
-    AbandondCartListCtrl.$inject = ['$location','uiGridGroupingConstants'];
+    AbandondCartListCtrl.$inject = ['uiGridGroupingConstants','$rootScope', 'apiUrl','CommonService','$scope'];
 
-    function AbandondCartListCtrl($location,uiGridGroupingConstants) {
+    function AbandondCartListCtrl(uiGridGroupingConstants, $rootScope, apiUrl, CommonService, $scope) {
 		
-		var vm 	=	this; 
-        vm.myData = [
-            {
-                "date":"2016-06-01",
-                "uid": "Cox",
-                "castDateTime": "Carney",
-                "package": "Enormo",
-                "plan": true
-            },
-            {
-                "date":"2016-06-01",
-                "uid": "Present",
-                "castDateTime": "Carney",
-                "package": "Enormo",
-                "plan": true
-            },
-            {
-                "date":"2016-06-02",
-                "uid": "FebPresent",
-                "castDateTime": "FebPresent",
-                "package": "Enormo",
-                "plan": true
-            },
-            {
-                "date":"2016-06-02",
-                "uid": "FebPresent",
-                "castDateTime": "FebPresent",
-                "package": "Enormo",
-                "plan": true
-            }
-        ];
-		
-		vm.gridOptions = {
-            enableRowHeaderSelection : false,
-            enableCellEdit: false,
-			data: vm.myData,
-			colDef: [
-						{ 
-                          name: 'date', grouping: { groupPriority: 0 }, sort: { priority: 0, direction: 'desc' }, width: '18%', 
-						  cellTemplate: '<div><div ng-if="!col.grouping || col.grouping.groupPriority === undefined || col.grouping.groupPriority === null || ( row.groupHeader && col.grouping.groupPriority === row.treeLevel )" class="ui-grid-cell-contents" title="TOOLTIP">{{COL_FIELD CUSTOM_FILTERS}}</div></div>' },
-						  { 
-                            name: 'uid', treeAggregation: { type: uiGridGroupingConstants.aggregation.AVG }, customTreeAggregationFinalizerFn: function( aggregation ) { 
-							aggregation.rendered = aggregation.value; 
-						  } 
-						},
-						{field: 'castDateTime'},
-						{field: 'package'},
-						{field: 'plan'},
-                        {
-                            field: 'status',
-                            editType: 'dropdown',
-                            enableCellEdit: true,
-                            editableCellTemplate: 'ui-grid/dropdownEditor',
-                            editDropdownOptionsArray: [
-                              { id: 0, value: 'Pending' },
-                              { id: 1, value: 'Started' }
+		var vm = this;
+
+        vm.editUser = function() {
+            alert('It works!');
+        }
+
+        /*This method is callback when we are dealing with asynchronus http calls.*/
+        function parseData(response){
+            vm.gridOptions = {
+                data    :  [response.data],
+                appScopeProvider: vm,
+                colDef  :  [
+                                {
+                                    field: 'created',
+                                    type: 'date',
+                                    cellFilter: 'date:\'MM/dd/yyyy\'',
+                                    grouping: { groupPriority: 0 }, 
+                                    sort: { priority: 0, direction: 'desc' }, 
+                                    width: '18%', 
+                                    cellTemplate: '<div><div ng-if="!col.grouping || col.grouping.groupPriority === undefined || col.grouping.groupPriority === null || ( row.groupHeader && col.grouping.groupPriority === row.treeLevel )" class="ui-grid-cell-contents" title="TOOLTIP">{{COL_FIELD CUSTOM_FILTERS}}</div></div>' },
+                                    { 
+                                        name: 'id', treeAggregation: { type: uiGridGroupingConstants.aggregation.AVG 
+                                    } 
+                                },
+                                {field: 'name'},
+                                {field: 'keywords'},
+                                {field: 'price'},
+                                {field: 'img_sizes'},
+                                {field: 'active'},
+                                {field: 'product_video'},
+                                {
+                                    field: 'action',
+                                    cellTemplate:'<button ng-if="row.treeLevel!=0" class="btn btn-danger btn-xs grid-bttn-align" onclick="console.log(this);">Update</button>'
+                                }
                             ]
-                        },
-                        {
-                            field: 'action',
-                            cellTemplate:'<button type="button" ng-if="row.treeLevel!=0" class="btn btn-danger btn-xs grid-bttn-align">Update</button>'
-                        }
 
-            ]
+            };
+        }              
+
+        /*This method actually loading the data from service.*/
+        function loadData() {
+
+            CommonService.postData(apiUrl+"abandonedCart.php",$rootScope.globals.currentUser)
+                    .then(function (gridData) {
+                        if (gridData.error==false) {
+                            parseData(gridData);
+                        } 
+            });
         };
+        
+        loadData();
     }
 	
 })();

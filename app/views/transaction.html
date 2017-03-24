@@ -38,7 +38,10 @@
        </span>
        <hr class="line-color">
     </div>
-  <div ng-if="vm.gridOptions">
+  <div ng-if="vm.gridOptions && vm.gridOptions.data.length>0">
     <ui-custom-grid options="vm.gridOptions" class="grid"></ui-custom-grid>
+  </div>
+  <div ng-if="vm.gridOptions && vm.gridOptions.data.length==0">
+      No Transactions details available.
   </div>
 </div>

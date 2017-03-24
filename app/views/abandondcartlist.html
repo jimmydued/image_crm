@@ -21,7 +21,10 @@
         </select>
       </div>
 	</div>
-	<div>
-		<ui-custom-grid options="vm.gridOptions" class="grid"></ui-custom-grid>
-	</div>
+	<div ng-if="vm.gridOptions && vm.gridOptions.data.length>0">
+    <ui-custom-grid options="vm.gridOptions" class="grid"></ui-custom-grid>
+  </div>
+  <div ng-if="vm.gridOptions && vm.gridOptions.data.length==0">
+      No Abandonded data available.
+  </div>
 </div>

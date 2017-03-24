@@ -5,62 +5,49 @@
         .module('imageCrmApp')
         .controller('AdvancedMemberSearchCtrl', AdvancedMemberSearchCtrl);
 
-    AdvancedMemberSearchCtrl.$inject = ['$location','uiGridGroupingConstants'];
+    AdvancedMemberSearchCtrl.$inject = ['CommonService','$rootScope','apiUrl','$scope','uiGridConstants'];
 
-    function AdvancedMemberSearchCtrl($location,uiGridGroupingConstants) {
+    function AdvancedMemberSearchCtrl(CommonService,$rootScope,apiUrl,$scope,uiGridConstants) {
 		
-		var vm 	=	this; 
-        vm.myData = [
-            {
-                "date":"2016-06-01",
-                "uid": "Cox",
-                "castDateTime": "Carney",
-                "package": "Enormo",
-                "plan": true
-            },
-            {
-                "date":"2016-06-01",
-                "uid": "Present",
-                "castDateTime": "Carney",
-                "package": "Enormo",
-                "plan": true
-            },
-            {
-                "date":"2016-06-02",
-                "uid": "FebPresent",
-                "castDateTime": "FebPresent",
-                "package": "Enormo",
-                "plan": true
-            },
-            {
-                "date":"2016-06-02",
-                "uid": "FebPresent",
-                "castDateTime": "FebPresent",
-                "package": "Enormo",
-                "plan": true
-            }
-        ];
-		
-		vm.gridOptions = {
-            enableRowHeaderSelection : false,
-            enableCellEdit: false,
-			data: vm.myData,
-			colDef: [
-						{ 
-                          name: 'date'
-						},
-						{field: 'castDateTime'},
-						{field: 'package'},
-						{field: 'plan'},
-                        {
-                            field: 'status',
-                            editType: 'dropdown'
-                        },
-                        {
-                            field: 'action'
-						}
+		var vm 	=	this;
 
-            ]
+        vm.formData = {};
+        
+        /*This method is callback when we are dealing with asynchronus http calls.*/
+        function parseData(response){
+            
+            $scope.gridOptions = {
+                data    :  [response.data],
+                colDef  :  [
+                                {field: 'username'},
+                                {field: 'firstname'},
+                                {field: 'lastname'},
+                                {field: 'company'},
+                                {field: 'country'},
+                                {field: 'city'},
+                                {field: 'phone'},
+                                {field: 'email'},
+                                {field: 'postcode'}
+                            ]
+
+            };
+
+        }     
+
+        $scope.advanceSearch = function(){
+            
+            vm.formData.apiKey = $rootScope.globals.currentUser.apiKey;
+            
+            CommonService.postData(apiUrl+"advanceMembers.php",vm.formData)
+                    .then(function (searchedData) {
+                        if (searchedData.error==false) {
+                            parseData(searchedData);
+                        } 
+            });
+        };
+
+        $scope.gridOptions = {
+                data    :  []
         };
     }
 	

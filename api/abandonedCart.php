@@ -15,7 +15,6 @@ class aCart_Functions extends Common_Functions{
 	 
 			$where="";
 			
-			
 			if(!empty($this->input_data->country)){
 				
 				$where.=" AND country LIKE '%$this->input_data->country%' ";
