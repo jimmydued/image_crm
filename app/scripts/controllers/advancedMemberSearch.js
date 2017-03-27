@@ -16,8 +16,12 @@
         /*This method is callback when we are dealing with asynchronus http calls.*/
         function parseData(response){
             
+            if(response.data!=null){
+                response.data = [response.data];
+            }
+
             $scope.gridOptions = {
-                data    :  [response.data],
+                data    :  response.data,
                 colDef  :  [
                                 {field: 'username'},
                                 {field: 'firstname'},

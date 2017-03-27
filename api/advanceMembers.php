@@ -57,7 +57,11 @@ class Users_Functions extends Common_Functions{
 				$where.=" AND (phone LIKE '%$input_data->phone%' OR mobile LIKE '%$input_data->mobile%' ) ";
 				
 			}
-			
+			if(!empty($input_data->email)){
+				
+				$where.=" AND ( email LIKE '%$input_data->email%' ) ";
+				
+			}
 			$stmt = $this->conn->prepare("SELECT * from users WHERE 1=1 $where");
 			
 			if ($stmt->execute()) {

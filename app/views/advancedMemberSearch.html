@@ -80,11 +80,10 @@
 		</div>
       </div>
 	</div>
-
-	<div ng-if="gridOptions.data.length>0">
-	    <ui-custom-grid options="gridOptions"></ui-custom-grid>
+	<div ng-if="gridOptions.data!=null">
+	    <ui-custom-grid ng-if="gridOptions.data.length>0" options="gridOptions"></ui-custom-grid>
 	</div>
-	<div ng-if="gridOptions.data.length==0">
-	    No data available.
+	<div ng-if="gridOptions.data==null" align="center">
+	    No Data Found.
 	</div>
 </div>
