@@ -22,55 +22,60 @@
 								</div>
 							</div>
 						</div>
-						<div class="row">
-							<form role="form" method="post" ng-submit="advanceSearch()">
-								<div class="col-lg-6">
-									<div class="form-group">
-											<label>Name</label>
-											<input class="form-control" placeholder="Please Enter Name" name="name" ng-model="vm.formData.name">
+						<form role="form" method="post" ng-submit="advanceSearch()">
+							<div class="row">
+									<div class="col-lg-6 col-md-6 col-xs-6">
+										<div class="form-group">
+												<label>Name</label>
+												<input class="form-control" placeholder="Please Enter Name" name="name" ng-model="vm.formData.name">
+											</div>
+											<div class="form-group">
+												<label>Email</label>
+												<input class="form-control" placeholder="Please Enter Email" name="email" ng-model="vm.formData.email">
+											</div>
+											<div class="form-group">
+												<label>City</label>
+												<input class="form-control" placeholder="Please Enter City" name="city" ng-model="vm.formData.city">
+											</div>
+											<div class="form-group">
+												<label>Postcode</label>
+												<input class="form-control" placeholder="Please Enter Postcode" name="postcode" ng-model="vm.formData.postcode">
+											</div>
+											<div class="form-group">
+												<label>State</label>
+												<input class="form-control" placeholder="Please Enter State" name="state" ng-model="vm.formData.state">
+											</div>
+									</div>
+									<!-- /.col-lg-6 (nested) -->
+									<div class="col-lg-6 col-md-6 col-xs-6">
+										<div class="form-group">
+											<label>Company</label>
+											<input class="form-control" placeholder="Please Enter Company" name="company" ng-model="vm.formData.company">
 										</div>
 										<div class="form-group">
-											<label>Email</label>
-											<input class="form-control" placeholder="Please Enter Email" name="email" ng-model="vm.formData.email">
+											<label>Phone</label>
+											<input class="form-control" placeholder="Please Enter Phone" name="phone" ng-model="vm.formData.phone">
 										</div>
 										<div class="form-group">
-											<label>City</label>
-											<input class="form-control" placeholder="Please Enter City" name="city" ng-model="vm.formData.city">
+											<label>Country</label>
+											<input class="form-control" placeholder="Please Enter Country" name="country" ng-model="vm.formData.country">
 										</div>
 										<div class="form-group">
-											<label>Postcode</label>
-											<input class="form-control" placeholder="Please Enter Postcode" name="postcode" ng-model="vm.formData.postcode">
+											<label>Date Register</label>
+											<input class="form-control" placeholder="Please Enter Register Date" name="country" ng-model="vm.formData.created_date">
 										</div>
-										<div class="form-group">
-											<label>State</label>
-											<input class="form-control" placeholder="Please Enter State" name="state" ng-model="vm.formData.state">
-										</div>
-										<button type="submit" class="btn btn-danger">Search</button>
-										<button type="reset" class="btn btn-danger">Reset</button>
-								</div>
-								<!-- /.col-lg-6 (nested) -->
-								<div class="col-lg-6">
-									<div class="form-group">
-										<label>Company</label>
-										<input class="form-control" placeholder="Please Enter Company" name="company" ng-model="vm.formData.company">
 									</div>
-									<div class="form-group">
-										<label>Phone</label>
-										<input class="form-control" placeholder="Please Enter Phone" name="phone" ng-model="vm.formData.phone">
-									</div>
-									<div class="form-group">
-										<label>Country</label>
-										<input class="form-control" placeholder="Please Enter Country" name="country" ng-model="vm.formData.country">
-									</div>
-									<div class="form-group">
-										<label>Date Register</label>
-										<input class="form-control" placeholder="Please Enter Register Date" name="country" ng-model="vm.formData.created_date">
-									</div>
-								</div>
-								<!-- /.col-lg-6 (nested) -->
-							</form>
-						</div>
-						<!-- /.row (nested) -->
+									<!-- /.col-lg-6 (nested) -->								
+							</div>
+							<!-- /.row (nested) -->
+							<div class="row">
+								<div class="col-lg-12 col-md-12 col-xs-12" align="center">
+									<button type="submit" class="btn btn-danger">Search</button>
+									<button type="reset" class="btn btn-danger">Reset</button>
+								<div>
+							<div>
+						</form>
+						<!--form ended-->
 					</div>
 					<!-- /.panel-body -->
 				</div>
