@@ -5,22 +5,17 @@
         .module('imageCrmApp')
         .controller('AbandondCartListCtrl', AbandondCartListCtrl);
 
-    AbandondCartListCtrl.$inject = ['uiGridGroupingConstants','$rootScope', 'apiUrl','CommonService','$scope'];
+    AbandondCartListCtrl.$inject = ['uiGridGroupingConstants','$rootScope', 'apiUrl','CommonService','$scope','$http'];
 
-    function AbandondCartListCtrl(uiGridGroupingConstants, $rootScope, apiUrl, CommonService, $scope) {
+    function AbandondCartListCtrl(uiGridGroupingConstants, $rootScope, apiUrl, CommonService, $scope, $http) {
 		
-		var vm = this;
+		$scope.showMe = function(){
+            alert("i am here");
+        };
 
-        vm.editUser = function() {
-            alert('It works!');
-        }
+        $scope.gridOptions = {};
 
-        /*This method is callback when we are dealing with asynchronus http calls.*/
-        function parseData(response){
-            vm.gridOptions = {
-                data    :  [response.data],
-                appScopeProvider: vm,
-                colDef  :  [
+        $scope.gridOptions.columnDefs   = [
                                 {
                                     field: 'created',
                                     type: 'date',
@@ -41,25 +36,27 @@
                                 {field: 'product_video'},
                                 {
                                     field: 'action',
-                                    cellTemplate:'<button ng-if="row.treeLevel!=0" class="btn btn-danger btn-xs grid-bttn-align" onclick="console.log(this);">Update</button>'
+                                    cellTemplate:'<button ng-if="row.treeLevel!=0" class="btn btn-danger btn-xs grid-bttn-align" ng-click="grid.appScope.showMe()">Update</button>'
                                 }
-                            ]
+                            ];
+         
+        /*This method is callback when we are dealing with asynchronus http calls.*/
+        function parseData(response){
+            
+            if(response.data!=null){
+                response.data = [response.data];
+            }
+            
+            $scope.gridOptions.data     = response.data;
+        } 
 
-            };
-        }              
-
-        /*This method actually loading the data from service.*/
-        function loadData() {
-
-            CommonService.postData(apiUrl+"abandonedCart.php",$rootScope.globals.currentUser)
+        CommonService.postData(apiUrl+"abandonedCart.php",$rootScope.globals.currentUser)
                     .then(function (gridData) {
                         if (gridData.error==false) {
                             parseData(gridData);
                         } 
-            });
-        };
-        
-        loadData();
+        });
+
     }
 	
 })();

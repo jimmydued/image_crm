@@ -10,14 +10,13 @@ angular.module('imageCrmApp')
 	.directive('uiCustomGrid',function(){
 		return {
 					templateUrl : 'scripts/directives/uicustomgrid/gridTemplate.html',
-					restrict: 'E',
+					restrict: 'AEC',
 					scope: {
 					  options : '=',
 					},
-					controllerAs : 'vm',
-					replace: false,
 					link: function(scope, element, attrs) {
 						
+
 						scope.gridOptions = {
 	            			enableRowHeaderSelection  : scope.options.enableRowHeaderSelection ? scope.options.enableRowHeaderSelection : false,
 	            			enableCellEdit	: scope.options.enableCellEdit ? scope.options.enableCellEdit : false,

@@ -16,8 +16,7 @@ angular
     'ngCookies',
     'ui.grid',
     'ui.grid.grouping', 
-    'ui.grid.edit', 
-    'ui.grid.selection'
+    'ui.grid.edit'
   ])
   .config(['$stateProvider','$urlRouterProvider','$ocLazyLoadProvider', '$httpProvider',function ($stateProvider,$urlRouterProvider,$ocLazyLoadProvider,$httpProvider) {
     
@@ -211,7 +210,6 @@ angular
     .state('dashboard.searchClientInformation',{
         templateUrl:'views/searchClientInformation.html',
         url:'/searchClientInformation',
-        controller:'SearchClientInformationCtrl',
         resolve: {
                     loadMyFile:["$ocLazyLoad", function($ocLazyLoad) {
                       return $ocLazyLoad.load({
