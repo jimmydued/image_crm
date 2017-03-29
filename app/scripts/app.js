@@ -197,11 +197,9 @@ angular
                     loadMyFile:["$ocLazyLoad", function($ocLazyLoad) {
                       return $ocLazyLoad.load({
                                   name:'imageCrmApp',
-                                  files:[                                    
-                                    'services/focusService.js',
+                                  files:[                       
                                     'scripts/controllers/advancedMemberSearch.js',
-                                    'scripts/directives/uicustomgrid/uicustomgrid.js',
-                                    'scripts/directives/focus/eventFocus.js'
+                                    'scripts/directives/uicustomgrid/uicustomgrid.js'
                                   ] 
                               })
                     }
