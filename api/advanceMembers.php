@@ -62,7 +62,7 @@ class Users_Functions extends Common_Functions{
 				$where.=" AND ( email LIKE '%$input_data->email%' ) ";
 				
 			}
-			$stmt = $this->conn->prepare("SELECT * from users WHERE 1=1 $where");
+			$stmt = $this->conn->prepare("SELECT email,username,firstname,lastname,company, country, city, phone, mobile,zipcode from users WHERE 1=1 $where");
 			
 			if ($stmt->execute()) {
 				$result = $stmt->get_result()->fetch_assoc();

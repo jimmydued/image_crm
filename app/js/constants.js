@@ -4,6 +4,6 @@
 
     angular
         .module('imageCrmApp')
-        .constant('apiUrl', 'http://image_crm.com/api/');
+        .constant('apiUrl', 'http://localhost/image_crm/api/');
 		
 })();

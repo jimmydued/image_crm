@@ -112,6 +112,24 @@ class Common_Functions {
             return false;
         }
     }
+	
+	/**
+		 * Get Countries Data
+	 */
+	function getCountriesData() { 
+	 
+					
+			$stmt = $this->conn->prepare("SELECT * from countries WHERE 1=1");
+	            
+			if ($stmt->execute()) {
+				$result = $stmt->get_result()->fetch_assoc();
+				$stmt->close();
+				return $result;
+				
+			} else {
+				return NULL;
+			}
+	}
 }
  
 ?>
