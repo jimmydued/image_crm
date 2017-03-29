@@ -16,8 +16,7 @@ angular
     'ngCookies',
     'ui.grid',
     'ui.grid.grouping', 
-    'ui.grid.edit', 
-    'ui.grid.selection'
+    'ui.grid.edit'
   ])
   .config(['$stateProvider','$urlRouterProvider','$ocLazyLoadProvider', '$httpProvider',function ($stateProvider,$urlRouterProvider,$ocLazyLoadProvider,$httpProvider) {
     
@@ -146,10 +145,10 @@ angular
                       return $ocLazyLoad.load({
                                   name:'imageCrmApp',
                                   files:[
-                  'services/commonService.js',
-                  'scripts/controllers/transactionController.js',
-                                    'scripts/directives/uicustomgrid/uicustomgrid.js'
-                                  ] 
+                                          'services/commonService.js',
+                                          'scripts/controllers/transactionController.js',
+                                          'scripts/directives/uicustomgrid/uicustomgrid.js'
+                                        ] 
                               })
                   }
                 ]
@@ -198,12 +197,12 @@ angular
                     loadMyFile:["$ocLazyLoad", function($ocLazyLoad) {
                       return $ocLazyLoad.load({
                                   name:'imageCrmApp',
-                                  files:[
+                                  files:[                       
                                     'scripts/controllers/advancedMemberSearch.js',
                                     'scripts/directives/uicustomgrid/uicustomgrid.js'
                                   ] 
                               })
-                  }
+                    }
                 ]
           }
     })
@@ -211,7 +210,6 @@ angular
     .state('dashboard.searchClientInformation',{
         templateUrl:'views/searchClientInformation.html',
         url:'/searchClientInformation',
-        controller:'SearchClientInformationCtrl',
         resolve: {
                     loadMyFile:["$ocLazyLoad", function($ocLazyLoad) {
                       return $ocLazyLoad.load({
@@ -266,7 +264,8 @@ angular
         templateUrl:'views/ui-elements/notifications.html',
         url:'/notifications'
     })
-      .state('dashboard.typography',{
+    
+    .state('dashboard.typography',{
        templateUrl:'views/ui-elements/typography.html',
        url:'/typography'
    })
@@ -280,17 +279,19 @@ angular
        templateUrl:'views/ui-elements/grid.html',
        url:'/grid'
    })
+
   }])
   .run(run);
-  
-  
+    
   /*Code to handle not logged InUser redirection*/
   run.$inject = ['$rootScope', '$location', '$cookies', '$http'];
+  
   function run($rootScope, $location, $cookies, $http) {
+    
     // keep user logged in after page refresh
     $rootScope.globals = $cookies.getObject('globals') || {};
     
-    if ($rootScope.globals.currentUser) {
+    if($rootScope.globals.currentUser) {
       $http.defaults.headers.common['Authorization'] = 'Basic ' + $rootScope.globals.currentUser.apiKey;
     }
 

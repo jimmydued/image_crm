@@ -5,14 +5,16 @@
         .module('imageCrmApp')
         .factory('CommonService', CommonService);
 
-    CommonService.$inject = ['$http'];
-    function CommonService($http) {
+    CommonService.$inject = ['$http','$window'];
+    function CommonService($http,$window) {
 
         var service = {};
 
-        service.postData = postData;
+        service.postData    = postData;
         
-        service.getData = getData;
+        service.getData     = getData;
+
+        service.setFocus    = setFocus;
         
         return service;
 
@@ -22,6 +24,13 @@
         
         function getData(getUrl) {
             return $http.get(getUrl).then(handleSuccess, handleError('Error creating user'));
+        }
+
+        function setFocus(id){
+            //var element = document.getElementById(id).scrollIntoView();
+            document.body.scrollTop = document.body.scrollHeight;
+
+            return true;
         }
 
         // private functions
