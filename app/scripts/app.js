@@ -264,7 +264,8 @@ angular
         templateUrl:'views/ui-elements/notifications.html',
         url:'/notifications'
     })
-      .state('dashboard.typography',{
+    
+    .state('dashboard.typography',{
        templateUrl:'views/ui-elements/typography.html',
        url:'/typography'
    })
@@ -278,17 +279,19 @@ angular
        templateUrl:'views/ui-elements/grid.html',
        url:'/grid'
    })
+   
   }])
   .run(run);
-  
-  
+    
   /*Code to handle not logged InUser redirection*/
   run.$inject = ['$rootScope', '$location', '$cookies', '$http'];
+  
   function run($rootScope, $location, $cookies, $http) {
+    
     // keep user logged in after page refresh
     $rootScope.globals = $cookies.getObject('globals') || {};
     
-    if ($rootScope.globals.currentUser) {
+    if($rootScope.globals.currentUser) {
       $http.defaults.headers.common['Authorization'] = 'Basic ' + $rootScope.globals.currentUser.apiKey;
     }
 

@@ -1,6 +1,6 @@
 <div class="container-fluid" ng-controller="SearchClientInformationCtrl as vm">
 	<div class="row mtxl">
-      <div class="col-md-12 col-sm-12 col-xs-12">
+      <div class="col-md-12 col-sm-12">
 		 <div class="row">
 			<div class="col-lg-12">
 				<div class="panel panel-default">
@@ -8,73 +8,46 @@
 						<strong>Search Client Information</strong>
 					</div>
 					<div class="panel-body">
-						<div class="row">
-							<div class="col-lg-6">
-								<div class="radio">
-									<label>
-										<input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked>Advance Member Search
-									</label>
-								</div>
-								<div class="radio">
-									<label>
-										<input type="radio" name="optionsRadios" id="optionsRadios2" value="option2">Potential Search
-									</label>
+						<form role="form" method="post" ng-submit="advanceSearch()">
+							<div class="form-group">
+								<div class="row">
+										<div class="col-lg-2 col-md-2 col-xs-2">
+											<label>Company</label>
+										</div>
+										<div class="col-lg-5 col-md-5 col-xs-5">
+											<select class="form-control">
+										    	<option>All Companies</option>
+										      	<option>U.S</option>
+										      	<option>India</option>
+										    </select>
+										</div>
+										<!-- /.col-lg-12 (nested) -->								
 								</div>
 							</div>
-						</div>
-						<div class="row">
-							<form role="form">
-								<div class="col-lg-6">
-									<div class="form-group">
-											<label>Name</label>
-											<input class="form-control">
+							<div class="form-group">	
+								<div class="row">
+										<div class="col-lg-2 col-md-2 col-xs-2">
+											<label>Position</label>
 										</div>
-										<div class="form-group">
-											<label>Email</label>
-											<input class="form-control" placeholder="Enter text">
+										<div class="col-lg-5 col-md-5 col-xs-5">
+											<select class="form-control">
+										    	<option>All Positions</option>
+										      	<option>U.S</option>
+										      	<option>India</option>
+										    </select>
 										</div>
-										<div class="form-group">
-											<label>City</label>
-											<input class="form-control" placeholder="Enter text">
-										</div>
-										<div class="form-group">
-											<label>Postcode</label>
-											<input class="form-control" placeholder="Enter text">
-										</div>
-										<div class="form-group">
-											<label>State</label>
-											<input class="form-control" placeholder="Enter text">
-										</div>
-										<button type="submit" class="btn btn-danger" ng-click="vm.test()">Search</button>
-										<button type="reset" class="btn btn-danger">Reset</button>
+										<!-- /.col-lg-12 (nested) -->								
 								</div>
-								<!-- /.col-lg-6 (nested) -->
-								<div class="col-lg-6">
-									<div class="form-group">
-										<label>Company</label>
-										<input class="form-control">
-									</div>
-									<div class="form-group">
-										<label>Phone</label>
-										<input class="form-control" placeholder="Enter text">
-									</div>
-									<div class="form-group">
-										<label>Country</label>
-										<input class="form-control" placeholder="Enter text">
-									</div>
-									<div class="form-group">
-										<label>IP Country</label>
-										<input class="form-control" placeholder="Enter text">
-									</div>
-									<div class="form-group">
-										<label>Date Register</label>
-										<input class="form-control" placeholder="Enter text">
-									</div>
+							</div>
+							<!-- /.row (nested) -->
+							<div class="row">
+								<div class="col-lg-12 col-md-12 col-xs-12" align="center">
+									<button type="submit" class="btn btn-danger">Search</button>
+									<button type="reset" class="btn btn-danger">Reset</button>
 								</div>
-								<!-- /.col-lg-6 (nested) -->
-							</form>
-						</div>
-						<!-- /.row (nested) -->
+							</div>
+						</form>
+						<!--form ended-->
 					</div>
 					<!-- /.panel-body -->
 				</div>
@@ -84,7 +57,10 @@
 		</div>
       </div>
 	</div>
-	<div>
-		<ui-custom-grid options="vm.gridOptions" class="grid"></ui-custom-grid>
+	<div ng-if="gridOptions.data!=null">
+	    <ui-custom-grid ng-if="gridOptions.data.length>0" options="gridOptions"></ui-custom-grid>
+	</div>
+	<div ng-if="gridOptions.data==null" align="center">
+	    No Data Found.
 	</div>
 </div>
