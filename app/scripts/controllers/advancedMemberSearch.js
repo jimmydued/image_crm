@@ -5,9 +5,9 @@
         .module('imageCrmApp')
         .controller('AdvancedMemberSearchCtrl', AdvancedMemberSearchCtrl);
 
-    AdvancedMemberSearchCtrl.$inject = ['CommonService','$rootScope','apiUrl','$scope','uiGridConstants'];
+    AdvancedMemberSearchCtrl.$inject = ['CommonService','$rootScope','apiUrl','$scope','FocusService'];
 
-    function AdvancedMemberSearchCtrl(CommonService,$rootScope,apiUrl,$scope,uiGridConstants) {
+    function AdvancedMemberSearchCtrl(CommonService,$rootScope,apiUrl,$scope,uiGridConstants,FocusService) {
 		
 		var vm 	=	this;
 
@@ -35,7 +35,7 @@
                             ]
 
             };
-
+            CommonService.setFocus('grid');            
         }     
 
         $scope.advanceSearch = function(){

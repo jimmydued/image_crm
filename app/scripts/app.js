@@ -145,10 +145,10 @@ angular
                       return $ocLazyLoad.load({
                                   name:'imageCrmApp',
                                   files:[
-                  'services/commonService.js',
-                  'scripts/controllers/transactionController.js',
-                                    'scripts/directives/uicustomgrid/uicustomgrid.js'
-                                  ] 
+                                          'services/commonService.js',
+                                          'scripts/controllers/transactionController.js',
+                                          'scripts/directives/uicustomgrid/uicustomgrid.js'
+                                        ] 
                               })
                   }
                 ]
@@ -197,12 +197,14 @@ angular
                     loadMyFile:["$ocLazyLoad", function($ocLazyLoad) {
                       return $ocLazyLoad.load({
                                   name:'imageCrmApp',
-                                  files:[
+                                  files:[                                    
+                                    'services/focusService.js',
                                     'scripts/controllers/advancedMemberSearch.js',
-                                    'scripts/directives/uicustomgrid/uicustomgrid.js'
+                                    'scripts/directives/uicustomgrid/uicustomgrid.js',
+                                    'scripts/directives/focus/eventFocus.js'
                                   ] 
                               })
-                  }
+                    }
                 ]
           }
     })
@@ -279,7 +281,7 @@ angular
        templateUrl:'views/ui-elements/grid.html',
        url:'/grid'
    })
-   
+
   }])
   .run(run);
     
