@@ -89,10 +89,11 @@
 		</div>
       </div>
 	</div>
-	<div ng-if="gridOptions.data!=null && gridOptions.data.length>0">
+	<image src="images/loading_spinner.gif" class="col-md-offset-5 loading" ng-if="dataLoading">	 
+	<div class="row" ng-if="gridOptions.data!=null && gridOptions.data.length>0">
       <div ui-grid-grouping ui-grid="gridOptions" class="grid"></div>
 	</div>
-	<div ng-if="gridOptions.data==null" align="center">
+	<div class="row" ng-if="gridOptions.data==null" align="center">
 	      No Data Found.
 	</div>
 </div>

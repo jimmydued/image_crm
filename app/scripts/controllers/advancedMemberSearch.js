@@ -37,13 +37,15 @@
                                 {field: 'email'},
                                 {field: 'postcode'}
                             ];
-
-            CommonService.setFocus('grid');            
+            $scope.dataLoading = false;
         }
 
-        
-
         $scope.advanceSearch = function(){
+            $scope.gridOptions = {
+                data : []
+            };
+            
+            $scope.dataLoading = true;
             
             vm.formData.apiKey = $rootScope.globals.currentUser.apiKey;
             
