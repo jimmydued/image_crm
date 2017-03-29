@@ -35,8 +35,9 @@
                             ]
 
             };
+
             CommonService.setFocus('grid');            
-        }     
+        }    
 
         $scope.advanceSearch = function(){
             
