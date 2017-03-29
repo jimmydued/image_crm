@@ -13,6 +13,10 @@
 
         vm.formData = {};
         
+        $scope.gridOptions = {
+            data : []
+        };
+
         /*This method is callback when we are dealing with asynchronus http calls.*/
         function parseData(response){
             
@@ -20,9 +24,9 @@
                 response.data = [response.data];
             }
 
-            $scope.gridOptions = {
-                data    :  response.data,
-                colDef  :  [
+            $scope.gridOptions.data = response.data;
+
+            $scope.gridOptions.columnDefs  =  [
                                 {field: 'username'},
                                 {field: 'firstname'},
                                 {field: 'lastname'},
@@ -32,12 +36,12 @@
                                 {field: 'phone'},
                                 {field: 'email'},
                                 {field: 'postcode'}
-                            ]
-
-            };
+                            ];
 
             CommonService.setFocus('grid');            
-        }    
+        }
+
+        
 
         $scope.advanceSearch = function(){
             
@@ -51,9 +55,6 @@
             });
         };
 
-        $scope.gridOptions = {
-                data    :  []
-        };
     }
 	
 })();

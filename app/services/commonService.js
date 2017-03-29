@@ -27,9 +27,9 @@
         }
 
         function setFocus(id){
-            var element = $window.document.getElementById(id);
-            var alignWithTop = true;
-            element.scrollIntoView(alignWithTop);
+            //var element = document.getElementById(id).scrollIntoView();
+            document.body.scrollTop = document.body.scrollHeight;
+
             return true;
         }
 
