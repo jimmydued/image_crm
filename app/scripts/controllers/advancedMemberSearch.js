@@ -12,10 +12,6 @@
 		var vm 	=	this;
 
         vm.formData = {};
-        
-        $scope.gridOptions = {
-            data : []
-        };
 
         /*This method is callback when we are dealing with asynchronus http calls.*/
         function parseData(response){

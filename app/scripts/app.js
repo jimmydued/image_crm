@@ -16,7 +16,8 @@ angular
     'ngCookies',
     'ui.grid',
     'ui.grid.grouping', 
-    'ui.grid.edit'
+    'ui.grid.edit', 
+    'datePicker',
   ])
   .config(['$stateProvider','$urlRouterProvider','$ocLazyLoadProvider', '$httpProvider',function ($stateProvider,$urlRouterProvider,$ocLazyLoadProvider,$httpProvider) {
     
@@ -180,7 +181,7 @@ angular
                       return $ocLazyLoad.load({
                                   name:'imageCrmApp',
                                   files:[
-                                    'scripts/controllers/abandondCartList.js',
+                                    'scripts/controllers/abandondCartListController.js',
                                     'scripts/directives/uicustomgrid/uicustomgrid.js'
                                   ] 
                               })
@@ -198,7 +199,7 @@ angular
                       return $ocLazyLoad.load({
                                   name:'imageCrmApp',
                                   files:[                       
-                                    'scripts/controllers/advancedMemberSearch.js',
+                                    'scripts/controllers/advancedMemberSearchController.js',
                                     'scripts/directives/uicustomgrid/uicustomgrid.js'
                                   ] 
                               })
@@ -215,7 +216,24 @@ angular
                       return $ocLazyLoad.load({
                                   name:'imageCrmApp',
                                   files:[
-                                    'scripts/controllers/searchClientInformation.js',
+                                    'scripts/controllers/searchClientInformationController.js',
+                                    'scripts/directives/uicustomgrid/uicustomgrid.js'
+                                  ] 
+                              })
+                  }
+                ]
+          }
+    })
+
+    .state('dashboard.transactionSearch',{
+        templateUrl:'views/transactionSearch.html',
+        url:'/transactionSearch',
+        resolve: {
+                    loadMyFile:["$ocLazyLoad", function($ocLazyLoad) {
+                      return $ocLazyLoad.load({
+                                  name:'imageCrmApp',
+                                  files:[
+                                    'scripts/controllers/transactionSearchController.js',
                                     'scripts/directives/uicustomgrid/uicustomgrid.js'
                                   ] 
                               })
