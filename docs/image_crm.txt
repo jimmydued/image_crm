@@ -1,3 +1,39 @@
+TASK we can start
+
+# 1) USER add/edit/delete done by superadmin
+# 2) USER can manage client, client orders and other client activtiese
+# 3) CREAT Product for client
+# 4) cart/checkout functonality for offline clients
+# 5) INVOICE Generation
+# 6) Package and Package Subscription?
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 HI Kapil,
 
 I tried to Input as much details as possible, hope I did not miss anything prudent. so kindly re create the milestones with timelines, like tentative closing date, so we are all on track.. We have just 60 days and we need to rush..
