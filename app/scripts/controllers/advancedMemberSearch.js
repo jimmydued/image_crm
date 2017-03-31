@@ -13,6 +13,8 @@
 
         vm.formData = {};
 
+        vm.formData.created_date = new date("YYYY-MM-DD");
+
         /*This method is callback when we are dealing with asynchronus http calls.*/
         function parseData(response){
             
@@ -44,6 +46,8 @@
             $scope.dataLoading = true;
             
             vm.formData.apiKey = $rootScope.globals.currentUser.apiKey;
+
+            //vm.formData.created_date = new Date(vm.formData.created_date);
             
             CommonService.postData(apiUrl+"advanceMembers.php",vm.formData)
                     .then(function (searchedData) {

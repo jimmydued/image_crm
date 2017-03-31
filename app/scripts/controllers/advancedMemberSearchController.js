@@ -1,21 +1,19 @@
 (function () {
     'use strict';
-	
-	angular
+    
+    angular
         .module('imageCrmApp')
         .controller('AdvancedMemberSearchCtrl', AdvancedMemberSearchCtrl);
 
-    AdvancedMemberSearchCtrl.$inject = ['CommonService','$rootScope','apiUrl','$scope'];
+    AdvancedMemberSearchCtrl.$inject = ['CommonService','$rootScope','apiUrl','$scope','dateFormat'];
 
-    function AdvancedMemberSearchCtrl(CommonService,$rootScope,apiUrl,$scope) {
-		
-		var vm 	=	this;
+    function AdvancedMemberSearchCtrl(CommonService,$rootScope,apiUrl,$scope,dateFormat) {
+        
+        var vm  =   this;
 
         vm.formData = {};
-        
-        $scope.gridOptions = {
-            data : []
-        };
+
+        vm.formData.created_date = moment(new Date()).format(dateFormat);
 
         /*This method is callback when we are dealing with asynchronus http calls.*/
         function parseData(response){
@@ -48,6 +46,8 @@
             $scope.dataLoading = true;
             
             vm.formData.apiKey = $rootScope.globals.currentUser.apiKey;
+
+            vm.formData.created_date = moment(vm.formData.created_date).format(dateFormat);
             
             CommonService.postData(apiUrl+"advanceMembers.php",vm.formData)
                     .then(function (searchedData) {
@@ -58,5 +58,5 @@
         };
 
     }
-	
+    
 })();

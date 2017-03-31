@@ -5,9 +5,9 @@
         .module('imageCrmApp')
         .controller('AdvancedMemberSearchCtrl', AdvancedMemberSearchCtrl);
 
-    AdvancedMemberSearchCtrl.$inject = ['CommonService','$rootScope','apiUrl','$scope','angularjs-datetime-picker'];
+    AdvancedMemberSearchCtrl.$inject = ['CommonService','$rootScope','apiUrl','$scope'];
 
-    function AdvancedMemberSearchCtrl(CommonService,$rootScope,apiUrl,$scope,angularjs-datetime-picker) {
+    function AdvancedMemberSearchCtrl(CommonService,$rootScope,apiUrl,$scope) {
 		
 		var vm 	=	this;
 

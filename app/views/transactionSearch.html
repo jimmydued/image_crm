@@ -13,7 +13,7 @@
 									<div class="col-lg-4 col-md-4 col-xs-4">
 										<div class="form-group">
 											<label>Date From</label>
-											<input class="form-control" placeholder="Please Enter Date From" name="dateFrom" ng-model="vm.formData.dateFrom" type="date">
+											<input type="text" class="form-control" date-time ng-model="vm.formData.fromDate" min-view="date" view="date" format="YYYY-MM-DD" auto-close="true" watch-direct-changes="true">
 										</div>
 										<div class="form-group">
 											<label>Search In : </label>
@@ -32,7 +32,7 @@
 									<div class="col-lg-4 col-md-4 col-xs-4">
 										<div class="form-group">
 											<label>Date To</label>
-											<input class="form-control" placeholder="Please Enter Date To" name="dateTo" ng-model="vm.formData.dateTo" type="date">
+											<input type="text" class="form-control" date-time ng-model="vm.formData.toDate" min-view="date" view="date" format="YYYY-MM-DD" auto-close="true" watch-direct-changes="true">
 										</div>
 										<div class="form-group">
 											<label>Payment Method</label>
@@ -51,8 +51,12 @@
 											<input class="form-control" placeholder="Please Enter Postcode" name="postcode" ng-model="vm.formData.postcode">
 										</div>
 											<div class="form-group">
-												<label>State</label>
-												<input class="form-control" placeholder="Please Enter State" name="state" ng-model="vm.formData.state">
+												<label>Status</label>
+												<select class="form-control">
+											      <option>All Countries</option>
+											      <option>U.S</option>
+											      <option>India</option>
+											    </select>
 											</div>
 										<div class="form-group">
 											<label>Date Register</label>
