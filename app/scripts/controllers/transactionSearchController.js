@@ -5,18 +5,18 @@
         .module('imageCrmApp')
         .controller('AdvancedMemberSearchCtrl', AdvancedMemberSearchCtrl);
 
-    AdvancedMemberSearchCtrl.$inject = ['CommonService','$rootScope','apiUrl','$scope'];
+    AdvancedMemberSearchCtrl.$inject = ['CommonService','$rootScope','apiUrl','$scope','dateFormat'];
 
-    function AdvancedMemberSearchCtrl(CommonService,$rootScope,apiUrl,$scope) {
+    function AdvancedMemberSearchCtrl(CommonService,$rootScope,apiUrl,$scope,dateFormat) {
 		
 		var vm 	=	this;
 
         vm.formData = {};
-        
-        $scope.gridOptions = {
-            data : []
-        };
 
+        vm.formData.fromDate = moment(new Date()).format(dateFormat);
+
+        vm.formData.toDate = moment(new Date()).format(dateFormat);
+        
         /*This method is callback when we are dealing with asynchronus http calls.*/
         function parseData(response){
             
@@ -28,19 +28,15 @@
 
             $scope.gridOptions.columnDefs  =  [
                                 {field: 'username'},
-                                {field: 'firstname'},
-                                {field: 'lastname'},
-                                {field: 'company'},
-                                {field: 'country'},
-                                {field: 'city'},
-                                {field: 'phone'},
-                                {field: 'email'},
-                                {field: 'postcode'}
+                                {field: 'txn_id'},
+                                {field: 'order_total'},
+                                {field: 'order_date'},
+                                {field: 'order_status'}
                             ];
             $scope.dataLoading = false;
         }
 
-        $scope.advanceSearch = function(){
+        $scope.advanceSearch = function(){ 
             
             $scope.gridOptions = {
                 data : []
@@ -50,7 +46,11 @@
             
             vm.formData.apiKey = $rootScope.globals.currentUser.apiKey;
             
-            CommonService.postData(apiUrl+"advanceMembers.php",vm.formData)
+            vm.formData.fromDate = moment(vm.formData.fromDate).format(dateFormat);
+
+            vm.formData.toDate = moment(vm.formData.toDate).format(dateFormat);
+
+            CommonService.postData(apiUrl+"transactionsSearch.php",vm.formData)
                     .then(function (searchedData) {
                         if (searchedData.error==false) {
                             parseData(searchedData);
