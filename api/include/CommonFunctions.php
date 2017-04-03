@@ -96,7 +96,7 @@ class Common_Functions {
      */
     public function isUserExistedByUsername($username) {
         
-		$stmt = $this->conn->prepare("SELECT * from users WHERE username = '".$username."'");
+		$stmt = $this->conn->prepare("SELECT * from admins WHERE username = '".$username."' OR email='".$username."'");
 			
         $stmt->execute();
  

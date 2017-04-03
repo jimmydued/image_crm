@@ -6,17 +6,15 @@ class Login extends Common_Functions{
 	/**
      * Get user by email and password
      */
-    public function getUserByEmailAndPassword($email, $password) {
+    public function getUserByEmailAndPassword($userDetail, $password) {
  
-        $stmt = $this->conn->prepare("SELECT * FROM users WHERE email = ?");
- 
-        $stmt->bind_param("s", $email);
- 
+        $stmt = $this->conn->prepare("SELECT username,firstname,lastname,email FROM admins WHERE (email = '".$userDetail."' OR username='".$userDetail."') and password='".md5($password)."'");
+  
         if ($stmt->execute()) {
             $user = $stmt->get_result()->fetch_assoc();
             $stmt->close();
             // check for password equality
-            if ($user['password'] == md5($password)) {
+            if (!empty($user)) {
                 // user authentication details are correct
                 return $user;
             }
@@ -28,11 +26,10 @@ class Login extends Common_Functions{
     /**
      * Check user is existed or not
      */
-    public function isUserExisted($email) {
-        $stmt = $this->conn->prepare("SELECT email from users WHERE email = ?");
- 
-        $stmt->bind_param("s", $email);
- 
+    public function isUserExisted($userDetail) {
+	
+        $stmt = $this->conn->prepare("SELECT username,firstname,lastname,email FROM admins WHERE (email = '".$userDetail."' OR username='".$userDetail."')");
+  
         $stmt->execute();
  
         $stmt->store_result();
@@ -41,7 +38,8 @@ class Login extends Common_Functions{
             // user existed 
             $stmt->close();
             return true;
-        } else {
+        }
+		else {
             // user not existed
             $stmt->close();
             return false;
@@ -54,18 +52,18 @@ $loginObj 		=  	new Login();
 if (isset($data->apiKey) && isset($data->password)) {
 	
     // receiving the post params
-    $email 		= base64_decode($data->apiKey);
-    $password 	= base64_decode($data->password);
+    $userDetail 		= base64_decode($data->apiKey);
+    $password 			= base64_decode($data->password);
 	
     // get the user by email and password
-    $user = $loginObj->getUserByEmailAndPassword($email, $password);
-    if ($user != false){
+    $user = $loginObj->getUserByEmailAndPassword($userDetail, $password);
+    
+	if ($user != false){
         // use is found
         $response["error"] = FALSE;
         $response["firstname"] 	= $user["firstname"];
 		$response["lastname"] 	= $user["lastname"];
 		$response["username"] 	= $user["username"];
-        $response["email"] 		= $user["email"];
         echo json_encode($response);
     } 
 	else

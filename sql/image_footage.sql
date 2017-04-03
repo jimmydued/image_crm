@@ -1,13 +1,14 @@
 -- phpMyAdmin SQL Dump
--- version 3.3.9
+-- version 4.0.4
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Mar 07, 2017 at 08:55 AM
--- Server version: 5.5.8
--- PHP Version: 5.3.5
+-- Generation Time: Apr 03, 2017 at 01:44 PM
+-- Server version: 5.6.12-log
+-- PHP Version: 5.4.16
 
-SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET time_zone = "+00:00";
 
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
@@ -18,6 +19,8 @@ SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 --
 -- Database: `image_footage`
 --
+CREATE DATABASE IF NOT EXISTS `image_footage` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
+USE `image_footage`;
 
 -- --------------------------------------------------------
 
@@ -29,7 +32,11 @@ CREATE TABLE IF NOT EXISTS `admins` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `username` varchar(255) NOT NULL,
   `password` varchar(255) NOT NULL,
+  `type` enum('SITE','CRMUSERS','ADMIN') NOT NULL DEFAULT 'SITE',
   `status` int(2) NOT NULL,
+  `firstname` varchar(255) NOT NULL,
+  `lastname` varchar(255) NOT NULL,
+  `email` varchar(255) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `username` (`username`),
   KEY `password` (`password`),
@@ -40,8 +47,8 @@ CREATE TABLE IF NOT EXISTS `admins` (
 -- Dumping data for table `admins`
 --
 
-INSERT INTO `admins` (`id`, `username`, `password`, `status`) VALUES
-(1, 'admin', '49c7c09ed3b1ed297cb4b7cde4ebcf3ade1c65c3', 1);
+INSERT INTO `admins` (`id`, `username`, `password`, `type`, `status`, `firstname`, `lastname`, `email`) VALUES
+(1, 'admin', '202cb962ac59075b964b07152d234b70', 'ADMIN', 1, 'Kapil', 'Sharma', 'k@k.com');
 
 -- --------------------------------------------------------
 
@@ -586,11 +593,6 @@ CREATE TABLE IF NOT EXISTS `multiple_image_uploads` (
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
---
--- Dumping data for table `multiple_image_uploads`
---
-
-
 -- --------------------------------------------------------
 
 --
@@ -1012,11 +1014,6 @@ CREATE TABLE IF NOT EXISTS `shopping_coupons` (
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=28 ;
 
---
--- Dumping data for table `shopping_coupons`
---
-
-
 -- --------------------------------------------------------
 
 --
@@ -1164,7 +1161,7 @@ INSERT INTO `users` (`id`, `fbid`, `email`, `password`, `username`, `firstname`,
 (8, '', 'aman@gmail.com', 'a836dfa2a0f5428d7606112dca44b2d780d9cdc6', '', 'aman', 'kumar', '', '', '', 'sec45', '234234234234', '982342342', 'delhi', 'delhi', '201201', 'India', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 1, 'b13b589793c757bff693198f63e7050350ff1c03', 0, '2017-01-27 21:50:04', '2017-01-27 21:50:04'),
 (9, '', 'raman@gmail.com', '9ac7feeeb08687acb52bc9c68bc336ffeb07fb9b', 'raman2', 'raman2', 'kumar2', 'job11', 'business11', 'company11', 'sec461', '2939938912', '9812939393', 'gurgaon', 'hr', '122001', 'Iceland', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 1, 'bef9d9fc35de075a8b851f3c234bd4702a8fd9c6', 1, '2017-01-27 21:54:21', '2017-02-04 18:11:07'),
 (10, '', 'tewt@gmail.com', 'e0b9ae8a1ee18092a14920abc715cf652d7f280d', 'adad', 'asdsad', 'adds', 'software', 'IT', 'it section', 'sec45', '23423423423', '98234244', 'delhi', 'delhi', '234332', 'India', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, '6a3c0e0f3bb2c642b9bc0f87235c0c9360a5a495', 1, '2017-02-05 02:09:19', '2017-02-05 02:09:19'),
-(11, NULL, 'k@k.com', '202cb962ac59075b964b07152d234b70', 'jimmydued', 'kapil', 'sharma', 'test', 'test', 'test', 'test', 'test', 'test', 'test', 'test', 'test', 'test', 'test', 'test', 'test', 'test', 'test', 'test', 'test', 'test', 'test', 'test', 'test', 'test', 'test', 'test', 'test', 'test', 'test', 'test', 0, 0, '123', 0, NULL, NULL);
+(11, NULL, 'k@k.com', '202cb962ac59075b964b07152d234b70', 'jimmydued', 'kapil', 'sharma', 'test', 'test', 'test', 'test', 'test', 'test', 'test', 'test', 'test', 'test', 'test', 'test', 'test', 'test', 'test', 'test', 'test', 'test', 'test', 'test', 'test', 'test', 'test', 'test', 'test', 'test', 'test', 'test', 0, 0, '123', 0, '2017-03-31 00:00:00', NULL);
 
 -- --------------------------------------------------------
 
@@ -1186,11 +1183,6 @@ CREATE TABLE IF NOT EXISTS `users1` (
   UNIQUE KEY `email` (`email`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
---
--- Dumping data for table `users1`
---
-
-
 -- --------------------------------------------------------
 
 --
@@ -1208,11 +1200,6 @@ CREATE TABLE IF NOT EXISTS `wish_lists` (
   `modified` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
-
---
--- Dumping data for table `wish_lists`
---
-
 
 -- --------------------------------------------------------
 
@@ -1242,7 +1229,6 @@ CREATE TABLE IF NOT EXISTS `zip_codes` (
   KEY `country` (`country`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
---
--- Dumping data for table `zip_codes`
---
-
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

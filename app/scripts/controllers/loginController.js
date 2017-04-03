@@ -25,13 +25,12 @@
             loggedInUserData.password   = Base64Service.encode(vm.password);
             
             UserService.CheckUserAuthentication(loggedInUserData)
-                    .then(function (user) {
-                        if (user.error==false) {
-                            AuthenticationService.SetCredentials(Base64Service.encode(user.username));
+                    .then(function (fetchedUserDetails) {
+                        if (fetchedUserDetails.error==false) {
+                            AuthenticationService.SetCredentials(fetchedUserDetails);
                             $location.path('/');
                         } else {
-                            var message = 'Username or password is incorrect';
-                            FlashService.Error(message);
+                            FlashService.Error(fetchedUserDetails.error_msg);
                             vm.dataLoading = false;
                         }
                     });

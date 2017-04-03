@@ -50,7 +50,7 @@
             $scope.gridOptions.data     = response.data;
         } 
 
-        CommonService.postData(apiUrl+"abandonedCart.php",$rootScope.globals.currentUser)
+        CommonService.postData(apiUrl+"abandonedCart.php",{apiKey: $rootScope.globals.currentUser.apiKey})
                     .then(function (gridData) {
                         if (gridData.error==false) {
                             parseData(gridData);
