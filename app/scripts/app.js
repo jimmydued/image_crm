@@ -79,7 +79,8 @@ angular
             }]
         }
     })
-      .state('dashboard.home',{
+    
+    .state('dashboard.home',{
         url:'/home',
         controller: 'MainCtrl',
         templateUrl:'views/dashboard/home.html',
@@ -98,16 +99,18 @@ angular
           }]
         }
       })
+      
       .state('dashboard.form',{
         templateUrl:'views/form.html',
         url:'/form'
-    })
+      })
+
       .state('dashboard.blank',{
         templateUrl:'views/pages/blank.html',
         url:'/blank'
-    })
+      })
     
-    .state('login',{
+      .state('login',{
         templateUrl:'views/pages/login.html',
         url:'/login',
         controller:'LoginCtrl',
@@ -242,6 +245,22 @@ angular
           }
     })  
     
+    .state('dashboard.addCrmUser',{
+        templateUrl:'views/addCrmUser.html',
+        url:'/addCrmUser',
+        resolve: {
+                    loadMyFile:["$ocLazyLoad", function($ocLazyLoad) {
+                      return $ocLazyLoad.load({
+                                  name:'imageCrmApp',
+                                  files:[
+                                    'scripts/controllers/addCrmUserController.js',
+                                    'scripts/directives/uicustomgrid/uicustomgrid.js'
+                                  ] 
+                              })
+                  }
+                ]
+          }
+    })  
     .state('dashboard.chart',{
         templateUrl:'views/chart.html',
         url:'/chart',
@@ -262,6 +281,8 @@ angular
           }]
         }
     })
+
+
     
     .state('dashboard.table',{
         templateUrl:'views/table.html',

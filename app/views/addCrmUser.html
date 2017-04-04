@@ -1,4 +1,4 @@
-<div class="container-fluid" ng-controller="AdvancedMemberSearchCtrl as vm">
+<div class="container-fluid" ng-controller="AddCrmUserCtrl as vm">
 	<div class="row mtxl">
       <div class="col-md-12 col-sm-12">
 		 <div class="row">
@@ -16,43 +16,27 @@
 												<input class="form-control" placeholder="Please Enter First Name" name="firstName" ng-model="vm.formData.firstName">
 											</div>
 											<div class="form-group">
-												<label>Last Name</label>
-												<input class="form-control" placeholder="Please Enter Last Name" name="lastName" ng-model="vm.formData.lastName">
-											</div>
-											<div class="form-group">
-												<label>City</label>
-												<input class="form-control" placeholder="Please Enter City" name="city" ng-model="vm.formData.city">
+												<label>UserName</label>
+												<input class="form-control" placeholder="Please Enter UserName" name="userName" ng-model="vm.formData.userName">
 											</div>
 									</div>
 									<!-- /.col-lg-6 (nested) -->
 									<div class="col-lg-4 col-md-4 col-xs-4">
 										<div class="form-group">
-											<label>Company</label>
-											<input class="form-control" placeholder="Please Enter Company" name="company" ng-model="vm.formData.company">
-										</div>
+											<label>Last Name</label>
+											<input class="form-control" placeholder="Please Enter Last Name" name="lastName" ng-model="vm.formData.lastName">
+										</div>										
 										<div class="form-group">
-											<label>Phone</label>
-											<input class="form-control" placeholder="Please Enter Phone" name="phone" ng-model="vm.formData.phone">
-										</div>
-										<div class="form-group">
-											<label>Country</label>
-											<input class="form-control" placeholder="Please Enter Country" name="country" ng-model="vm.formData.country">
+											<label>Password</label>
+											<input class="form-control" placeholder="Please Enter Password" name="password" ng-model="vm.formData.password">
 										</div>
 									</div>
 									<!-- /.col-lg-6 (nested) -->
 									<!-- /.col-lg-6 (nested) -->
 									<div class="col-lg-4 col-md-4 col-xs-4">
 										<div class="form-group">
-											<label>Postcode</label>
-											<input class="form-control" placeholder="Please Enter Postcode" name="postcode" ng-model="vm.formData.postcode">
-										</div>
-											<div class="form-group">
-												<label>State</label>
-												<input class="form-control" placeholder="Please Enter State" name="state" ng-model="vm.formData.state">
-											</div>
-										<div class="form-group">
-											<label>Date Register</label>
-											<input type="text" class="form-control" date-time ng-model="vm.formData.created_date" min-view="date" view="date" format="YYYY-MM-DD" auto-close="true" watch-direct-changes="true">
+											<label>Email ID</label>
+											<input class="form-control" placeholder="Please Enter Email ID" name="emailId" ng-model="vm.formData.emailId">
 										</div>
 									</div>
 									<!-- /.col-lg-6 (nested) -->								
@@ -60,7 +44,7 @@
 							<!-- /.row (nested) -->
 							<div class="row">
 								<div class="col-lg-12 col-md-12 col-xs-12" align="center">
-									<button type="submit" class="btn btn-danger">Search</button>
+									<button type="submit" class="btn btn-danger">Add Member</button>
 									<button type="reset" class="btn btn-danger">Reset</button>
 								</div>
 							</div>
@@ -81,7 +65,7 @@
       	<div ui-grid-grouping ui-grid="gridOptions" class="grid panel panel-default"></div>
 	  </div>	
 	</div>
-	<div class="row alert alert-info" ng-if="gridOptions && gridOptions.data==null" align="center">
+	<div class="row alert alert-info" ng-if="gridOptions && gridOptions.data==null && !dataLoading" align="center">
 	      No Data Found.
 	</div>
 </div>

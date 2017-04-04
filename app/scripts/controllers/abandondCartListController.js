@@ -15,7 +15,19 @@
 
         $scope.gridOptions = {};
 
-        $scope.gridOptions.columnDefs   = [
+        $scope.dataLoading = true;
+        
+         
+        /*This method is callback when we are dealing with asynchronus http calls.*/
+        function parseData(response){
+            
+            if(response.data!=null){
+                response.data = [response.data];
+            }
+            
+            $scope.gridOptions.data     = response.data;
+
+            $scope.gridOptions.columnDefs   = [
                                 {
                                     field: 'created',
                                     type: 'date',
@@ -39,15 +51,8 @@
                                     cellTemplate:'<button ng-if="row.treeLevel!=0" class="btn btn-danger btn-xs grid-bttn-align" ng-click="grid.appScope.showMe()">Update</button>'
                                 }
                             ];
-         
-        /*This method is callback when we are dealing with asynchronus http calls.*/
-        function parseData(response){
-            
-            if(response.data!=null){
-                response.data = [response.data];
-            }
-            
-            $scope.gridOptions.data     = response.data;
+
+            $scope.dataLoading = false;
         } 
 
         CommonService.postData(apiUrl+"abandonedCart.php",{apiKey: $rootScope.globals.currentUser.apiKey})

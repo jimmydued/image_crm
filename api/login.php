@@ -8,7 +8,7 @@ class Login extends Common_Functions{
      */
     public function getUserByEmailAndPassword($userDetail, $password) {
  
-        $stmt = $this->conn->prepare("SELECT username,firstname,lastname,email FROM admins WHERE (email = '".$userDetail."' OR username='".$userDetail."') and password='".md5($password)."'");
+        $stmt = $this->conn->prepare("SELECT username,firstname,lastname,email,type FROM admins WHERE (email = '".$userDetail."' OR username='".$userDetail."') and password='".md5($password)."'");
   
         if ($stmt->execute()) {
             $user = $stmt->get_result()->fetch_assoc();
@@ -64,6 +64,7 @@ if (isset($data->apiKey) && isset($data->password)) {
         $response["firstname"] 	= $user["firstname"];
 		$response["lastname"] 	= $user["lastname"];
 		$response["username"] 	= $user["username"];
+        $response["type"]       = $user["type"];
         echo json_encode($response);
     } 
 	else

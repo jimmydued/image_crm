@@ -17,9 +17,10 @@
         function SetCredentials(loggedInUserDetails) {
             $rootScope.globals = {
                 currentUser: {
-                    apiKey: Base64Service.encode(loggedInUserDetails.username),
-                    firstName: loggedInUserDetails.firstname,
-                    lastName : loggedInUserDetails.lastname
+                    apiKey      : Base64Service.encode(loggedInUserDetails.username),
+                    firstName   : loggedInUserDetails.firstname,
+                    lastName    : loggedInUserDetails.lastname,
+                    type        : loggedInUserDetails.type
                 }
             };
 
@@ -35,7 +36,7 @@
         function ClearCredentials() {
             $rootScope.globals = {};
             $cookies.remove('globals');
-            $http.defaults.headers.common.Authorization = 'Basic';
+            $http.defaults.headers.common.Authorization = $rootScope.globals;
         }
     }    
 

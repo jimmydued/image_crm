@@ -46,9 +46,11 @@
             
             vm.formData.apiKey = $rootScope.globals.currentUser.apiKey;
             
-            vm.formData.fromDate = moment(vm.formData.fromDate).format(dateFormat);
+            if(vm.formData.fromDate)
+                vm.formData.fromDate = moment(vm.formData.fromDate).format(dateFormat);
 
-            vm.formData.toDate = moment(vm.formData.toDate).format(dateFormat);
+            if(vm.formData.toDate)
+                vm.formData.toDate = moment(vm.formData.toDate).format(dateFormat);
 
             CommonService.postData(apiUrl+"transactionsSearch.php",vm.formData)
                     .then(function (searchedData) {

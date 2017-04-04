@@ -130,6 +130,19 @@ class Common_Functions {
 				return NULL;
 			}
 	}
+
+    function fethArray($stmt){
+
+        $data = array();
+
+        $result = $stmt->get_result();
+        while($row = $result->fetch_assoc()) {
+            $data[] = $row;
+        }
+        
+        $stmt->close();
+        return $data;
+    }
 }
  
 ?>

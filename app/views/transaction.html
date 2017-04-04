@@ -38,6 +38,7 @@
        </span>
        <hr class="line-color">
     </div>
+  <image src="images/loading_spinner.gif" class="col-md-offset-5 loading" ng-if="vm.dataLoading">  
   <div ng-if="vm.gridOptions && vm.gridOptions.data.length>0">
     <ui-custom-grid options="vm.gridOptions" class="grid"></ui-custom-grid>
   </div>

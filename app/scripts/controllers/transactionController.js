@@ -11,6 +11,8 @@
         
         var vm = this;
 
+        vm.dataLoading = true;
+
         /*This method is callback when we are dealing with asynchronus http calls.*/
         function parseData(response){
             vm.gridOptions = {
@@ -25,6 +27,7 @@
                             ]
 
             };
+            vm.dataLoading = false;
         }              
 
         /*This method actually loading the data from service.*/

@@ -39,6 +39,7 @@
         }
 
         $scope.advanceSearch = function(){
+            
             $scope.gridOptions = {
                 data : []
             };
@@ -47,7 +48,8 @@
             
             vm.formData.apiKey = $rootScope.globals.currentUser.apiKey;
 
-            vm.formData.created_date = moment(vm.formData.created_date).format(dateFormat);
+            if(vm.formData.created_date)
+                vm.formData.created_date = moment(vm.formData.created_date).format(dateFormat);
             
             CommonService.postData(apiUrl+"advanceMembers.php",vm.formData)
                     .then(function (searchedData) {

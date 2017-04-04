@@ -35,6 +35,7 @@ angular.module('imageCrmApp')
         };
 
         $scope.sidebarAuth = $http.defaults.headers.common.Authorization;
+      
       }]
     }
   }]);
