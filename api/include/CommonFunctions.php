@@ -131,15 +131,12 @@ class Common_Functions {
 			}
 	}
 
-    function fethArray($stmt){
-
+    function fetchArray($stmt){
         $data = array();
-
         $result = $stmt->get_result();
         while($row = $result->fetch_assoc()) {
             $data[] = $row;
         }
-        
         $stmt->close();
         return $data;
     }

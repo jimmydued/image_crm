@@ -22,6 +22,7 @@
         $scope.dataLoading = true;
 
         vm.formData.operationType   =   "get";
+        
         /*This method is callback when we are dealing with asynchronus http calls.*/
         function parseData(response){
             
@@ -32,15 +33,18 @@
                                 {field: 'firstname'},
                                 {field: 'lastname'},
                                 {field: 'email'},
-                                {field: 'status'}
+                                {field: 'status'},
+                                {field: 'type'}
                             ];
 
             $scope.dataLoading = false;
         }
 
-        $scope.addCrmMemer = function(){
+        $scope.addCrmMember = function(){
+
+            vm.formData.operationType   =   "set";
             
-            CommonService.postData(apiUrl+"addCrmMembers.php",vm.formData)
+            CommonService.postData(apiUrl+"crmMember.php",vm.formData)
                     .then(function (searchedData) {
                         if (searchedData.error==false) {
                             parseData(searchedData);

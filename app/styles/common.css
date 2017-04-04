@@ -87,6 +87,9 @@ font-weight:bold;
   height: 250px;
 }
 
+input[type="text"].sucess {          /*make myBlur class for text field for achieve boder color of input field */
+  border: solid 1px green;  
+}
 .grid-bttn-align{
 	margin : 5px 6px 10px 9px;
 }

@@ -4,7 +4,7 @@
       <form name="loginForm" method="post" ng-submit="vm.login()" role="form">
          <div ng-class="{ 'alert': flash, 'alert-success': flash.type === 'success', 'alert-danger': flash.type === 'error' }" ng-if="flash" ng-bind="flash.message"></div>
          <div class="field-wrap">
-            <input class="login-input" required autocomplete="off" name="username" ng-blur="blur=true" ng-model="vm.username" placeholder="E-mail or Username" required ng-class="{myBlur:blur}"/>
+            <input type="text" class="login-input" required autocomplete="off" name="username" ng-blur="blur=true" ng-model="vm.username" placeholder="E-mail or Username" required ng-class="{myBlur:blur}"/>
             <p class="validat-text-clr" ng-show="loginForm.userEmail.$touched && loginForm.userEmail.$invalid">Please Enter  Your E-mail</p>
          </div>
          <div class="field-wrap">
