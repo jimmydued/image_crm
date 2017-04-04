@@ -13,9 +13,7 @@ angular.module('imageCrmApp')
       templateUrl:'scripts/directives/sidebar/sidebar.html',
       restrict: 'E',
       replace: true,
-      scope: {
-      },
-      controller:["$scope", function($scope){
+      controller:["$scope","$http", function($scope,$http){
         $scope.selectedMenu = 'dashboard';
         $scope.collapseVar = 0;
         $scope.multiCollapseVar = 0;
@@ -35,6 +33,8 @@ angular.module('imageCrmApp')
           else
             $scope.multiCollapseVar = y;
         };
+
+        $scope.sidebarAuth = $http.defaults.headers.common.Authorization;
       }]
     }
   }]);
