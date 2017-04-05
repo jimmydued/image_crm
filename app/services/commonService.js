@@ -14,8 +14,6 @@
         
         service.getData     = getData;
 
-        service.setFocus    = setFocus;
-
         service.checkElementLength  =   checkElementLength;
         
         return service;
@@ -26,11 +24,6 @@
         
         function getData(getUrl) {
             return $http.get(getUrl).then(handleSuccess, handleError('Error creating user'));
-        }
-
-        function setFocus(id){
-            document.body.scrollTop = document.body.scrollHeight;
-            return true;
         }
 
         function checkElementLength(objectToCheck,elementId){            

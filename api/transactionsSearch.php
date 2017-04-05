@@ -1,4 +1,5 @@
 <?php
+
 require_once 'include/CommonFunctions.php';
         
 class TransactionsSearch_Functions extends Common_Functions{
@@ -9,8 +10,8 @@ class TransactionsSearch_Functions extends Common_Functions{
         $this->keepValidateUser($input_data);
     }	
 	/**
-		 * Get transactions
-	 */
+		* Get transactions
+	*/
 	function getTransactions($input_data) { 
 	 		$where="";
 			
@@ -19,6 +20,7 @@ class TransactionsSearch_Functions extends Common_Functions{
 				$where.=" AND country LIKE '%$input_data->country%' ";
 				
 			}
+			
 			if(!empty($input_data->status)){
 				
 				$where.=" AND status='$input_data->status' ";
