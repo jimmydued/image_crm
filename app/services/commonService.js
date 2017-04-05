@@ -5,8 +5,8 @@
         .module('imageCrmApp')
         .factory('CommonService', CommonService);
 
-    CommonService.$inject = ['$http','$window'];
-    function CommonService($http,$window) {
+    CommonService.$inject = ['$http','$window','_'];
+    function CommonService($http,$window,_) {
 
         var service = {};
 
@@ -15,6 +15,8 @@
         service.getData     = getData;
 
         service.setFocus    = setFocus;
+
+        service.checkElementLength  =   checkElementLength;
         
         return service;
 
@@ -30,6 +32,18 @@
             document.body.scrollTop = document.body.scrollHeight;
             return true;
         }
+
+        function checkElementLength(objectToCheck,elementId){            
+            var result = _.has(objectToCheck,elementId);            
+            if(result && objectToCheck[elementId]){
+                result = false;
+            }
+            else
+            {
+                result = true;
+            }
+            return result;            
+        }  
 
         // private functions
 

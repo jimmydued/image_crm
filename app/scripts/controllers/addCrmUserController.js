@@ -58,6 +58,8 @@
                     parseData(crmUserData);
                 } 
         });
+
+        $scope.commonService = CommonService; 
     }
     
 })();

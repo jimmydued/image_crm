@@ -36,7 +36,7 @@
             $scope.dataLoading = false;
         }
 
-        $scope.advanceSearch = function(){ 
+        $scope.transactionSearch = function(){ 
             
             $scope.gridOptions = {
                 data : []
@@ -59,6 +59,8 @@
                         } 
             });
         };
+
+        
 
     }
 	
