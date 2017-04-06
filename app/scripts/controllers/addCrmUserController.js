@@ -5,24 +5,49 @@
         .module('imageCrmApp')
         .controller('AddCrmUserCtrl', AddCrmUserCtrl);
 
-    AddCrmUserCtrl.$inject = ['CommonService','$rootScope','apiUrl','$scope','dateFormat'];
+    AddCrmUserCtrl.$inject = ['CommonService','$rootScope','apiUrl','$scope','dateFormat','_'];
 
-    function AddCrmUserCtrl(CommonService,$rootScope,apiUrl,$scope,dateFormat) {
+    function AddCrmUserCtrl(CommonService,$rootScope,apiUrl,$scope,dateFormat,_) {
         
         var vm  =   this;
 
         vm.formData = {};
 
-        vm.formData.apiKey  = $rootScope.globals.currentUser.apiKey;
-
-        vm.formData.type    = $rootScope.globals.currentUser.type;
 
         $scope.gridOptions = {};
 
         $scope.dataLoading = true;
 
         vm.formData.operationType   =   "get";
-        
+
+        $scope.buttonText           =   "Add Member";
+
+         (function initController() {
+            defaultParamSetup();
+        })();
+
+        function defaultParamSetup(){            
+            vm.formData.apiKey   = $rootScope.globals.currentUser.apiKey;
+            vm.formData.type     = $rootScope.globals.currentUser.type;
+        }
+
+        $scope.editUser = function(rowId){
+            vm.formData.id = rowId;
+            CommonService.postData(apiUrl+"crmMember.php",vm.formData)
+                    .then(function (editData) {
+                        if (editData.error==false) {
+                            parseUserInformatioData(editData);
+                        } 
+            });
+        };        
+
+        /*This method is callback when we are dealing with asynchronus http calls.*/
+        function parseUserInformatioData(response){            
+            vm.formData                 = _.extend(vm.formData, response.data[0]);
+            $scope.buttonText           =   "Update Member";
+            $scope.dataLoading          = false;
+        }
+
         /*This method is callback when we are dealing with asynchronus http calls.*/
         function parseData(response){
             
@@ -34,20 +59,31 @@
                                 {field: 'lastname'},
                                 {field: 'email'},
                                 {field: 'status'},
-                                {field: 'type'}
+                                {field: 'type'},
+                                {
+                                    field: 'action',
+                                    cellTemplate:'<button class="btn btn-success btn-xs" ng-click="grid.appScope.editUser(row.entity.id)">Edit</button>  <button class="btn btn-danger btn-xs" ng-click="grid.appScope.deleteUser()">Delete</button>'
+                                }
                             ];
 
             $scope.dataLoading = false;
         }
 
-        $scope.addCrmMember = function(){
+        $scope.addUpdateCrmMember = function(){
 
-            vm.formData.operationType   =   "set";
+            CommonService.showHideImage($scope);
+
+            if(vm.formData.id){
+                vm.formData.operationType   =   "updateUser";
+            }
+            else{
+                vm.formData.operationType   =   "set";
+            }
             
             CommonService.postData(apiUrl+"crmMember.php",vm.formData)
-                    .then(function (searchedData) {
-                        if (searchedData.error==false) {
-                            parseData(searchedData);
+                    .then(function (addUpdateData) {
+                        if (addUpdateData.error==false) {
+                            parseData(addUpdateData);
                         } 
             });
         };

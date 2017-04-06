@@ -16,6 +16,8 @@
 
         service.checkElementLength  =   checkElementLength;
         
+        service.showHideImage   =   showHideImage;
+
         return service;
 
         function postData(postUrl,data) {
@@ -36,6 +38,12 @@
                 result = true;
             }
             return result;            
+        }
+
+        function showHideImage(scopeVar){
+            scopeVar.dataLoading = true;
+            scopeVar.gridOptions = {};
+            return true;
         }  
 
         // private functions
