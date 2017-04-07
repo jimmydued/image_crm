@@ -3,11 +3,11 @@
 	
 	angular
         .module('imageCrmApp')
-        .controller('AdvancedMemberSearchCtrl', AdvancedMemberSearchCtrl);
+        .controller('TransactionSearchCtrl', TransactionSearchCtrl);
 
-    AdvancedMemberSearchCtrl.$inject = ['CommonService','$rootScope','apiUrl','$scope','dateFormat'];
+    TransactionSearchCtrl.$inject = ['CommonService','$rootScope','apiUrl','$scope','dateFormat'];
 
-    function AdvancedMemberSearchCtrl(CommonService,$rootScope,apiUrl,$scope,dateFormat) {
+    function TransactionSearchCtrl(CommonService,$rootScope,apiUrl,$scope,dateFormat) {
 		
 		var vm 	=	this;
 
