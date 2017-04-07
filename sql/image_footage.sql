@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Apr 03, 2017 at 01:44 PM
+-- Generation Time: Apr 07, 2017 at 07:11 AM
 -- Server version: 5.6.12-log
 -- PHP Version: 5.4.16
 
@@ -41,14 +41,22 @@ CREATE TABLE IF NOT EXISTS `admins` (
   KEY `username` (`username`),
   KEY `password` (`password`),
   KEY `status` (`status`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=10 ;
 
 --
 -- Dumping data for table `admins`
 --
 
 INSERT INTO `admins` (`id`, `username`, `password`, `type`, `status`, `firstname`, `lastname`, `email`) VALUES
-(1, 'admin', '202cb962ac59075b964b07152d234b70', 'ADMIN', 1, 'Kapil', 'Sharma', 'k@k.com');
+(1, 'admin', '202cb962ac59075b964b07152d234b70', 'ADMIN', 1, 'Admin', '', 'k@k.com'),
+(2, 'jimmydued', '202cb962ac59075b964b07152d234b70', 'CRMUSERS', 1, 'This is good', '', 'a@a.com'),
+(3, 'sdsdfdf', '70c045393a462534cb75ab2a58f55d0a', 'SITE', 0, 'kappu here 123', 'sharma', 's@s.com'),
+(4, 'sdsd', 'dsdsd', 'SITE', 0, 'kappu', 'sdsdsdsd', 'dd'),
+(5, 'sdsdfdf', '70c045393a462534cb75ab2a58f55d0a', 'SITE', 0, 'kappu here 123', 'sharma', 's@s.com'),
+(6, '34', '70c045393a462534cb75ab2a58f55d0a', 'SITE', 0, 'This is good', 'not one', 'a@a.com'),
+(7, '34', '70c045393a462534cb75ab2a58f55d0a', 'SITE', 0, 'This is good', 'not one', 'a@a.com'),
+(8, '34', '70c045393a462534cb75ab2a58f55d0a', 'CRMUSERS', 0, 'This is good', 'not one', 'a@a.com'),
+(9, '34', '70c045393a462534cb75ab2a58f55d0a', 'CRMUSERS', 0, 'This is good 123', 'not one', 'a@a.com');
 
 -- --------------------------------------------------------
 
