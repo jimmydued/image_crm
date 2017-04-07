@@ -254,7 +254,8 @@ angular
                                   name:'imageCrmApp',
                                   files:[
                                     'scripts/controllers/addCrmUserController.js',
-                                    'scripts/directives/uicustomgrid/uicustomgrid.js'
+                                    'scripts/directives/uicustomgrid/uicustomgrid.js',
+                                    'scripts/directives/custommodal/customModal.js'
                                   ] 
                               })
                   }

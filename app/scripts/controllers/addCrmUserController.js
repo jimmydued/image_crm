@@ -21,6 +21,12 @@
 
         $scope.buttonText           =   "Add Member";
 
+        $scope.modalShown = false;
+        
+        $scope.toggleModal = function() {
+            $scope.modalShown = !$scope.modalShown;
+        };
+
          (function initController() {
             defaultParamSetup();
         })();
@@ -41,14 +47,14 @@
         };
 
         $scope.deleteUser = function(rowId){
-            vm.formData.id              =   rowId;
+            /*vm.formData.id              =   rowId;
             vm.formData.operationType   =   "deleteUser";
             CommonService.postData(apiUrl+"crmMember.php",vm.formData)
                     .then(function (gridData) {
                         if (gridData.error==false) {
                             parseData(gridData);
                         } 
-            });
+            });*/
         };        
 
         /*This method is callback when we are dealing with asynchronus http calls.*/
@@ -78,7 +84,7 @@
                                 {field: 'type'},
                                 {
                                     field: 'action',
-                                    cellTemplate:'<button class="btn btn-success btn-xs grid-bttn-align" ng-click="grid.appScope.editUser(row.entity.id)">Edit</button>  <button class="btn btn-danger btn-xs" ng-click="grid.appScope.deleteUser()">Delete</button>'
+                                    cellTemplate:'<button class="btn btn-success btn-xs grid-bttn-align" ng-click="grid.appScope.editUser(row.entity.id)">Edit</button> <button class="btn btn-danger btn-xs" ng-click="grid.appScope.toggleModal()">Delete</button>'
                                 }
                             ];
 

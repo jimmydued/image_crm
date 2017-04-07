@@ -65,6 +65,19 @@
 		</div>
       </div>
 	</div>
+	<!--Modal HTML specific to Page-->
+	<div class="row mtxl" >			
+		<modal-dialog show='modalShown' height="50px">		  
+		  	<div class="col-md-6 col-sm-6" >
+		  		Are you sure want to delete?
+		  	</div>
+		  	<div class="col-md-6 col-sm-6">		  		
+		  		<button type="submit" class="btn btn-primary" ng-disabled="crmMember.$invalid || dataLoading">Delete</button>
+				<button type="button" class="btn btn-danger" ng-click="resetFormToAddUser()">Cancel</button>
+		 	</div>
+		</modal-dialog>
+	</div>
+	<!--Modal HTML specific to Page-->
 	<image src="images/loading_spinner.gif" class="col-md-offset-5 loading" ng-if="dataLoading">	 
 	<div class="row mtxl" ng-if="gridOptions.data!=null && gridOptions.data.length>0">
       <div class="col-md-12 col-sm-12">
