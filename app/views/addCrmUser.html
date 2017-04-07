@@ -3,7 +3,7 @@
       <div class="col-md-12 col-sm-12">
 		 <div class="row">
 			<div class="col-lg-12">
-				<div class="panel panel-default">
+				<div class="panel panel-primary">
 					<div class="panel-heading">
 						<strong>Add CRM User</strong>
 					</div>
@@ -51,7 +51,7 @@
 							<div class="row">
 								<div class="col-lg-12 col-md-12 col-xs-12" align="center">
 									<button type="submit" class="btn btn-primary" ng-disabled="crmMember.$invalid || dataLoading">{{buttonText}}</button>
-									<button type="reset" class="btn btn-danger">Reset</button>
+									<button type="button" class="btn btn-danger" ng-click="resetFormToAddUser()">Reset</button>
 								</div>
 							</div>
 						</form>

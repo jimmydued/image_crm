@@ -13,7 +13,6 @@
 
         vm.formData = {};
 
-
         $scope.gridOptions = {};
 
         $scope.dataLoading = true;
@@ -48,6 +47,12 @@
             $scope.dataLoading          = false;
         }
 
+        $scope.resetFormToAddUser       =   function(){            
+            $scope.buttonText           =   "Add Member";
+            vm.formData = {};
+            defaultParamSetup();               
+        };
+
         /*This method is callback when we are dealing with asynchronus http calls.*/
         function parseData(response){
             
@@ -67,6 +72,7 @@
                             ];
 
             $scope.dataLoading = false;
+            $scope.resetFormToAddUser();
         }
 
         $scope.addUpdateCrmMember = function(){

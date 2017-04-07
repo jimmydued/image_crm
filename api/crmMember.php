@@ -98,7 +98,7 @@ $obj = new CrmMembers_Functions($data);
 if($task=="list"){
 
 	if(isset($data->id)){
-		if($data->operationType=="updateUser"){
+		if(isset($data->operationType) && $data->operationType=="updateUser"){
 			$result_data=$obj->addUpdateUser($data);
 			$obj->getGridData();	
 		}
