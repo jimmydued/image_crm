@@ -9,13 +9,13 @@
 
     function AddCrmUserCtrl(CommonService,$rootScope,apiUrl,$scope,dateFormat,_) {
         
-        var vm  =   this;
+        var vm                      =   this;
 
-        vm.formData = {};
+        vm.formData                 =   {};
 
-        $scope.gridOptions = {};
+        $scope.gridOptions          =   {};
 
-        $scope.dataLoading = true;
+        $scope.dataLoading          =   true;
 
         vm.formData.operationType   =   "get";
 
@@ -36,6 +36,17 @@
                     .then(function (editData) {
                         if (editData.error==false) {
                             parseUserInformatioData(editData);
+                        } 
+            });
+        };
+
+        $scope.deleteUser = function(rowId){
+            vm.formData.id              =   rowId;
+            vm.formData.operationType   =   "deleteUser";
+            CommonService.postData(apiUrl+"crmMember.php",vm.formData)
+                    .then(function (gridData) {
+                        if (gridData.error==false) {
+                            parseData(gridData);
                         } 
             });
         };        
@@ -67,7 +78,7 @@
                                 {field: 'type'},
                                 {
                                     field: 'action',
-                                    cellTemplate:'<button class="btn btn-success btn-xs" ng-click="grid.appScope.editUser(row.entity.id)">Edit</button>  <button class="btn btn-danger btn-xs" ng-click="grid.appScope.deleteUser()">Delete</button>'
+                                    cellTemplate:'<button class="btn btn-success btn-xs grid-bttn-align" ng-click="grid.appScope.editUser(row.entity.id)">Edit</button>  <button class="btn btn-danger btn-xs" ng-click="grid.appScope.deleteUser()">Delete</button>'
                                 }
                             ];
 
