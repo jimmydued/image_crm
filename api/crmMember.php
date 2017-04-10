@@ -9,6 +9,25 @@ class CrmMembers_Functions extends Common_Functions{
         $this->keepValidateUser($input_data);
     }	
 	/**
+		* Delete CRM members
+	*/
+	function deleteUser($input_data) { 
+			
+			if(isset($input_data->id) && $input_data->id>0){
+				$stmt = $this->conn->prepare("DELETE FROM admins WHERE id=".$input_data->id."
+					");
+			}			
+			
+			if ($stmt->execute()) {
+				$stmt->close();
+				
+			}
+			else
+			{
+				return NULL;
+			}
+	}
+	/**
 		* edit CRM members
 	*/
 	function addUpdateUser($input_data) { 
@@ -100,6 +119,10 @@ if($task=="list"){
 	if(isset($data->id)){
 		if(isset($data->operationType) && $data->operationType=="updateUser"){
 			$result_data=$obj->addUpdateUser($data);
+			$obj->getGridData();	
+		}
+		else if(isset($data->operationType) && $data->operationType=="deleteUser"){
+			$result_data=$obj->deleteUser($data);
 			$obj->getGridData();	
 		}
 		else

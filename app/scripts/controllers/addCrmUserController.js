@@ -23,7 +23,8 @@
 
         $scope.modalShown = false;
         
-        $scope.toggleModal = function() {
+        $scope.toggleModal = function(rowId) {
+            vm.formData.id              =   rowId;
             $scope.modalShown = !$scope.modalShown;
         };
 
@@ -39,22 +40,25 @@
         $scope.editUser = function(rowId){
             vm.formData.id = rowId;
             CommonService.postData(apiUrl+"crmMember.php",vm.formData)
-                    .then(function (editData) {
-                        if (editData.error==false) {
-                            parseUserInformatioData(editData);
+                    .then(function (editUserData) {
+                        if (editUserData.error==false) {
+                            parseUserInformatioData(editUserData);
                         } 
             });
         };
 
         $scope.deleteUser = function(rowId){
-            /*vm.formData.id              =   rowId;
+            $scope.dataLoading          =   true;
             vm.formData.operationType   =   "deleteUser";
             CommonService.postData(apiUrl+"crmMember.php",vm.formData)
                     .then(function (gridData) {
                         if (gridData.error==false) {
+                            vm.formData.id              =   "";
+                            $scope.modalShown   = !$scope.modalShown;
+                            $scope.message      = "User Deleted Sucessfully";   
                             parseData(gridData);
                         } 
-            });*/
+            });
         };        
 
         /*This method is callback when we are dealing with asynchronus http calls.*/
@@ -84,11 +88,12 @@
                                 {field: 'type'},
                                 {
                                     field: 'action',
-                                    cellTemplate:'<button class="btn btn-success btn-xs grid-bttn-align" ng-click="grid.appScope.editUser(row.entity.id)">Edit</button> <button class="btn btn-danger btn-xs" ng-click="grid.appScope.toggleModal()">Delete</button>'
+                                    cellTemplate:'<button class="btn btn-success btn-xs grid-bttn-align" ng-click="grid.appScope.editUser(row.entity.id)">Edit</button> <button class="btn btn-danger btn-xs" ng-click="grid.appScope.toggleModal(row.entity.id)">Delete</button>'
                                 }
                             ];
 
             $scope.dataLoading = false;
+
             $scope.resetFormToAddUser();
         }
 
@@ -106,6 +111,13 @@
             CommonService.postData(apiUrl+"crmMember.php",vm.formData)
                     .then(function (addUpdateData) {
                         if (addUpdateData.error==false) {
+                            if(vm.formData.operationType=="updateUser"){
+                                $scope.message  =   "User updated sucessfully";
+                            }
+                            else
+                            {
+                                $scope.message  =   "User added sucessfully";
+                            }
                             parseData(addUpdateData);
                         } 
             });

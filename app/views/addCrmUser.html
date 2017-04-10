@@ -66,14 +66,19 @@
       </div>
 	</div>
 	<!--Modal HTML specific to Page-->
+	<div id='operationMessage' ng-if="!dataLoading">{{message}}</div>
 	<div class="row mtxl" >			
-		<modal-dialog show='modalShown' height="50px">		  
-		  	<div class="col-md-6 col-sm-6" >
-		  		Are you sure want to delete?
+		<modal-dialog show='modalShown' width="226px" height="124px">		  
+		  	<div class="row mtxl" >
+			  	<div class="col-md-12 col-sm-12" align="center">
+			  		Are you sure want to delete this User?
+			  	</div>
 		  	</div>
-		  	<div class="col-md-6 col-sm-6">		  		
-		  		<button type="submit" class="btn btn-primary" ng-disabled="crmMember.$invalid || dataLoading">Delete</button>
-				<button type="button" class="btn btn-danger" ng-click="resetFormToAddUser()">Cancel</button>
+		  	<div class="row mtxl" >
+			  	<div class="col-md-12 col-sm-12" align="center">		  		
+			  		<button type="button" class="btn btn-primary" ng-click="deleteUser()">Delete</button>
+					<button type="button" class="btn btn-danger" ng-click="toggleModal()">Cancel</button>
+			 	</div>
 		 	</div>
 		</modal-dialog>
 	</div>
