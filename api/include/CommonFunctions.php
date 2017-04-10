@@ -7,7 +7,7 @@ $data 			= 	json_decode($request_body);
 
 $task			=	(!empty($data->task)?$data->task:"list");
 
-@$data->apiKey			=	(!empty($data->apiKey)?$data->apiKey:base64_encode("jimmydued"));
+//@$data->apiKey			=	(!empty($data->apiKey)?$data->apiKey:base64_encode("jimmydued"));
 
 class Common_Functions {
 	
@@ -96,20 +96,19 @@ class Common_Functions {
      */
     public function isUserExistedByUsername($username) {
         
-		$stmt = $this->conn->prepare("SELECT * from admins WHERE username = '".$username."' OR email='".$username."'");
-			
+		$stmt = $this->conn->prepare("SELECT * from admins WHERE username = '".$username."' OR email='".$username."'");	
         $stmt->execute();
  
         $stmt->store_result();
  
-        if ($stmt->num_rows > 0) {
+        if ($stmt->num_rows!=0) {
             // user existed 
             $stmt->close();
-            return true;
+            return 1;
         } else {
             // user not existed
             $stmt->close();
-            return false;
+            return 0;
         }
     }
 	

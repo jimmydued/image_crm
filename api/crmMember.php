@@ -135,10 +135,27 @@ if($task=="list"){
 	}
 	else
 	{
-		if($data->operationType=="set"){
-			$result_data=$obj->addUpdateUser($data);
+		if($data->operationType=="getUsernameEmail"){
+			
+			$result_data=$obj->isUserExistedByUsername($data->checkParam);
+
+			$response["error"] = FALSE;
+			
+			if($result_data==1){
+				$response["data"] = false;	
+			}
+			else{
+				$response["data"] = true;	
+			}			
+			echo json_encode($response);
 		}
-		$obj->getGridData();
+		else
+		{
+			if($data->operationType=="set"){
+				$result_data=$obj->addUpdateUser($data);
+			}
+			$obj->getGridData();	
+		}
 	}	
 }
 ?>

@@ -255,7 +255,8 @@ angular
                                   files:[
                                     'scripts/controllers/addCrmUserController.js',
                                     'scripts/directives/uicustomgrid/uicustomgrid.js',
-                                    'scripts/directives/custommodal/customModal.js'
+                                    'scripts/directives/custommodal/customModal.js',
+                                    'scripts/directives/usernameemailcheck/usernameEmailAvailable.js'
                                   ] 
                               })
                   }
