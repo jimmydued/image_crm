@@ -15,23 +15,19 @@
 
         $scope.gridOptions = {};
 
-        $scope.dataLoading = true;
-        
+        $scope.dataLoading = true;        
          
         /*This method is callback when we are dealing with asynchronus http calls.*/
         function parseData(response){
             
-            if(response.data!=null){
-                response.data = [response.data];
-            }
-            
-            $scope.gridOptions.data     = response.data;
+            $scope.gridOptions.data         = response.data;
+
+            $scope.gridOptions.countries    = response.countries;
 
             $scope.gridOptions.columnDefs   = [
                                 {
                                     field: 'created',
                                     type: 'date',
-                                    cellFilter: 'date:\'MM/dd/yyyy\'',
                                     grouping: { groupPriority: 0 }, 
                                     sort: { priority: 0, direction: 'desc' }, 
                                     width: '18%', 

@@ -121,21 +121,20 @@ class Common_Functions {
 	/**
 		 * Get Countries Data
 	 */
-	function getCountriesData() { 
-	 
-					
-			$stmt = $this->conn->prepare("SELECT * from countries WHERE 1=1");
-	            
-			if ($stmt->execute()) {
-				$result = $stmt->get_result()->fetch_assoc();
-				$stmt->close();
-				return $result;
-				
-			} else {
-				return NULL;
-			}
+	function getCountriesData(){ 					
+			
+        $stmt = $this->conn->prepare("SELECT id,code,name from countries");
+        if ($stmt->execute()) {             
+            $result = $this->fetchArray($stmt);
+            return $result;             
+        }
+        else
+        {
+            return NULL;
+        }
 	}
 
+    /*Common function to fetch and send back the array from fetch row*/
     function fetchArray($stmt){
         $data = array();
         $result = $stmt->get_result();

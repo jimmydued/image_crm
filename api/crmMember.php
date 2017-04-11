@@ -28,7 +28,7 @@ class CrmMembers_Functions extends Common_Functions{
 			}
 	}
 	/**
-		* edit CRM members
+		* add/edit CRM members
 	*/
 	function addUpdateUser($input_data) { 
 			
@@ -51,37 +51,21 @@ class CrmMembers_Functions extends Common_Functions{
 			}
 	}
 
-	function addUser($input_data) { 
-			
-			$where="";
-
-			$stmt = $this->conn->prepare("INSERT INTO admins (username, password, firstname, lastname, email, status, type) VALUES ('$input_data->username','".md5($input_data->password)."','$input_data->firstname','$input_data->lastname','$input_data->email',0,'CRMUSERS')
-			");
-			
-			if ($stmt->execute()) {
-				$stmt->close();
-				
-			} else {
-				return NULL;
-			}
-	}
 	/**
 		* get CRM members
 	*/
 	function getUsers() { 
 			
-			$where = "";
+		$stmt = $this->conn->prepare("Select id,username,firstname,lastname,email,status,type from admins order by id desc");
 
-			$stmt = $this->conn->prepare("Select id,username,firstname,lastname,email,status,type from admins order by id desc");
-
-			if ($stmt->execute()) {				
-				$result = $this->fetchArray($stmt);
-				return $result;				
-			}
-			else
-			{
-				return NULL;
-			}
+		if ($stmt->execute()) {				
+			$result = $this->fetchArray($stmt);
+			return $result;				
+		}
+		else
+		{
+			return NULL;
+		}
 	}
 	/**
 		* get CRM member Grid Data
