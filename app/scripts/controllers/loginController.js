@@ -18,8 +18,7 @@
         })();
 
         function login() {
-            vm.dataLoading = true;
-            
+            vm.dataLoading = true;            
             var loggedInUserData = {};
             loggedInUserData.apiKey     = Base64Service.encode(vm.username);   
             loggedInUserData.password   = Base64Service.encode(vm.password);

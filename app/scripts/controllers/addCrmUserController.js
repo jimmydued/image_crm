@@ -5,9 +5,9 @@
         .module('imageCrmApp')
         .controller('AddCrmUserCtrl', AddCrmUserCtrl);
 
-    AddCrmUserCtrl.$inject = ['CommonService','$rootScope','apiUrl','$scope','dateFormat','_'];
+    AddCrmUserCtrl.$inject = ['CommonService','$rootScope','apiUrl','$scope','dateFormat','_','$http'];
 
-    function AddCrmUserCtrl(CommonService,$rootScope,apiUrl,$scope,dateFormat,_) {
+    function AddCrmUserCtrl(CommonService,$rootScope,apiUrl,$scope,dateFormat,_,$http) {
         
         var vm                      =   this;
 
@@ -39,9 +39,11 @@
 
         $scope.editUser = function(rowId){
             vm.formData.id = rowId;
+            $http.defaults.headers.common.Authorization.id = rowId;
+            vm.formData.operationType   =   "getUserInformation";
             CommonService.postData(apiUrl+"crmMember.php",vm.formData)
                     .then(function (editUserData) {
-                        if (editUserData.error==false) {
+                        if(editUserData.error==false) {
                             parseUserInformatioData(editUserData);
                         } 
             });

@@ -342,8 +342,7 @@ angular
         var loggedIn = $rootScope.globals.currentUser;
         if (restrictedPage && !loggedIn) {
           $location.path('/login');
-        }
-      
+        }      
     });
   }
 

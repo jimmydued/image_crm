@@ -7,29 +7,27 @@
  * # uiGridDirective
  */
 angular.module('imageCrmApp')
-  .directive('usernameEmailAvailable',function($http,CommonService,apiUrl){
+  .directive('usernameEmailAvailable',function($http,CommonService,apiUrl,$timeout,$q,_){
     return {
-          restrict: 'AE',
-                require: 'ngModel',
-          scope: {
-            options : '=',
-          },
-          link: function(scope, elm, attr, model) {
-            
-            model.$asyncValidators.usernameEmailExists = function() { 
-              var postData = {};
-              postData                = $http.defaults.headers.common.Authorization;
-              postData.checkParam     = model.$viewValue;
-              postData.operationType  = "getUsernameEmail";
-              console.log(model.$name);                      
-              return CommonService.postData(apiUrl+"crmMember.php",postData).then(function (fetchData) {
-                  if (fetchData.error==false)
-                  {
-                     model.$setValidity('usernameExists', fetchData.data); 
-                  } 
-              });
-            };
-          }
+              restrict: 'AE',
+              require: 'ngModel',
+              link: function(scope, elm, attr, model) {            
+                elm.bind('keydown keypress', function() {
+                  model.$asyncValidators.usernameEmailExists = function() { 
+                    var postData = {};
+                      postData                = $http.defaults.headers.common.Authorization;
+                      postData.checkParam     = model.$viewValue;
+                      postData.operationType  = "getUsernameEmail";
+                                             
+                      return CommonService.postData(apiUrl+"crmMember.php",postData).then(function (fetchData) {
+                          if (fetchData.error==false)
+                          {
+                             model.$setValidity('usernameExists', fetchData.data);
+                          } 
+                      });
+                  };
+                });            
+              }
       }
   });
 

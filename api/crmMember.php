@@ -116,7 +116,8 @@ $obj = new CrmMembers_Functions($data);
 
 if($task=="list"){
 
-	if(isset($data->id)){
+	if(isset($data->id) && $data->operationType!="getUsernameEmail"){
+
 		if(isset($data->operationType) && $data->operationType=="updateUser"){
 			$result_data=$obj->addUpdateUser($data);
 			$obj->getGridData();	
@@ -137,8 +138,12 @@ if($task=="list"){
 	{
 		if($data->operationType=="getUsernameEmail"){
 			
-			$result_data=$obj->isUserExistedByUsername($data->checkParam);
+			if(!isset($data->id)){
+				$data->id = null; 
+			}
 
+			$result_data=$obj->isUserExistedByUsername($data->checkParam,$data->id);
+			
 			$response["error"] = FALSE;
 			
 			if($result_data==1){
