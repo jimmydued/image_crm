@@ -27,12 +27,9 @@ class aCart_Functions extends Common_Functions{
 $tf = new aCart_Functions($data);
 
 if($task=="list"){
-	$result_data			=	$tf->getCartData();
-	$countries_Data			=	$tf->getCountriesData();
 	$response["error"] 		= 	FALSE;
 	$response["error_msg"] 	= 	"";
-	$response["data"] 		= 	$result_data;
-	$response["countries"] 	= 	$countries_Data;
+	$response["data"] 		= 	$tf->getCartData();	
 	echo json_encode($response);
 }
 ?>

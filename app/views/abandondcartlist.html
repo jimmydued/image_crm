@@ -7,16 +7,13 @@
          206 Item remaining
       </div>
 	  <div class="col-md-3 col-sm-3 col-xs-3 form-group">
-      <select class="form-control">
-        <option>All Countries</option>
-      	<option ng-repeat="option in gridOptions.countries" value="{{option.id}}">{{option.name}}</option>
-      </select>
+      <countries></countries>
      </div>
 	  <div class="col-md-3 col-sm-3 col-xs-3 form-group">
         <select class="form-control">
-            <option>All Statuses</option>
-			<option>Started</option>
-			<option>Pending</option>
+          <option>All Statuses</option>
+			    <option>Started</option>
+			    <option>Pending</option>
         </select>
       </div>
 	</div>

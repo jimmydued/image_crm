@@ -185,7 +185,8 @@ angular
                                   name:'imageCrmApp',
                                   files:[
                                     'scripts/controllers/abandondCartListController.js',
-                                    'scripts/directives/uicustomgrid/uicustomgrid.js'
+                                    'scripts/directives/uicustomgrid/uicustomgrid.js',
+                                    'scripts/directives/countries/countries.js'
                                   ] 
                               })
                   }
@@ -237,7 +238,8 @@ angular
                                   name:'imageCrmApp',
                                   files:[
                                     'scripts/controllers/transactionSearchController.js',
-                                    'scripts/directives/uicustomgrid/uicustomgrid.js'
+                                    'scripts/directives/uicustomgrid/uicustomgrid.js',
+                                    'scripts/directives/countries/countries.js',
                                   ] 
                               })
                   }

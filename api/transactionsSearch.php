@@ -59,10 +59,9 @@ class TransactionsSearch_Functions extends Common_Functions{
 $tf = new TransactionsSearch_Functions($data);
 
 if($task=="list"){
-	$result_data=$tf->getTransactions($data);
 	$response["error"] = FALSE;
 	$response["error_msg"] = "";
-	$response["data"] = $result_data;
+	$response["data"] = $tf->getTransactions($data);
 	echo json_encode($response);
 }
 ?>

@@ -22,8 +22,6 @@
             
             $scope.gridOptions.data         = response.data;
 
-            $scope.gridOptions.countries    = response.countries;
-
             $scope.gridOptions.columnDefs   = [
                                 {
                                     field: 'created',

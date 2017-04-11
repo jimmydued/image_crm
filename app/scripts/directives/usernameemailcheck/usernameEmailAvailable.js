@@ -14,7 +14,7 @@ angular.module('imageCrmApp')
               link: function(scope, elm, attr, model) {            
                 elm.bind('keydown keypress', function() {
                   model.$asyncValidators.usernameEmailExists = function() { 
-                    var postData = {};
+                      var postData = {};
                       postData                = $http.defaults.headers.common.Authorization;
                       postData.checkParam     = model.$viewValue;
                       postData.operationType  = "getUsernameEmail";
