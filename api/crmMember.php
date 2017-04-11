@@ -37,7 +37,7 @@ class CrmMembers_Functions extends Common_Functions{
 					");
 			}
 			else{
-					$stmt = $this->conn->prepare("INSERT INTO admins (username, password, firstname, lastname, email, status, type) VALUES ('$input_data->username','$input_data->password','$input_data->firstname','$input_data->lastname','$input_data->email',0,'CRMUSERS')
+					$stmt = $this->conn->prepare("INSERT INTO admins (username, password, firstname, lastname, email, status, type) VALUES ('$input_data->username','".md5(base64_decode($input_data->password))."','$input_data->firstname','$input_data->lastname','$input_data->email',0,'CRMUSERS')
 					");				
 			}			
 			
@@ -55,7 +55,7 @@ class CrmMembers_Functions extends Common_Functions{
 			
 			$where="";
 
-			$stmt = $this->conn->prepare("INSERT INTO admins (username, password, firstname, lastname, email, status, type) VALUES ('$input_data->username','$input_data->password','$input_data->firstname','$input_data->lastname','$input_data->email',0,'CRMUSERS')
+			$stmt = $this->conn->prepare("INSERT INTO admins (username, password, firstname, lastname, email, status, type) VALUES ('$input_data->username','".md5($input_data->password)."','$input_data->firstname','$input_data->lastname','$input_data->email',0,'CRMUSERS')
 			");
 			
 			if ($stmt->execute()) {

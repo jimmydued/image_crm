@@ -5,9 +5,9 @@
         .module('imageCrmApp')
         .controller('AddCrmUserCtrl', AddCrmUserCtrl);
 
-    AddCrmUserCtrl.$inject = ['CommonService','$rootScope','apiUrl','$scope','dateFormat','_','$http'];
+    AddCrmUserCtrl.$inject = ['CommonService','$rootScope','apiUrl','$scope','dateFormat','_','$http','Base64Service'];
 
-    function AddCrmUserCtrl(CommonService,$rootScope,apiUrl,$scope,dateFormat,_,$http) {
+    function AddCrmUserCtrl(CommonService,$rootScope,apiUrl,$scope,dateFormat,_,$http,Base64Service) {
         
         var vm                      =   this;
 
@@ -109,6 +109,8 @@
             else{
                 vm.formData.operationType   =   "set";
             }
+
+            vm.formData.password   = Base64Service.encode(vm.formData.password);
             
             CommonService.postData(apiUrl+"crmMember.php",vm.formData)
                     .then(function (addUpdateData) {
