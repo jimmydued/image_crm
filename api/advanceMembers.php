@@ -14,10 +14,8 @@ class Users_Functions extends Common_Functions{
 	function getUsers($input_data) { 
 			
 			$where="";
-			if(!empty($input_data->name)){
-				
-				$where.=" AND (firstname LIKE '%$input_data->name%' OR lastname LIKE '%$input_data->name%' OR  email LIKE '%$input_data->name%' ) ";
-				
+			if(!empty($input_data->name)){				
+				$where.=" AND (firstname LIKE '%$input_data->name%' OR lastname LIKE '%$input_data->name%' OR  email LIKE '%$input_data->name%' ) ";				
 			}
 			
 			if(!empty($input_data->city)){
@@ -64,12 +62,11 @@ class Users_Functions extends Common_Functions{
 			}
 			$stmt = $this->conn->prepare("SELECT email,username,firstname,lastname,company, country, city, phone, mobile,zipcode from users WHERE 1=1 $where");
 			
-			if ($stmt->execute()) {
-				$result = $stmt->get_result()->fetch_assoc();
-				$stmt->close();
-				return $result;
-				
-			} else {
+			if ($stmt->execute()){
+				$result = $this->fetchArray($stmt);
+				return $result;				
+			}
+			else{
 				return NULL;
 			}
 	}

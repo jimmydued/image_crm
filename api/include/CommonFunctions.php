@@ -7,7 +7,7 @@ $data 			= 	json_decode($request_body);
 
 $task			=	(!empty($data->task)?$data->task:"list");
 
-@$data->apiKey			=	(!empty($data->apiKey)?$data->apiKey:base64_encode("jimmydued"));
+//@$data->apiKey			=	(!empty($data->apiKey)?$data->apiKey:base64_encode("jimmydued"));
 
 class Common_Functions {
 	
@@ -94,43 +94,47 @@ class Common_Functions {
 	/**
      * Check user is existed or not by username
      */
-    public function isUserExistedByUsername($username) {
+    public function isUserExistedByUsername($username,$id=null) {
+        $condition = "";
         
-		$stmt = $this->conn->prepare("SELECT * from admins WHERE username = '".$username."' OR email='".$username."'");
-			
+        if(isset($id)){
+            $condition.=" AND id!=".$id."";
+        }
+             
+		$stmt = $this->conn->prepare("SELECT * from admins WHERE (username = '".$username."' OR email='".$username."') ".$condition." ");
+
         $stmt->execute();
  
         $stmt->store_result();
  
-        if ($stmt->num_rows > 0) {
+        if ($stmt->num_rows!=0) {
             // user existed 
             $stmt->close();
-            return true;
+            return 1;
         } else {
             // user not existed
             $stmt->close();
-            return false;
+            return 0;
         }
     }
 	
 	/**
 		 * Get Countries Data
 	 */
-	function getCountriesData() { 
-	 
-					
-			$stmt = $this->conn->prepare("SELECT * from countries WHERE 1=1");
-	            
-			if ($stmt->execute()) {
-				$result = $stmt->get_result()->fetch_assoc();
-				$stmt->close();
-				return $result;
-				
-			} else {
-				return NULL;
-			}
+	function getCountriesData(){ 					
+			
+        $stmt = $this->conn->prepare("SELECT id,code,name from countries");
+        if ($stmt->execute()) {             
+            $result = $this->fetchArray($stmt);
+            return $result;             
+        }
+        else
+        {
+            return NULL;
+        }
 	}
 
+    /*Common function to fetch and send back the array from fetch row*/
     function fetchArray($stmt){
         $data = array();
         $result = $stmt->get_result();

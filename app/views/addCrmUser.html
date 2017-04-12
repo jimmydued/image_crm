@@ -9,16 +9,19 @@
 					</div>
 					<div class="panel-body">
 						<form role="form" name="crmMember" method="post" ng-submit="addUpdateCrmMember()">
+							<div class="row" ng-if="crmMember.$error.usernameExists" align="center">
+								<div ng-if="crmMember.$error.usernameExists" class="col-lg-12 col-md-12 col-xs-12 alert alert-danger">Already exist</div>
+							</div>	
 							<div class="row">
 									<div class="col-lg-4 col-md-4 col-xs-4">
 										<div class="form-group">
 												<label>First Name</label>
 												<input class="form-control" placeholder="Please Enter First Name" name="firstname" ng-model="vm.formData.firstname" type="text"  ng-blur="firstName = commonService.checkElementLength(vm.formData,'firstname');" required ng-class="{myBlur:firstName}">
-											</div>
-											<div class="form-group">
-												<label>UserName</label>
-												<input class="form-control" placeholder="Please Enter UserName" name="username" ng-model="vm.formData.username" type="text"  ng-blur="username = commonService.checkElementLength(vm.formData,'username');" required ng-class="{myBlur:username}">
-											</div>
+										</div>
+										<div class="form-group">
+											<label>UserName</label>
+											<input class="form-control" placeholder="Please Enter UserName" name="username" ng-model="vm.formData.username" type="text"  ng-blur="username = commonService.checkElementLength(vm.formData,'username');" required ng-class="{myBlur:username}" username-email-available>
+										</div>
 									</div>
 									<!-- /.col-lg-6 (nested) -->
 									<div class="col-lg-4 col-md-4 col-xs-4">
@@ -42,7 +45,7 @@
 											<label>Email ID</label>
 											<input class="form-control" placeholder="Please Enter Email ID" name="email" ng-model="vm.formData.email"
 											type="email"  ng-blur="email = commonService.checkElementLength(vm.formData,'email');" required ng-class="{myBlur:email}"
-											>
+											username-email-available>
 										</div>
 									</div>
 									<!-- /.col-lg-6 (nested) -->								
@@ -50,7 +53,7 @@
 							<!-- /.row (nested) -->
 							<div class="row">
 								<div class="col-lg-12 col-md-12 col-xs-12" align="center">
-									<button type="submit" class="btn btn-primary" ng-disabled="crmMember.$invalid || dataLoading">{{buttonText}}</button>
+									<button type="submit" class="btn btn-primary" ng-disabled="crmMember.$invalid">{{buttonText}}</button>
 									<button type="button" class="btn btn-danger" ng-click="resetFormToAddUser()">Reset</button>
 								</div>
 							</div>
@@ -65,10 +68,28 @@
 		</div>
       </div>
 	</div>
+	<!--Modal HTML specific to Page-->
+	<div id='operationMessage' ng-if="!dataLoading">{{message}}</div>
+	<div class="row mtxl" >			
+		<modal-dialog show='modalShown' width="226px" height="124px">		  
+		  	<div class="row mtxl" >
+			  	<div class="col-md-12 col-sm-12" align="center">
+			  		Are you sure want to delete this User?
+			  	</div>
+		  	</div>
+		  	<div class="row mtxl" >
+			  	<div class="col-md-12 col-sm-12" align="center">		  		
+			  		<button type="button" class="btn btn-primary" ng-click="deleteUser()">Delete</button>
+					<button type="button" class="btn btn-danger" ng-click="toggleModal()">Cancel</button>
+			 	</div>
+		 	</div>
+		</modal-dialog>
+	</div>
+	<!--Modal HTML specific to Page-->
 	<image src="images/loading_spinner.gif" class="col-md-offset-5 loading" ng-if="dataLoading">	 
 	<div class="row mtxl" ng-if="gridOptions.data!=null && gridOptions.data.length>0">
       <div class="col-md-12 col-sm-12">
-      	<div ui-grid-grouping ui-grid="gridOptions" class="grid panel panel-default"></div>
+      	<div ui-grid-grouping ui-grid="gridOptions" class="panel panel-primary grid"></div>
 	  </div>	
 	</div>
 	<div class="row alert alert-info" ng-if="gridOptions && gridOptions.data==null && !dataLoading" align="center">

@@ -9,7 +9,26 @@ class CrmMembers_Functions extends Common_Functions{
         $this->keepValidateUser($input_data);
     }	
 	/**
-		* edit CRM members
+		* Delete CRM members
+	*/
+	function deleteUser($input_data) { 
+			
+			if(isset($input_data->id) && $input_data->id>0){
+				$stmt = $this->conn->prepare("DELETE FROM admins WHERE id=".$input_data->id."
+					");
+			}			
+			
+			if ($stmt->execute()) {
+				$stmt->close();
+				
+			}
+			else
+			{
+				return NULL;
+			}
+	}
+	/**
+		* add/edit CRM members
 	*/
 	function addUpdateUser($input_data) { 
 			
@@ -18,7 +37,7 @@ class CrmMembers_Functions extends Common_Functions{
 					");
 			}
 			else{
-					$stmt = $this->conn->prepare("INSERT INTO admins (username, password, firstname, lastname, email, status, type) VALUES ('$input_data->username','$input_data->password','$input_data->firstname','$input_data->lastname','$input_data->email',0,'CRMUSERS')
+					$stmt = $this->conn->prepare("INSERT INTO admins (username, password, firstname, lastname, email, status, type) VALUES ('$input_data->username','".md5(base64_decode($input_data->password))."','$input_data->firstname','$input_data->lastname','$input_data->email',0,'CRMUSERS')
 					");				
 			}			
 			
@@ -32,37 +51,21 @@ class CrmMembers_Functions extends Common_Functions{
 			}
 	}
 
-	function addUser($input_data) { 
-			
-			$where="";
-
-			$stmt = $this->conn->prepare("INSERT INTO admins (username, password, firstname, lastname, email, status, type) VALUES ('$input_data->username','$input_data->password','$input_data->firstname','$input_data->lastname','$input_data->email',0,'CRMUSERS')
-			");
-			
-			if ($stmt->execute()) {
-				$stmt->close();
-				
-			} else {
-				return NULL;
-			}
-	}
 	/**
 		* get CRM members
 	*/
 	function getUsers() { 
 			
-			$where = "";
+		$stmt = $this->conn->prepare("Select id,username,firstname,lastname,email,status,type from admins order by id desc");
 
-			$stmt = $this->conn->prepare("Select id,username,firstname,lastname,email,status,type from admins order by id desc");
-
-			if ($stmt->execute()) {				
-				$result = $this->fetchArray($stmt);
-				return $result;				
-			}
-			else
-			{
-				return NULL;
-			}
+		if ($stmt->execute()) {				
+			$result = $this->fetchArray($stmt);
+			return $result;				
+		}
+		else
+		{
+			return NULL;
+		}
 	}
 	/**
 		* get CRM member Grid Data
@@ -97,9 +100,14 @@ $obj = new CrmMembers_Functions($data);
 
 if($task=="list"){
 
-	if(isset($data->id)){
+	if(isset($data->id) && $data->operationType!="getUsernameEmail"){
+
 		if(isset($data->operationType) && $data->operationType=="updateUser"){
 			$result_data=$obj->addUpdateUser($data);
+			$obj->getGridData();	
+		}
+		else if(isset($data->operationType) && $data->operationType=="deleteUser"){
+			$result_data=$obj->deleteUser($data);
 			$obj->getGridData();	
 		}
 		else
@@ -112,10 +120,31 @@ if($task=="list"){
 	}
 	else
 	{
-		if($data->operationType=="set"){
-			$result_data=$obj->addUpdateUser($data);
+		if($data->operationType=="getUsernameEmail"){
+			
+			if(!isset($data->id)){
+				$data->id = null; 
+			}
+
+			$result_data=$obj->isUserExistedByUsername($data->checkParam,$data->id);
+			
+			$response["error"] = FALSE;
+			
+			if($result_data==1){
+				$response["data"] = false;	
+			}
+			else{
+				$response["data"] = true;	
+			}			
+			echo json_encode($response);
 		}
-		$obj->getGridData();
+		else
+		{
+			if($data->operationType=="set"){
+				$result_data=$obj->addUpdateUser($data);
+			}
+			$obj->getGridData();	
+		}
 	}	
 }
 ?>

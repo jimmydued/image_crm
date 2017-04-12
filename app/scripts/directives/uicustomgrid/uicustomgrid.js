@@ -14,8 +14,7 @@ angular.module('imageCrmApp')
 					scope: {
 					  options : '=',
 					},
-					link: function(scope, element, attrs) {
-						
+					link: function(scope, element, attrs) {				
 
 						scope.gridOptions = {
 	            			enableRowHeaderSelection  : scope.options.enableRowHeaderSelection ? scope.options.enableRowHeaderSelection : false,

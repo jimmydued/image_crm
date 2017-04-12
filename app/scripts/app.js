@@ -185,7 +185,8 @@ angular
                                   name:'imageCrmApp',
                                   files:[
                                     'scripts/controllers/abandondCartListController.js',
-                                    'scripts/directives/uicustomgrid/uicustomgrid.js'
+                                    'scripts/directives/uicustomgrid/uicustomgrid.js',
+                                    'scripts/directives/countries/countries.js'
                                   ] 
                               })
                   }
@@ -203,7 +204,8 @@ angular
                                   name:'imageCrmApp',
                                   files:[                       
                                     'scripts/controllers/advancedMemberSearchController.js',
-                                    'scripts/directives/uicustomgrid/uicustomgrid.js'
+                                    'scripts/directives/uicustomgrid/uicustomgrid.js',
+                                    'scripts/directives/countries/countries.js'
                                   ] 
                               })
                     }
@@ -237,7 +239,8 @@ angular
                                   name:'imageCrmApp',
                                   files:[
                                     'scripts/controllers/transactionSearchController.js',
-                                    'scripts/directives/uicustomgrid/uicustomgrid.js'
+                                    'scripts/directives/uicustomgrid/uicustomgrid.js',
+                                    'scripts/directives/countries/countries.js',
                                   ] 
                               })
                   }
@@ -254,7 +257,9 @@ angular
                                   name:'imageCrmApp',
                                   files:[
                                     'scripts/controllers/addCrmUserController.js',
-                                    'scripts/directives/uicustomgrid/uicustomgrid.js'
+                                    'scripts/directives/uicustomgrid/uicustomgrid.js',
+                                    'scripts/directives/custommodal/customModal.js',
+                                    'scripts/directives/usernameemailcheck/usernameEmailAvailable.js'
                                   ] 
                               })
                   }
@@ -356,8 +361,7 @@ angular
         var loggedIn = $rootScope.globals.currentUser;
         if (restrictedPage && !loggedIn) {
           $location.path('/login');
-        }
-      
+        }      
     });
   }
 
