@@ -21,7 +21,7 @@
 
         $scope.buttonText           =   "Add Member";
 
-        $scope.modalShown = false;
+        $scope.modalShown           =   false;
         
         $scope.toggleModal = function(rowId) {
             vm.formData.id              =   rowId;
