@@ -208,7 +208,7 @@ angular
                               })
                     }
                 ]
-          }
+        }
     })
 
     .state('dashboard.searchClientInformation',{

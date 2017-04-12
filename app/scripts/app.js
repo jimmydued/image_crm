@@ -204,7 +204,8 @@ angular
                                   name:'imageCrmApp',
                                   files:[                       
                                     'scripts/controllers/advancedMemberSearchController.js',
-                                    'scripts/directives/uicustomgrid/uicustomgrid.js'
+                                    'scripts/directives/uicustomgrid/uicustomgrid.js',
+                                    'scripts/directives/countries/countries.js'
                                   ] 
                               })
                     }

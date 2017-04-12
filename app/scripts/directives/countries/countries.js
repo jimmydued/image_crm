@@ -13,17 +13,15 @@ angular.module('imageCrmApp')
               restrict: 'E',
               link: function(scope, element, attrs) {       
                 var postData = {};
-                postData                = $http.defaults.headers.common.Authorization;
-                
+                postData                = $http.defaults.headers.common.Authorization;                
                 CommonService.postData(apiUrl+"countries.php",postData).then(function (fetchData) {
                     if (fetchData.error==false)
                     {
                         scope.options = fetchData.countries;
                     } 
                 });
-
               }
-      }
+          }
   });
 
 
