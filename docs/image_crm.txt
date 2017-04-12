@@ -1,3 +1,9 @@
+Sql to update
+
+ALTER TABLE `products` ADD `crm_product` TINYINT(1) NOT NULL DEFAULT '0' AFTER `featured_product`;
+
+
+
 TASK we can start
 
 # 1) USER add/edit/delete done by superadmin
@@ -8,6 +14,12 @@ TASK we can start
 # 6) Package and Package Subscription?
 
 
+Login Service
+  1) user_type need to add with option admin/user/client/contributor
+
+  2) word country/state/city database need to import
+
+  3)  database to uploaded on w3demo
 
 
 

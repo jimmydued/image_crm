@@ -266,6 +266,22 @@ angular
                 ]
           }
     })  
+	.state('dashboard.addCrmProduct',{
+        templateUrl:'views/addCrmProduct.html',
+        url:'/addCrmProduct',
+        resolve: {
+                    loadMyFile:["$ocLazyLoad", function($ocLazyLoad) {
+                      return $ocLazyLoad.load({
+                                  name:'imageCrmApp',
+                                  files:[
+                                    'scripts/controllers/addCrmProductController.js',
+                                    'scripts/directives/uicustomgrid/uicustomgrid.js'
+                                  ] 
+                              })
+                  }
+                ]
+          }
+    })  
     .state('dashboard.chart',{
         templateUrl:'views/chart.html',
         url:'/chart',
