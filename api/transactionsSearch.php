@@ -45,11 +45,9 @@ class TransactionsSearch_Functions extends Common_Functions{
 			
 			$stmt = $this->conn->prepare("SELECT a.id, a.txn_id, a.order_total, a.order_date, a.order_status,b.username,a.created  FROM orders as a left join users as b on a.user_id=b.id WHERE 1=1 $where");
 	            
-			if ($stmt->execute()) {
-				$result = $stmt->get_result()->fetch_assoc();
-				$stmt->close();
-				return $result;
-				
+			if ($stmt->execute()){
+				$result = $this->fetchArray($stmt);
+				return $result;				
 			} else {
 				return NULL;
 			}
