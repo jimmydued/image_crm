@@ -33,7 +33,14 @@ class CrmMembers_Functions extends Common_Functions{
 	function addUpdateUser($input_data) { 
 			
 			if(isset($input_data->id) && $input_data->id>0){
-				$stmt = $this->conn->prepare("UPDATE admins SET username='".$input_data->username."',password = '".md5(base64_decode($input_data->password))."',firstname='".$input_data->firstname."', lastname='".$input_data->lastname."', email='".$input_data->email."' WHERE id=".$input_data->id."
+				
+				$passwordString		=	"";
+				
+				if(isset($input_data->password)){
+					$passwordString = 	",password = '".md5(base64_decode($input_data->password))."'";
+				}
+				
+				$stmt = $this->conn->prepare("UPDATE admins SET username='".$input_data->username."',firstname='".$input_data->firstname."',lastname='".$input_data->lastname."', email='".$input_data->email."' ".$passwordString." WHERE id=".$input_data->id."
 					");
 			}
 			else{

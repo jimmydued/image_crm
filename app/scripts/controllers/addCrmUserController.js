@@ -72,7 +72,7 @@
 
         $scope.resetFormToAddUser       =   function(){            
             $scope.buttonText           =   "Add Member";
-            vm.formData = {};
+            vm.formData = {};  
             defaultParamSetup();               
         };
 
@@ -110,7 +110,10 @@
                 vm.formData.operationType   =   "set";
             }
 
-            vm.formData.password   = Base64Service.encode(vm.formData.password);
+            if(vm.formData.password){
+                vm.formData.password        =   Base64Service.encode(vm.formData.password);    
+            }
+            
             
             CommonService.postData(apiUrl+"crmMember.php",vm.formData)
                     .then(function (addUpdateData) {
