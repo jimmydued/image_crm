@@ -61,8 +61,9 @@
                             parseData(gridData);
                         } 
             });
-        };        
+        };
 
+        
         /*This method is callback when we are dealing with asynchronus http calls.*/
         function parseUserInformatioData(response){            
             vm.formData                 = _.extend(vm.formData, response.data[0]);
@@ -79,10 +80,14 @@
         /*This method is callback when we are dealing with asynchronus http calls.*/
         function parseData(response){
             
-            $scope.gridOptions.data = response.data;
+            $scope.gridOptions.data     = response.data;
 
+            $scope.gridOptions.onRegisterApi = function(gridApi){
+              $scope.gridApi = gridApi;
+            };
+            
             $scope.gridOptions.columnDefs  =  [
-                                {field: 'username'},
+                                {field: 'username',enableFiltering:true},
                                 {field: 'firstname'},
                                 {field: 'lastname'},
                                 {field: 'email'},
@@ -137,7 +142,9 @@
                 } 
         });
 
-        $scope.commonService = CommonService; 
+        $scope.commonService = CommonService;
+        $scope.scope         = $scope;   
+        
     }
     
 })();

@@ -91,6 +91,11 @@
 	<!--Modal HTML specific to Page-->
 	<image src="images/loading_spinner.gif" class="col-md-offset-5 loading" ng-if="dataLoading">	 
 	<div class="row mtxl" ng-if="gridOptions.data!=null && gridOptions.data.length>0">
+      	<div class="col-md-12 col-sm-12" align="right">
+    		<button id='toggleFiltering' ng-click="commonService.toggleFiltering(scope)" class="btn btn-success">Filter</button>
+    	</div>	
+	</div>		
+	<div class="row mtxl" ng-if="gridOptions.data!=null && gridOptions.data.length>0">
       <div class="col-md-12 col-sm-12">
       	<div ui-grid-grouping ui-grid="gridOptions" class="panel panel-primary grid"></div>
 	  </div>	

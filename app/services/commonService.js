@@ -5,8 +5,8 @@
         .module('imageCrmApp')
         .factory('CommonService', CommonService);
 
-    CommonService.$inject = ['$http','$window','_'];
-    function CommonService($http,$window,_) {
+    CommonService.$inject = ['$http','$window','_','uiGridConstants'];
+    function CommonService($http,$window,_,uiGridConstants) {
 
         var service = {};
 
@@ -16,7 +16,9 @@
 
         service.checkElementLength  =   checkElementLength;
         
-        service.showHideImage   =   showHideImage;
+        service.showHideImage       =   showHideImage;
+
+        service.toggleFiltering     =   toggleFiltering;
 
         return service;
 
@@ -38,6 +40,12 @@
                 result = true;
             }
             return result;            
+        }
+
+        function toggleFiltering(scope){
+            scope.gridOptions.enableFiltering = !scope.gridOptions.enableFiltering;
+            scope.gridApi.core.notifyDataChange( uiGridConstants.dataChange.COLUMN);
+            return true;
         }
 
         function showHideImage(scopeVar){
