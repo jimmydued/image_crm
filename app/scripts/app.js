@@ -281,7 +281,43 @@ angular
                   }
                 ]
           }
-    })  
+    })
+
+    .state('dashboard.performaInvoiceSearch',{
+        templateUrl:'views/performaInvoiceSearch.html',
+        url:'/performaInvoiceSearch',
+        resolve: {
+                    loadMyFile:["$ocLazyLoad", function($ocLazyLoad) {
+                      return $ocLazyLoad.load({
+                                  name:'imageCrmApp',
+                                  files:[
+                                    'scripts/controllers/performaInvoiceSearchController.js',
+                                    'scripts/directives/uicustomgrid/uicustomgrid.js',
+                                    'scripts/directives/countries/countries.js'
+                                  ] 
+                              })
+                  }
+                ]
+          }
+    })
+
+    .state('dashboard.recentCancelledTransaction',{
+        templateUrl:'views/recentCancelledTransaction.html',
+        url:'/recentCancelledTransaction',
+        resolve: {
+                    loadMyFile:["$ocLazyLoad", function($ocLazyLoad) {
+                      return $ocLazyLoad.load({
+                                  name:'imageCrmApp',
+                                  files:[
+                                    'scripts/controllers/recentCancelledTransactionController.js',
+                                    'scripts/directives/uicustomgrid/uicustomgrid.js'
+                                   ] 
+                              })
+                  }
+                ]
+          }
+    }) 
+
     .state('dashboard.chart',{
         templateUrl:'views/chart.html',
         url:'/chart',
