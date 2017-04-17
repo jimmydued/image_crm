@@ -60,7 +60,7 @@
 	<div ng-if="gridOptions.data!=null">
 	    <ui-custom-grid ng-if="gridOptions.data.length>0" options="gridOptions"></ui-custom-grid>
 	</div>
-	<div ng-if="gridOptions.data==null" align="center">
-	    No Data Found.
+	<div class="row alert alert-info" ng-if="gridOptions && gridOptions.data.length==0" align="center">
+	      No Data Found.
 	</div>
 </div>
