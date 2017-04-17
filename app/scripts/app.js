@@ -333,6 +333,24 @@ angular
                   }
                 ]
           }
+    })
+
+    .state('dashboard.lowRemaningCreditList',{
+        templateUrl:'views/lowRemaningCreditList.html',
+        url:'/lowRemaningCreditList',
+        resolve: {
+                    loadMyFile:["$ocLazyLoad", function($ocLazyLoad) {
+                      return $ocLazyLoad.load({
+                                  name:'imageCrmApp',
+                                  files:[
+                                    'scripts/controllers/lowRemaningCreditListController.js',
+                                    'scripts/directives/uicustomgrid/uicustomgrid.js',
+                                    'scripts/directives/countries/countries.js'
+                                   ] 
+                              })
+                  }
+                ]
+          }
     }) 
 
     .state('dashboard.chart',{
