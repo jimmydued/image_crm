@@ -316,6 +316,23 @@ angular
                   }
                 ]
           }
+    })
+
+    .state('dashboard.downloadFacility',{
+        templateUrl:'views/downloadFacility.html',
+        url:'/downloadFacility',
+        resolve: {
+                    loadMyFile:["$ocLazyLoad", function($ocLazyLoad) {
+                      return $ocLazyLoad.load({
+                                  name:'imageCrmApp',
+                                  files:[
+                                    'scripts/controllers/downloadFacilityController.js',
+                                    'scripts/directives/uicustomgrid/uicustomgrid.js'
+                                   ] 
+                              })
+                  }
+                ]
+          }
     }) 
 
     .state('dashboard.chart',{

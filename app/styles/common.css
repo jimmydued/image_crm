@@ -172,3 +172,7 @@ input[type="text"].sucess {          /*make myBlur class for text field for achi
         visibility:hidden;
     }
 }
+.sidebar-scrolling{
+  max-height:590px;
+  overflow-x:auto;
+}
