@@ -95,7 +95,7 @@
                                 {field: 'type'},
                                 {
                                     field: 'action',
-                                    cellTemplate:'<button class="btn btn-success btn-xs grid-bttn-align" ng-click="grid.appScope.editUser(row.entity.id)">Edit</button> <button class="btn btn-danger btn-xs" ng-click="grid.appScope.toggleModal(row.entity.id)">Delete</button>'
+                                    cellTemplate:'<button class="btn btn-info btn-circle btn-align-left" ng-click="grid.appScope.editUser(row.entity.id)"><i class="fa fa-check"></i></button> <button class="btn btn-warning btn-circle" ng-click="grid.appScope.toggleModal(row.entity.id)"><i class="fa fa-times"></i></button>'
                                 }
                             ];
 
