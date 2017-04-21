@@ -113,7 +113,7 @@ class CrmProducts_Functions extends Common_Functions{
 			}
 	}
 }
- 
+ //creating object
 $obj = new CrmProducts_Functions($data);
 
 if($task=="list"){
