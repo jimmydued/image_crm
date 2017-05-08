@@ -58,6 +58,7 @@
             
             $scope.gridOptions.data = response.data;
 
+
             $scope.gridOptions.columnDefs  =  [
                                 {field: 'name'},
                                 { field: 'keywords' },                              
