@@ -53,18 +53,16 @@
             defaultParamSetup();               
         };
 
-        /*This method is callback when we are dealing with asynchronus http calls.*/
+        /*This method is used set up the Grid on Page Load Event.*/
         function parseData(response){
             
             $scope.gridOptions.data = response.data;
 
             $scope.gridOptions.columnDefs  =  [
                                 {field: 'name'},
-                                {field: 'product_image'},
-                                {field: 'product_type'},
+                                { field: 'keywords' },                              
                                 {field: 'price'},
-                                {field: 'active'},
-                                {field: 'type'},
+                                {field: 'active'},                               
                                 {
                                     field: 'action',
                                     cellTemplate:'<button class="btn btn-success btn-xs" ng-click="grid.appScope.editUser(row.entity.id)">Edit</button>  <button class="btn btn-danger btn-xs" ng-click="grid.appScope.deleteUser()">Delete</button>'
