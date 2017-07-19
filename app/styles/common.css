@@ -144,6 +144,52 @@ input[type="text"].sucess {          /*make myBlur class for text field for achi
   font-family: 'arial', 'sans-serif';
 }
 
+input[type="file"]{
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 2;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+} 
+
+.upload-field {
+    position: relative;
+    cursor: pointer;
+    width: 300px;
+    height: 30px;
+    line-height: 28px;
+    padding: 5px 10px;
+    border: 1px solid #203F53;
+    border-radius: 5px;
+}
+
+.icon-folder {
+    background-image: url("../images/icon-folder.png");
+    height: 30px;
+    width: 30px;
+    background-size: cover;
+    background-color: transparent;
+    border: none;
+    float: right;
+}
+
+.upload-file-button {
+    height: 40px;
+    width: 120px;
+    text-align: center;
+    margin: 20px 0;
+    border: none;
+    border-radius: 5px;
+    box-shadow: 0 1px 3px #203F53;
+    background-color: #203F53;
+    color: white;
+    font-size: 15px;
+}
+
+
 #operationMessage {
     -moz-animation: cssAnimation 0s ease-in 5s forwards;
     /* Firefox */
@@ -175,4 +221,60 @@ input[type="text"].sucess {          /*make myBlur class for text field for achi
 .sidebar-scrolling{
   max-height:590px;
   overflow-x:auto;
+}
+.tab-content {
+    width: 100% !important;
+}
+.row>.col-md-3>.form-group>label {
+    float: right;
+}
+.floatRight{
+float: right;
+}
+.mg-lft-n8pc{
+    margin-left: -8%;
+}
+.mg-lft-n4pc{
+    margin-left: -4%;
+}
+.mg-lft-n3pc{
+margin-left: -3%;
+}
+.width88{
+width: 88%;}
+.width94pc{
+width:94%;
+}
+.sub-form{
+border-bottom: 1px solid #ddd !important;}
+
+.clientInfo-btn-ctr{
+    margin-top: 12px;
+    margin-bottom: 12px;
+}
+.clientInfo-sub-ctr{
+    border-bottom: 1px solid;
+    margin-left: 0px;
+    margin-right: 0px;
+    background: #f8f8f8;
+    margin-top: 1px;
+}
+.txt-udl{
+text-decoration: underline;
+}
+.float-rgt{
+float: right;}
+.invoice-to{
+font-size: 18px;
+    margin-top: 5px;
+	margin-left: -6%;
+}
+.yr-dpdwn{
+width: 60%;
+    margin-left: -11%}
+.mnth-cntr{
+margin-left: -1.3%;}
+.invoiceLink{
+margin-left: 8%;
+    margin-top: 2%;
 }

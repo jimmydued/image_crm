@@ -158,7 +158,27 @@ angular
                 ]
           }
     })
-
+ .state('dashboard.salesAndTransactions',{
+        templateUrl:'views/salesAndTransactions/salesAndTransactions.html',
+        url:'/sales&transactions',
+        resolve: {
+                    loadMyFile:["$ocLazyLoad", function($ocLazyLoad) {
+                      return $ocLazyLoad.load({
+                                  name:'imageCrmApp',
+                                  files:[
+                                          'services/commonService.js',
+                                  'scripts/controllers/salesAndTransactionsController/salesAndTransactionsController.js',
+				'scripts/controllers/salesAndTransactionsController/clientInfoController.js',
+                                          'scripts/controllers/salesAndTransactionsController/saleForecastController.js',
+					'scripts/controllers/salesAndTransactionsController/invoiceController.js',
+					'scripts/directives/comment/comment.js',
+                                          'scripts/directives/uicustomgrid/uicustomgrid.js'
+                                        ] 
+                              })
+                  }
+                ]
+          }
+    })
     .state('dashboard.daily-tasks',{
         templateUrl:'views/daily-tasks.html',
         url:'/daily-tasks',
@@ -260,7 +280,7 @@ angular
                                     'scripts/directives/uicustomgrid/uicustomgrid.js',
                                     'scripts/directives/custommodal/customModal.js',
                                     'scripts/directives/usernameemailcheck/usernameEmailAvailable.js'
-                                  ] 
+                                  ]  
                               })
                   }
                 ]
@@ -275,7 +295,9 @@ angular
                                   name:'imageCrmApp',
                                   files:[
                                     'scripts/controllers/addCrmProductController.js',
-                                    'scripts/directives/uicustomgrid/uicustomgrid.js'
+                                    'scripts/directives/uicustomgrid/uicustomgrid.js',
+                                    'scripts/directives/custommodal/customModal.js'
+                                    
                                   ] 
                               })
                   }
